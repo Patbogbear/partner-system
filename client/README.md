@@ -1,4 +1,4 @@
-# vue3-ts
+# client
 
 ## Project setup
 ```
