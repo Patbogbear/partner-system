@@ -127,6 +127,7 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
 
 
     });
+ 
 
 module.exports = router;
 
