@@ -67,7 +67,11 @@ app.use(bodyParser.json())
 // DB config
 const db = require("./config/keys").mongoURI;
 //connect to mongodb
+<<<<<<< HEAD
 //test
+=======
+
+>>>>>>> cfcd2c8ad87ffbaa18e214e939d8bbcbff8c46cd
 
 
 mongoose.connect(db,{useNewUrlParser:true})
