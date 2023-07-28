@@ -26,12 +26,6 @@ const PartySchema = new Schema({
     introduce: {
         type:String,
     },
-    service_introduce: {
-        type:String,
-    },
-    advantage_features_introduce: {
-        type:String,
-    },
     major_cliens_or_case: {
         type:String,
     },
@@ -42,6 +36,15 @@ const PartySchema = new Schema({
         type:String,
     },
     first_time_cooperate: {
+        type:String,
+    },
+    channel_contact:{
+        type:String,
+    },
+    channel_contact_position:{
+        type:String,
+    },
+    channel_contact_information:{
         type:String,
     },
     marketing_data:{
@@ -62,13 +65,31 @@ const PartySchema = new Schema({
     POC_SH:{
         type:String,
     },
+    POC_BJ:{
+        type:String,
+    },
+    HZ_vertical:{
+        type:String,
+    },
     HZ_tracking_process:{
+        type:String,
+    },
+    HZ_tracking_process_segment:{
+        type:String,
+    },
+    HZ_channel_source:{
+        type:String,
+    },
+    SH_vertical:{
         type:String,
     },
     SH_tracking_process:{
         type:String,
     },
-    demonds:{
+    SH_tracking_process_segment:{
+        type:String,
+    },
+    SH_channel_source:{
         type:String,
     }
 })

@@ -7,6 +7,7 @@ const path = require("path")
 
 const users = require("./server/router/api/users");
 const parties = require("./server/router/api/parties")
+const logs = require("./server/router/api/logs")
 
 //excel 
 // const XLSX = require('xlsx')
@@ -73,7 +74,6 @@ const db = require("./config/keys").mongoURI;
 mongoose.connect(db, { useNewUrlParser: true })
     .then(() => {
         console.log("successful connected")
-        //return parties.insertMany(formattedData)
     }
 
     )
@@ -90,6 +90,8 @@ require("./config/passport")(passport)
 // use router
 app.use("/api/users", users);
 app.use("/api/parties", parties);
+app.use("/api/logs",logs);
+
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/dist'));
