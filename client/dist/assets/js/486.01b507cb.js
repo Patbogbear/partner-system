@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkclient"]=self["webpackChunkclient"]||[]).push([[486],{2486:function(n,e,t){t.r(e),t.d(e,{default:function(){return d}});var c=t(821);const r={class:"devoid"};function u(n,e){return(0,c.wg)(),(0,c.iD)("div",r," 404 page ")}var i=t(3744);const s={},a=(0,i.Z)(s,[["render",u]]);var d=a}}]);
+//# sourceMappingURL=486.01b507cb.js.map
