@@ -46,48 +46,51 @@ router.post("/register", (req, res) => {
             }
         })
 })
-// $edit password for yourself
-// 
 
+// get user for super-admin
+router.get("/", passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        User.find({ identity: { $ne: "Super-Admin" } }, 'email')
+            .then((users) => {
+                res.json(users);
+            })
+            .catch(err => res.status(500).json({ error: "error fetching users" }))
+    })
+// $edit password for yourself
 router.post("/edit-user/password", passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        const { oldPassword, newPassword } = req.body;
+        const { newPassword } = req.body;
         const userId = req.user.id;
-        console.log(oldPassword)
-        console.log(newPassword)
-        // 首先验证旧密码是否正确
-        User.findById(userId)
-            .then(user => {
-                if (!user) {
-                    return res.status(404).json({ error: "User not found" });
-                }
 
-                bcrypt.compare(oldPassword, user.password, (err, isMatch) => {
-                    if (err) throw err;
+        // 无需验证旧密码，直接对新密码进行加密并保存
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newPassword, salt, (err, hash) => {
+                if (err) throw err;
 
-                    if (!isMatch) {
-                        return res.status(400).json({ error: "Incorrect old password" });
-                    }
-
-                    // 旧密码验证通过，对新密码进行加密并保存
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newPassword, salt, (err, hash) => {
-                            if (err) throw err;
-
-                            User.findByIdAndUpdate(userId, { password: hash })
-                                .then(() => res.json({ message: "Password updated successfully" }))
-                                .catch(err => console.log(err));
-                        });
-                    });
-                });
-            })
-            .catch(err => console.log(err));
+                User.findByIdAndUpdate(userId, { password: hash })
+                    .then(() => res.json({ message: "Password updated successfully" }))
+                    .catch(err => console.log(err));
+            });
+        });
     });
+
 // $delete user under super-admin
+ 
+router.delete("/delete/user", passport.authenticate("jwt", { session: false }), (req, res) => {
 
-router.delete("/delete-user/:id", (req, res) => {
+//lack authenticate control function
 
-})
+    const email = req.body.email;
+    User.findOneAndRemove({ email })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            res.json({ success: true });
+        })
+        .catch(err => res.status(500).json({ error: "Error deleting user" }));
+});
+
 // $edit user role for admin 
 router.post("/edit-user/:id", (req, res) => {
 
