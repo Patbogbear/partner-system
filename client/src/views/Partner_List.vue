@@ -80,7 +80,7 @@
         
       >
         <div class="card-body">
-          <h5 class="card-title">{{ partner.thrid_party_name }}</h5>
+          <h5 class="card-title">{{ partner.thrid_partner_name }}</h5>
           <p class="card-text">
             {{ partner.introduce }}
             {{ partner.service_introduce }}
@@ -91,7 +91,7 @@
             >Partner details</router-link
           >
           <router-link
-            v-if="userIdentity.identity == 'Admin'"
+            v-if="userIdentity.identity == 'Super-Admin'"
             class="btn btn-primary"
             :to="'/detials/' + partner._id"
           >
@@ -107,7 +107,7 @@
         class="card single_item col-lg-3"
       >
         <div class="card-body">
-          <h5 class="card-title">{{ partner.thrid_party_name }}</h5>
+          <h5 class="card-title">{{ partner.thrid_partner_name }}</h5>
           <p class="card-text">
             {{ partner.introduce }}
             {{ partner.service_introduce }}
@@ -118,7 +118,7 @@
             >Partner details</router-link
           >
           <router-link
-            v-if="userIdentity.identity == 'Admin'"
+            v-if="userIdentity.identity == 'Super-Admin'"
             class="btn btn-primary"
             :to="'/detials/' + partner._id"
           >
@@ -155,7 +155,7 @@ onMounted(async () => {
 
 const getData = async () => {
   try {
-    let { data } = await axios.get("/api/parties");
+    let { data } = await axios.get("/api/partners");
     partners.value = data;
   } catch (error) {}
 };
@@ -181,7 +181,7 @@ const filterData = (data, value) => {
   }
   if (value.select_agent_or_partner) {
     result = result.filter(
-      (partner) => partner.thrid_party_type === value.select_agent_or_partner
+      (partner) => partner.thrid_partner_type === value.select_agent_or_partner
     );
   }
   if (value.select_tier) {

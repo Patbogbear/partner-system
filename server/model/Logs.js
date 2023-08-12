@@ -7,7 +7,7 @@ const LogSchema = new Schema({
         default: Date.now
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         required: true,
         ref: 'users'
     },

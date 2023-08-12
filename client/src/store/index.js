@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 
+
 const types = {
   SET_AUTHENTICATED: "SET_AUTHENTICATED",
   SET_USER: "SET_USER"
@@ -12,7 +13,7 @@ const state = {
 
 const getters = {
   isAuthenticated: state => state.isAuthenticated,
-  user: state => state.user
+  user: state => state.user,
 };
 
 const mutations = {
@@ -33,7 +34,7 @@ const actions = {
   },
   clearCurrentState: ({ commit }) => {
     commit(types.SET_AUTHENTICATED, false);
-    commit(types.SET_USER, null);
+    commit(types.SET_USER, {});
   }
 };
 
@@ -43,3 +44,4 @@ export default createStore({
   mutations,
   actions
 });
+

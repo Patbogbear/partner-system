@@ -21,6 +21,16 @@
           </div>
         </div>
         <div class="mb-3">
+          <label class="form-label">Cluster</label>
+          <div>
+            <select class="form-select" v-model="users.cluster" required>
+              <option>SH</option>
+              <option>HZ</option>
+              <option>BJ</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
           <label class="form-label required">Email address</label>
           <div>
             <input
@@ -74,9 +84,9 @@
           <label class="form-label">Select Reader or Editor </label>
           <div>
             <select class="form-select" v-model="users.identity" required>
-              <option>Reader</option>
-              <option>Editor</option>
-              <option>Admin</option>
+              <option>Sales</option>
+              <option>Pod-Leader</option>
+              <option>Team-Leader</option>
               <!-- only for PM and VPM above lever -->
               <option>Super-Admin</option>
             </select>
@@ -101,6 +111,7 @@ export default {
     return {
       users: {
         name: "",
+        cluster:"",
         email: "",
         password: "",
         identity: "",

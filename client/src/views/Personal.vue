@@ -1,8 +1,17 @@
 <template>
   <div>
     <div class="header">
-      personal page
-      {{ userIdentity }}
+      <div>
+        personal page
+        {{ userIdentity }}{{ userIdentity.email }}
+      </div>
+
+      request List
+      <div v-for="request in requestList" :key="request._id">
+        {{ request }}
+        <button @click="approveRequest(request._id)">approve request</button>
+        <button @click="denyRequest(request._id)">deny request</button>
+      </div>
       <div
         class="toast"
         role="alert"
@@ -77,69 +86,39 @@
               <table class="table mb-0">
                 <thead>
                   <tr>
+                    <th>User</th>
                     <th>Role</th>
-                    <th>Property</th>
-                    <th>Comparison</th>
-                    <th>Target</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <select class="form-select">
-                        <option value="STATUS_CODE" selected="">Role</option>
-                        <option value="JSON_BODY">Admin</option>
-                        <option value="HEADERS">Editor</option>
-                        <option value="TEXT_BODY">contributor</option>
+                      <select class="form-select" v-model="selectedEmail">
+                        <option value="" disabled>Select User</option>
+                        <option
+                          v-for="user in allUsers"
+                          :key="user.id"
+                          :value="user.email"
+                        >
+                          {{ user.email }}
+                        </option>
                       </select>
                     </td>
                     <td>
-                      <input type="text" class="form-control" />
-                    </td>
-                    <td>
-                      <select class="form-select">
-                        <option value="EQUALS" selected="">Equals</option>
-                        <option value="NOT_EQUALS">Not equals</option>
-                        <option value="HAS_KEY">Has key</option>
+                      <select class="form-select" v-model="selectedRole">
+                        <option value="Reader">Reader</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Admin">Admin</option>
                       </select>
                     </td>
                     <td>
-                      <input type="text" class="form-control" value="200" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select class="form-select">
-                        <option value="STATUS_CODE">Status code</option>
-                        <option value="JSON_BODY" selected="">JSON body</option>
-                        <option value="HEADERS">Headers</option>
-                        <option value="TEXT_BODY">Text body</option>
-                        <option value="RESPONSE_TIME">Response time</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="parameters.alt.type"
-                      />
-                    </td>
-                    <td>
-                      <select class="form-select">
-                        <option value="EQUALS">Equals</option>
-                        <option value="NOT_EQUALS">Not equals</option>
-                        <option value="HAS_KEY">Has key</option>
-                        <option value="NOT_HAS_KEY">Not has key</option>
-                        <option value="HAS_VALUE" selected="">Has value</option>
-                        <option value="NOT_HAS_VALUE">Not has value</option>
-                        <option value="IS_EMPTY">Is empty</option>
-                        <option value="NOT_EMPTY">Is not empty</option>
-                        <option value="GREATER_THAN">Greater than</option>
-                        <option value="LESS_THAN">Less than</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" class="form-control" value="string" />
+                      <button
+                        v-if="selectedEmail && selectedRole"
+                        @click="updateUserRole"
+                      >
+                        change Role
+                      </button>
                     </td>
                   </tr>
                   <tr>
@@ -158,65 +137,19 @@
                         </option>
                       </select>
                       <div v-else>没有用户数据</div>
+                    </td>
+                    <td>
+                      <select class="form-select">
+                        <option value="STATUS_CODE" selected="">Reader</option>
+                        <option value="JSON_BODY">Editor</option>
+                        <option value="HEADERS">Admin</option>
+                        <option value="TEXT_BODY">Text body</option>
+                      </select>
+                    </td>
+                    <td>
                       <button v-if="selectedEmail" @click="deleteUser">
                         delete user
                       </button>
-                    </td>
-                    <td>
-                      <select class="form-select">
-                        <option value="STATUS_CODE">Status code</option>
-                        <option value="JSON_BODY">JSON body</option>
-                        <option value="HEADERS">Headers</option>
-                        <option value="TEXT_BODY">Text body</option>
-                        <option value="RESPONSE_TIME" selected="">
-                          Response time
-                        </option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" class="form-control" />
-                    </td>
-                    <td>
-                      <select class="form-select">
-                        <option value="EQUALS">Equals</option>
-                        <option value="NOT_EQUALS">Not equals</option>
-                        <option value="HAS_KEY">Has key</option>
-                        <option value="NOT_HAS_KEY">Not has key</option>
-                        <option value="HAS_VALUE">Has value</option>
-                        <option value="NOT_HAS_VALUE">Not has value</option>
-                        <option value="IS_EMPTY">Is empty</option>
-                        <option value="NOT_EMPTY">Is not empty</option>
-                        <option value="GREATER_THAN">Greater than</option>
-                        <option value="LESS_THAN" selected="">Less than</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" class="form-control" value="500" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select class="form-select">
-                        <option value="STATUS_CODE">Status code</option>
-                        <option value="JSON_BODY">JSON body</option>
-                        <option value="HEADERS" selected="">Headers</option>
-                        <option value="TEXT_BODY">Text body</option>
-                        <option value="RESPONSE_TIME">Response time</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="content-type"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="application/json; charset=UTF-8"
-                      />
                     </td>
                   </tr>
                 </tbody>
@@ -228,6 +161,68 @@
           </div>
         </div>
       </div>
+      <form class="card" @submit.prevent="addUser">
+        <div class="card-header">
+          <h3 class="card-title">Add user</h3>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label required">User name</label>
+            <div>
+              <input
+                type="name"
+                class="form-control"
+                placeholder="Enter name"
+                v-model="addUserName"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Email address</label>
+            <div>
+              <input
+                type="email"
+                class="form-control"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+                v-model="addUserEmail"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Password</label>
+            <div>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                v-model="addUserPassword"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Select Reader or Editor </label>
+            <div>
+              <select class="form-select" v-model="addUserIdentity" required>
+                <option>Reader</option>
+                <option>Editor</option>
+                <option>Admin</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-end">
+          <button type="submit" class="btn btn-primary" @onclick="addUser">
+            Submit
+          </button>
+        </div>
+      </form>
+      <button>get list</button>
+      <button @click="approveRequest">approve request</button>
     </div>
   </div>
 </template>
@@ -242,9 +237,18 @@ const newPassword = ref("");
 const confirmNewPassword = ref("");
 const allUsers = ref([]);
 const selectedEmail = ref("");
+const selectedRole = ref("");
+const updatedUserRole = ref("");
+const addUserEmail = ref("");
+const addUserPassword = ref("");
+const addUserIdentity = ref("");
+const addUserName = ref("");
+
+const requestList = ref([]);
 
 onMounted(async () => {
   await getUsers();
+  await requestLists();
 });
 
 const getUsers = async () => {
@@ -280,6 +284,62 @@ const deleteUser = async () => {
     selectedEmail = null;
   } catch (error) {
     console.log("error deleting user:", error);
+  }
+};
+const updateUserRole = async () => {
+  try {
+    await axios.put("/api/users/edit/role", {
+      email: selectedEmail.value,
+      updatedUserRole: selectedRole.value,
+    });
+
+    await getUsers();
+  } catch (error) {
+    console.log("error editor user role:", error);
+  }
+};
+
+const addUser = async () => {
+  try {
+    await axios.post("/api/users/register", {
+      name: addUserName.value,
+      email: addUserEmail.value,
+      password: addUserPassword.value,
+      identity: addUserIdentity.value,
+    });
+    await getUsers();
+  } catch (error) {
+    console.log("error add user ", error);
+  }
+};
+
+const requestLists = async () => {
+  try {
+    let { data } = await axios.get("/api/accessQuests/all-requests", {
+      params: { status: "PENDING" },
+    });
+    requestList.value = data;
+  } catch (error) {
+    console.log("error get request list", error);
+  }
+};
+
+const approveRequest = async (value) => {
+  try {
+    await axios.put("/api/accessQuests/all-requests/" + value, {
+      status: "APPROVED",
+    });
+  } catch (error) {
+    console.log("error approve request", error);
+  }
+};
+const denyRequest = async (value) => {
+  try {
+    await axios.put("/api/accessQuests/all-requests/" + value, {
+      status: "DENIED",
+    });
+  } catch (error) {
+    console.log("error approve request", error);
   }
 };
 </script>

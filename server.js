@@ -6,36 +6,18 @@ const passport = require("passport")
 const path = require("path")
 
 const users = require("./server/router/api/users");
-const parties = require("./server/router/api/parties")
-const logs = require("./server/router/api/logs")
+const partners = require("./server/router/api/partners")
+const logs = require("./server/router/api/logs");
+const accessRequests = require("./server/router/api/accessRequests");
 
 //excel 
 // const XLSX = require('xlsx')
 
 // const collectionName = 'parties'
 // const fields = {
-//     '服务商类型': 'thrid_party_type',
-//     '服务商名称': 'thrid_party_name',
-//     '2B/2C': 'b2b_or_b2c',
-//     '公司所在地': 'party_location',
-//     '服务覆盖范围': 'party_scope',
-//     '公司介绍': 'introduce',
-//     '服务介绍': 'service_introduce',
-//     '优势和特色介绍': 'advantage_features_introduce',
-//     '主要客户/成功案例': 'major_cliens_or_case',
-//     '网址': 'website',
-//     'A1/A2/B1/B2': 'tier',
-//     '是否第一次合作': 'first_time_cooperate',
-//     '市场活动数据': 'marketing_data',
-//     '转介绍数据': 'transfer_data',
-//     '渠道类别活动数据': 'channel_categroy_activate_data',
-//     '合作评分': 'coorprate_score',
-//     'POC-HZ': 'POC-HZ',
-//     'POC-SH': 'POC-SH',
-//     'HZ跟进情况': 'HZ_tracking_process',
-//     'SH跟进情况': 'SH_tracking_process',
-//     '需求': 'demonds'
-
+//     '服务商类型': 'thrid_partner_type',
+//     '服务商名称': 'thrid_partner_name',
+//     '2B/2C': 'b2b_or_b2c',   
 // }
 
 // const desktopPath = path.join(require('os').homedir(), 'Desktop');
@@ -89,8 +71,10 @@ require("./config/passport")(passport)
 
 // use router
 app.use("/api/users", users);
-app.use("/api/parties", parties);
+app.use("/api/partners", partners);
 app.use("/api/logs",logs);
+app.use("/api/accessQuests",accessRequests);
+
 
 
 if (process.env.NODE_ENV === 'production') {

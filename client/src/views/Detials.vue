@@ -9,18 +9,29 @@
               <div class="card-header">
                 <h4 class="card-title">update Partner</h4>
               </div>
-              <div class="card-body">
+            {{partner}}
+              <!-- <div class="card-body">
                 <div class="row">
-                  <div class="col-xl-6">
+                  <div class="col-xl-4">
                     <div class="row">
                       <div class="col-md-6 col-xl-12">
+                        <div class="mb-3">
+                          <label class="form-label">Cluster</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.cluster"
+                            required
+                          />
+                        </div>
                         <div class="mb-3">
                           <label class="form-label">服务商类型</label>
                           <input
                             type="text"
                             class="form-control"
                             placeholder="服务商类型"
-                            v-model="party.thrid_party_type"
+                            v-model="partner.thrid_partner_type"
                             required
                           />
                         </div>
@@ -30,22 +41,42 @@
                             type="text"
                             class="form-control"
                             placeholder="服务商名称"
-                            v-model="party.thrid_party_name"
+                            v-model="partner.thrid_partner_name"
                             required
                           />
                         </div>
                         <div class="mb-3">
                           <div>
-                            <label class="form-label">2B or 2C</label>
-                            <select
-                              class="form-select form-select-sm"
-                              aria-label=".form-select-sm example"
-                              v-model="party.b2b_or_b2c"
-                              required
-                            >
-                              <option value="2B">2B</option>
-                              <option value="2C">2C</option>
-                            </select>
+                            <label class="form-label">业务类型</label>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.b2b_or_b2c"
+                                  value="2B"
+                                />
+                                <span class="form-check-label">2B</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.b2b_or_b2c"
+                                  value="2C"
+                                />
+                                <span class="form-check-label">2C</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.b2b_or_b2c"
+                                  value="mix"
+                                />
+                                <span class="form-check-label">MIX</span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                         <div class="mb-3">
@@ -54,7 +85,7 @@
                             type="text"
                             class="form-control"
                             placeholder="公司所在地"
-                            v-model="party.party_location"
+                            v-model="partner.partner_location"
                           />
                         </div>
                         <div class="mb-3">
@@ -63,35 +94,18 @@
                             type="text"
                             class="form-control"
                             placeholder="服务覆盖范围"
-                            v-model="party.party_scope"
+                            v-model="partner.partner_scope"
                           />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">公司介绍</label>
-                          <input
-                            type="text"
+                          <label class="form-label">公司介绍 </label>
+                          <textarea
                             class="form-control"
-                            placeholder="公司介绍"
-                            v-model="party.introduce"
-                          />
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label">服务介绍</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="服务介绍"
-                            v-model="party.service_introduce"
-                          />
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label">优势和特色介绍</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="优势和特色介绍"
-                            v-model="party.advantage_features_introduce"
-                          />
+                            name="example-textarea-input"
+                            rows="6"
+                            placeholder="partner introduce.."
+                            v-model="partner.introduce"
+                          ></textarea>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">主要客户/成功案例</label>
@@ -99,186 +113,484 @@
                             type="text"
                             class="form-control"
                             placeholder="主要客户/成功案例"
-                            v-model="party.major_cliens_or_case"
+                            v-model="partner.major_cliens_or_case"
                           />
                         </div>
-
                         <div class="mb-3">
                           <label for="basic-url" class="form-label"
                             >网站网址</label
                           >
                           <div class="input-group">
                             <span class="input-group-text" id="basic-addon3"
-                              >https://example.com/users/</span
+                              >https://</span
                             >
                             <input
                               type="text"
                               class="form-control"
                               id="basic-url"
                               aria-describedby="basic-addon3"
-                              v-model="party.website"
+                              v-model="partner.website"
                             />
-                          </div>
-                          <div class="form-text">
-                            Example help text goes outside the input group.
                           </div>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label"
-                            >是否是谷歌代理商/渠道Partner</label
-                          >
-                          <!-- <input
-                            type="text"
-                            class="form-control"
-                            placeholder="是否是谷歌代理商/渠道Partner"
-                            required
-                          /> -->
-                         <select
-                            class="form-select form-select-sm"
-                            aria-label=".form-select-sm example"
-                            required
-                          >
-                            <option value="是">是</option>
-                            <option value="否">否</option>
-                          </select>
+                          <div>
+                            <label class="form-label">服务商评级(SH)</label>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.tier"
+                                  value="A1"
+                                />
+                                <span class="form-check-label">A1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.tier"
+                                  value="A2"
+                                />
+                                <span class="form-check-label">A2</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.tier"
+                                  value="B1"
+                                />
+                                <span class="form-check-label">B1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.tier"
+                                  value="B2"
+                                />
+                                <span class="form-check-label">B2</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <div>
+                            <label class="form-label">服务商评级(SH)</label>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.sh_tier"
+                                  value="A1"
+                                />
+                                <span class="form-check-label">A1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.sh_tier"
+                                  value="A2"
+                                />
+                                <span class="form-check-label">A2</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.sh_tier"
+                                  value="B1"
+                                />
+                                <span class="form-check-label">B1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.sh_tier"
+                                  value="B2"
+                                />
+                                <span class="form-check-label">B2</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <div>
+                            <label class="form-label">服务商评级(HZ)</label>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.hz_tier"
+                                  value="A1"
+                                />
+                                <span class="form-check-label">A1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.hz_tier"
+                                  value="A2"
+                                />
+                                <span class="form-check-label">A2</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.hz_tier"
+                                  value="B1"
+                                />
+                                <span class="form-check-label">B1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.hz_tier"
+                                  value="B2"
+                                />
+                                <span class="form-check-label">B2</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <div>
+                            <label class="form-label">服务商评级(BJ)</label>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.bj_tier"
+                                  value="A1"
+                                />
+                                <span class="form-check-label">A1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.bj_tier"
+                                  value="A2"
+                                />
+                                <span class="form-check-label">A2</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.bj_tier"
+                                  value="B1"
+                                />
+                                <span class="form-check-label">B1</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input
+                                  class="form-check-input"
+                                  type="radio"
+                                  v-model="partner.hz_tier"
+                                  value="B2"
+                                />
+                                <span class="form-check-label">B2</span>
+                              </label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-6">
+                  <div class="col-xl-4">
                     <div class="row">
                       <div class="col-md-6 col-xl-12">
                         <div class="mb-3">
-                          <label class="form-label">选择级别</label>
-                          <select
-                            class="form-select form-select-sm"
-                            aria-label=".form-select-sm example"
-                            v-model="party.tier"
+                          <label class="form-label">渠道联系人(SH)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.sh_channel_contact"
                             required
-                          >
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                          </select>
+                          />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">是否第一次合作</label>
-                          <select
-                            class="form-select form-select-sm"
-                            aria-label=".form-select-sm example"
-                            v-model="party.first_time_cooperate"
+                          <label class="form-label">渠道方对接职位(SH)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.sh_channel_contact_position"
                             required
-                          >
-                            <option value="是">是第一次合作</option>
-                            <option value="否">非第一次合作</option>
-                          </select>
+                          />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">市场活动数据</label>
+                          <label class="form-label"
+                            >渠道方对接联系方式(SH)</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.sh_channel_contact_information"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">渠道联系人(HZ)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.hz_channel_contact"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">渠道方对接职位(HZ)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.hz_channel_contact_position"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >渠道方对接联系方式(HZ)</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.hz_channel_contact_information"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">渠道联系人(BJ)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.bj_channel_contact"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">渠道方对接职位(BJ)</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.bj_channel_contact_position"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label"
+                            >渠道方对接联系方式(BJ)</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="服务商类型"
+                            v-model="partner.bj_channel_contact_information"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <div class="input-group">
+                            <span class="input-group-text">Vertical</span>
+                            <input
+                              class="form-control"
+                              aria-label="With textarea"
+                              v-model="partner.vertical"
+                            />
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">市场活动数据(HZ)</label>
                           <input
                             class="form-control"
                             data-bs-toggle="autosize"
                             name="example-textarea-input"
                             rows="6"
                             placeholder="市场活动数据"
-                            v-model="party.marketing_data"
+                            v-model="partner.hz_marketing_data"
                           />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">转介绍数据</label>
+                          <label class="form-label">转介绍数据(HZ)</label>
                           <input
                             class="form-control"
                             data-bs-toggle="autosize"
                             name="example-textarea-input"
                             rows="6"
                             placeholder="转介绍数据"
-                            v-model="party.transfer_data"
+                            v-model="partner.hz_transfer_data"
                           />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">渠道类别活动数据</label>
+                          <label class="form-label">市场活动数据(SH)</label>
                           <input
                             class="form-control"
                             data-bs-toggle="autosize"
                             name="example-textarea-input"
                             rows="6"
-                            placeholder="渠道类别活动数据"
-                            v-model="party.channel_categroy_activate_data"
+                            placeholder="市场活动数据"
+                            v-model="partner.sh_marketing_data"
                           />
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">合作评分</label>
+                          <label class="form-label">转介绍数据(SH)</label>
                           <input
                             class="form-control"
                             data-bs-toggle="autosize"
                             name="example-textarea-input"
                             rows="6"
-                            placeholder="合作评分"
-                            v-model="party.coorprate_score"
+                            placeholder="转介绍数据"
+                            v-model="partner.sh_transfer_data"
                           />
                         </div>
+                        <div class="mb-3">
+                          <label class="form-label">市场活动数据(BJ)</label>
+                          <input
+                            class="form-control"
+                            data-bs-toggle="autosize"
+                            name="example-textarea-input"
+                            rows="6"
+                            placeholder="市场活动数据"
+                            v-model="partner.bj_marketing_data"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">转介绍数据(BJ)</label>
+                          <input
+                            class="form-control"
+                            data-bs-toggle="autosize"
+                            name="example-textarea-input"
+                            rows="6"
+                            placeholder="转介绍数据"
+                            v-model="partner.bj_transfer_data"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="row">
+                      <div class="col-md-6 col-xl-12">
                         <div class="mb-3">
                           <label class="form-label">HZ-POC</label>
                           <select
                             class="form-control form-select"
-                            v-model="party.POC_HZ"
-                            required
+                            v-model="partner.POC_HZ"
                           >
-                            <option value="jinyang">jinyang</option>
-                            <option value="mingliangh">mingliangh</option>
+                            <option value="jinyang">jinyangz</option>
+                            <option value="yiduc">bingyangw</option>
+                            <option value="mingliangh">hajiang</option>
                             <option value="zhimaop">zhimaop</option>
                             <option value="qinying">qinying</option>
                             <option value="yiduc">yiduc</option>
+                            <option value="yiduc">mingliangh</option>
                           </select>
                         </div>
+
                         <div class="mb-3">
                           <div class="input-group">
-                            <span class="input-group-text">杭州追踪数据</span>
-                            <textarea
+                            <span class="input-group-text">HZ合作状态</span>
+                            <input
                               class="form-control"
                               aria-label="With textarea"
-                              v-model="party.HZ_tracking_process"
-                            ></textarea>
+                              v-model="partner.HZ_tracking_process"
+                            />
                           </div>
                         </div>
+                        <div class="mb-3">
+                          <label class="form-label">HZ合作状态细分</label>
+                          <input
+                            type="text"
+                            name="input-mask"
+                            class="form-control"
+                            data-mask="0"
+                            data-mask-visible="true"
+                            placeholder=""
+                            autocomplete="off"
+                            v-model="partner.HZ_tracking_process_segment"
+                          />
+                        </div>
+
                         <div class="mb-3">
                           <label class="form-label">SH-POC</label>
                           <select
                             class="form-control form-select"
-                            v-model="party.POC_SH"
-                            required
+                            v-model="partner.POC_SH"
                           >
                             <option value="xieyang">xieyang</option>
-                            <option value="fangfangf">fangfangf</option>
+                            <option value="fangfangf">wuyuanyuan</option>
+                            <option value="fangfangf">zhangtao</option>
                           </select>
                         </div>
                         <div class="mb-3">
                           <div class="input-group">
-                            <span class="input-group-text">上海追踪数据</span>
-                            <textarea
+                            <span class="input-group-text">SH合作状态</span>
+                            <input
                               class="form-control"
                               aria-label="With textarea"
-                              v-model="party.SH_tracking_process"
-                            ></textarea>
+                              v-model="partner.SH_tracking_process"
+                            />
                           </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="mb-3 mb-0">
-                            <label class="form-label">需求</label>
-                            <textarea
-                              rows="5"
+                        <div class="mb-3">
+                          <span class="input-group-text">SH合作状态细分</span>
+                          <input
+                            class="form-control"
+                            aria-label="With textarea"
+                            v-model="partner.SH_tracking_process_segment"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">BJ-POC</label>
+                          <select
+                            class="form-control form-select"
+                            v-model="partner.POC_BJ"
+                          >
+                            <option value="xieyang">AAA</option>
+                            <option value="fangfangf">BBB</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <div class="input-group">
+                            <span class="input-group-text">BJ合作状态</span>
+                            <input
                               class="form-control"
-                              placeholder="Here can be your description"
-                              v-model="party.demonds"
-                            ></textarea>
+                              aria-label="With textarea"
+                              v-model="partner.BJ_tracking_process"
+                            />
                           </div>
+                        </div>
+                        <div class="mb-3">
+                          <span class="input-group-text">BJ合作状态细分</span>
+                          <input
+                            class="form-control"
+                            aria-label="With textarea"
+                            v-model="partner.BJ_tracking_process_segment"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>  -->
               <div class="card-footer text-end">
                 <div class="d-flex">
                   <a href="#" class="btn btn-link" @click="jumpBack()"
@@ -302,32 +614,54 @@ import axios from "../http";
 export default {
   created() {
     this.getDetail();
-    //console.log(this.party)
+    //console.log(this.partner)
   },
   data() {
     return {
-      party: {
-        thrid_party_type: "",
-        thrid_party_name: "",
+       partner: {
+        cluster: "",
+        thrid_partner_type: "",
+        thrid_partner_name: "",
         b2b_or_b2c: "",
-        party_location: "",
-        party_scope: "",
+        partner_location: "",
+        partner_scope: "",
         introduce: "",
-        service_introduce: "",
-        advantage_features_introduce: "",
         major_cliens_or_case: "",
         website: "",
-        tier: "",
-        first_time_cooperate: "",
-        marketing_data: "",
-        transfer_data: "",
-        channel_categroy_activate_data: "",
-        coorprate_score: "",
+        sh_tier: "",
+        hz_tier: "",
+        bj_tier: "",
+        SH: {
+          channel_contact_information: "",
+          channel_contact: "",
+          channel_contact_position: "",
+        },
+        HZ: {
+          channel_contact: "",
+          channel_contact_position: "",
+          channel_contact_information: "",
+        },
+        BJ: {
+          channel_contact: "",
+          channel_contact_position: "",
+          channel_contact_information: "",
+        },
+        vertical: "",
         POC_HZ: "",
         POC_SH: "",
+        POC_BJ: "",
         HZ_tracking_process: "",
+        HZ_tracking_process_segment: "",
         SH_tracking_process: "",
-        demonds: "",
+        SH_tracking_process_segment: "",
+        BJ_tracking_process: "",
+        BJ_tracking_process_segment: "",
+        hz_marketing_data: "",
+        sh_marketing_data: "",
+        bj_marketing_data: "",
+        hz_transfer_data: "",
+        sh_transfer_data: "",
+        bj_transfer_data: "",
       },
     };
   },
@@ -335,19 +669,19 @@ export default {
   methods: {
     getDetail() {
       const res = axios
-        .get("/api/parties/" + this.$route.params.id)
+        .get("/api/partners/" + this.$route.params.id)
         .then((res) => {
-          this.party = res.data;
-          //console.log(this.party)
+          this.partner = res.data;
+          //console.log(this.partner)
         });
     },
     updateData() {
-   
-      console.log(this.party)
-      axios.post("/api/parties/edit/" + this.$route.params.id, this.party)
-           .then((res) => {
-             //console.log(this.Party);
-             this.$router.push({ path: "/" });
+      console.log(this.partner);
+      axios
+        .post("/api/partners/edit/" + this.$route.params.id, this.partner)
+        .then((res) => {
+          //console.log(this.partner);
+          this.$router.push({ path: "/" });
         });
     },
     jumpBack() {

@@ -1,11 +1,13 @@
 <template>
   <div class="body">
-    <div class="content">
+    <div>{{ partner }}</div>
+    <!-- <div class="content">
+
       <div class="first_part">
         <div class="first_left">
           <div class="header">
             <div class="partner_name">
-              {{ partner.thrid_party_name }}
+              {{ partner.thrid_partner_name }}
             </div>
           </div>
         </div>
@@ -13,7 +15,7 @@
           <div class="first_middle_layout above">
             <div class="header">
               <div class="partner_type">
-                {{ partner.thrid_party_type }}
+                {{ partner.thrid_partner_type }}
               </div>
             </div>
             <div class="header">
@@ -45,7 +47,7 @@
             <div class="header_partner_location">
               所在地:
               <span class="body">
-                {{ partner.party_location }}
+                {{ partner.partner_location }}
               </span>
             </div>
           </div>
@@ -62,7 +64,7 @@
           <div class="first_right_layout header_partner_scope">
             Partner 服务覆盖范围:
             <span class="partner_scope">
-              {{ partner.party_scope }}
+              {{ partner.partner_scope }}
             </span>
           </div>
           <div class="first_right_layout header_partner_poc">
@@ -130,8 +132,9 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="edit">
+    </div> -->
+    <div class="edit" >
+      <button @click="requestData('SH')">request data</button>
       <div class="dropdown">
         <button
           class="btn btn-dark"
@@ -142,12 +145,12 @@
           "
           data-bs-toggle="dropdown"
           @click="deleteData(partner._id)"
-          v-if="userIdentity.identity == 'Admin'"
+          v-if="userIdentity.identity == 'Super-Admin'"
         >
           delete
         </button>
         <router-link
-          v-if="userIdentity.identity == 'Admin'"
+          v-if="userIdentity.identity == 'Super-Admin'"
           class="btn btn-primary"
           style="
             --bs-btn-padding-y: 0.25rem;
@@ -171,6 +174,8 @@ import router from "../router";
 const store = useStore();
 const userIdentity = store.getters.user;
 
+const requestLocation = ref("");
+
 computed(() => {
   return store.getters.user;
 });
@@ -182,16 +187,30 @@ const props = defineProps({
 const partner = ref({});
 
 const deleteData = (value) => {
-  axios.delete("/api/parties/delete/" + value).then((res) => {
-    console.log(333);
+  axios.delete("/api/partners/delete/" + value).then((res) => {
     router.push({ path: "/partner-list" });
   });
 };
 
+const requestData = (value) => {
+   const data ={
+     userId:userIdentity.id,
+     partnerId:props.id,
+     requestedContactLocation:value
+   }
+   axios
+    .post("/api/accessQuests/access-requests", data)
+    .then((res) => {
+      
+    });
+};
+
 const getDetail = async (id) => {
   try {
-    let { data } = await axios.get("/api/parties/" + id);
+    console.log(id);
+    let { data } = await axios.get("/api/partners/" + id);
     partner.value = data;
+    console.log(partner);
   } catch (error) {
     console.log("error from API", error);
   }
@@ -285,7 +304,7 @@ getDetail(props.id);
   width: 239px;
   height: 249px;
   margin: 10px;
-  flex:0.25;
+  flex: 0.25;
 }
 .third_part .third_part_layout .head {
   margin-top: 5px;

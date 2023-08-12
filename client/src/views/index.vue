@@ -34,7 +34,7 @@
               Search
             </button>
           </form>
-          <button class="btn btn-outline-success" @click="exportToCSV()">
+          <button class="btn btn-outline-success" @click="exportToCSV()" >
             export
           </button>
           <div @click="logOut()">logout</div>
@@ -47,6 +47,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">地区</th>
           <th scope="col">服务商类型</th>
           <th scope="col">服务商名称</th>
           <th scope="col">2B/2C</th>
@@ -55,66 +56,85 @@
           <!-- <th scope="col">公司介绍</th> -->
           <!-- <th scope="col">主要客户/成功案例</th> -->
           <!-- <th scope="col">网址</th> -->
-          <th scope="col">A1/A2/B1/B2</th>
-          <th scope="col">是否第一次合作</th>
-          <!-- <th scope="col">渠道方对接人</th> -->
-          <!-- <th scope="col">渠道方对接职位</th> -->
-          <!-- <th scope="col">渠道方对接联系方式</th> -->
-          <!-- <th scope="col">市场活动数据</th> -->
-          <!-- <th scope="col">转介绍数据</th> -->
-          <!-- <th scope="col">渠道类别活动数据</th> -->
-          <th scope="col">合作评分</th>
+          <!-- <th scope="col">服务商评级(SH)</th> -->
+          <!-- <th scope="col">服务商评级(HZ)</th> -->
+          <!-- <th scope="col">服务商评级(BJ)</th> -->
+          <!-- <th scope="col">SH渠道方对接人</th> -->
+          <!-- <th scope="col">SH渠道方对接职位</th> -->
+          <!-- <th scope="col">SH渠道方对接联系方式</th> -->
+          <!-- <th scope="col">HZ渠道方对接人</th> -->
+          <!-- <th scope="col">HZ渠道方对接职位</th> -->
+          <!-- <th scope="col">HZ渠道方对接联系方式</th> -->
+          <!-- <th scope="col">BJ渠道方对接人</th> -->
+          <!-- <th scope="col">BJ渠道方对接职位</th> -->
+          <!-- <th scope="col">BJ渠道方对接联系方式</th> -->
+          <th scope="col">Vertical</th>
           <th scope="col">POC-HZ</th>
           <th scope="col">POC-SH</th>
           <th scope="col">POC-BJ</th>
-          <th scope="col">杭州Vertical</th>
           <!-- <th scope="col">HZ跟进情况</th> -->
           <!-- <th scope="col">杭州合作状态细分</th> -->
-          <!-- <th scope="col">杭州渠道来源</th> -->
-          <th scope="col">上海Vertical</th>
           <!-- <th scope="col">SH跟进情况</th> -->
           <!-- <th scope="col">上海合作状态细分</th> -->
+          <!-- <th scope="col">BJ跟进情况</th> -->
+          <!-- <th scope="col">北京合作状态细分</th> -->
+          <!-- <th scope="col">市场活动数据(HZ)</th> -->
+          <!-- <th scope="col">转介绍数据(HZ)</th> -->
+          <!-- <th scope="col">市场活动数据(SH)</th> -->
+          <!-- <th scope="col">转介绍数据(SH)</th> -->
+          <!-- <th scope="col">市场活动数据(BJ)</th> -->
+          <!-- <th scope="col">转介绍数据(BJ)</th> -->
           <th>编辑</th>
         </tr>
       </thead>
       <tbody v-if="user">
         <!-- v-if helps avoid uncatched promise when you delete vuex user,but still computed is working on get vuex user state-->
         <tr
-          v-for="party in filteredData(parties, filterInput)"
-          :key="party._id"
+          v-for="partner in filteredData(partners, filterInput)"
+          :key="partner._id"
         >
-          <th scope="row">{{ party.thrid_party_type }}</th>
-          <td>{{ party.thrid_party_name }}</td>
-          <td>{{ party.b2b_or_b2c }}</td>
-          <td>{{ party.party_location }}</td>
-          <!-- <td>{{ party.party_scope }}</td> -->
-          <!-- <td>{{ party.introduce }}</td> -->
-          <!-- <td>{{ party.major_cliens_or_case }}</td> -->
-          <!-- <td>{{ party.website }}</td> -->
-          <td>{{ party.tier }}</td>
-          <td>{{ party.first_time_cooperate }}</td>
-          <!-- <td>{{ party.channel_contact }}</td> -->
-          <!-- <td>{{ party.channel_contact_position }}</td> -->
-          <!-- <td>{{ party.channel_contact_information }}</td> -->
-          <!-- <td>{{ party.marketing_data }}</td> -->
-          <!-- <td>{{ party.transfer_data }}</td> -->
-          <!-- <td>{{ party.channel_categroy_activate_data }}</td> -->
-          <td>{{ party.coorprate_score }}</td>
-          <td>{{ party.POC_HZ }}</td>
-          <td>{{ party.POC_SH }}</td>
-          <td>{{ party.POC_BJ }}</td>
-          <td>{{ party.HZ_vertical }}</td>
-          <!-- <td>{{ party.HZ_tracking_process }}</td> -->
-          <!-- <td>{{ party.HZ_tracking_process_segment }}</td> -->
-          <!-- <td>{{ party.HZ_channel_source }}</td> -->
-          <td>{{ party.SH_vertical }}</td>
-          <!-- <td>{{ party.SH_tracking_process }}</td> -->
-          <!-- <td>{{ party.SH_tracking_process_segment }}</td> -->
+          <th scope="row">{{ partner.cluster }}</th>
+          <td>{{ partner.third_partner_type }}</td>
+          <td>{{ partner.third_partner_name }}</td>
+          <td>{{ partner.b2b_or_b2c }}</td>
+          <td>{{ partner.partner_location }}</td>
+          <!-- <td>{{ partner.partner_scope }}</td> -->
+          <!-- <td>{{ partner.introduce }}</td> -->
+          <!-- <td>{{ partner.major_cliens_or_case }}</td> -->
+          <!-- <td>{{ partner.website }}</td> -->
+          <!-- <td>{{ partner.sh_tier }}</td> -->
+          <!-- <td>{{ partner.hz_tier }}</td> -->
+          <!-- <td>{{ partner.bj_tier }}</td> -->
+          <!-- <td>{{ partner.sh_channel_contact }}</td> -->
+          <!-- <td>{{ partner.sh_channel_contact_position }}</td> -->
+          <!-- <td>{{ partner.sh_channel_contact_information }}</td> -->
+          <!-- <td>{{ partner.hz_channel_contact }}</td> -->
+          <!-- <td>{{ partner.hz_channel_contact_position }}</td> -->
+          <!-- <td>{{ partner.hz_channel_contact_information }}</td> -->
+          <!-- <td>{{ partner.bj_channel_contact }}</td> -->
+          <!-- <td>{{ partner.bj_channel_contact_position }}</td> -->
+          <!-- <td>{{ partner.bj_channel_contact_information }}</td> -->
+          <td>{{ partner.vertical }}</td>
+          <td>{{ partner.POC_HZ }}</td>
+          <td>{{ partner.POC_SH }}</td>
+          <td>{{ partner.POC_BJ }}</td>
+          <!-- <td>{{ partner.HZ_tracking_process }}</td> -->
+          <!-- <td>{{ partner.HZ_tracking_process_segment }}</td> -->
+          <!-- <td>{{ partner.SH_tracking_process }}</td> -->
+          <!-- <td>{{ partner.SH_tracking_process_segment }}</td> -->
+          <!-- <td>{{ partner.BJ_tracking_process }}</td> -->
+          <!-- <td>{{ partner.BJ_tracking_process_segment }}</td> -->
+          <!-- <td>{{ partner.hz_marketing_data }}</td> -->
+          <!-- <td>{{ partner.sh_marketing_data }}</td> -->
+          <!-- <td>{{ partner.bj_marketing_data }}</td> -->
+          <!-- <td>{{ partner.sh_transfer_data }}</td> -->
+          <!-- <td>{{ partner.hz_transfer_data }}</td> -->
+          <!-- <td>{{ partner.bj_transfer_data }}</td> -->
           <td>
             <router-link
-              v-if="user.identity == 'Admin'"
+              v-if="user.identity == 'Super-Admin'"
               class="single-partner"
-              :to="'/single-partner/' + party._id"
+              :to="'/single-partner/' + partner._id"
             >
               <button
                 class="btn btn-primary"
@@ -136,8 +156,8 @@
                   --bs-btn-font-size: 0.75rem;
                 "
                 data-bs-toggle="dropdown"
-                @click="deleteData(party._id)"
-                v-if="user.identity == 'Admin'"
+                @click="deleteData(partner._id)"
+                v-if="user.identity == 'Super-Admin'"
               >
                 delete
               </button>
@@ -155,7 +175,7 @@ export default {
   components: {},
   data() {
     return {
-      parties: [],
+      partners: [],
       filterInput: [],
       exportsData: [],
     };
@@ -170,10 +190,10 @@ export default {
     this.getData();
   },
   methods: {
-    filteredData(parties, value) {
+    filteredData(partners, value) {
       const regex = new RegExp(value, "i");
-      return parties.filter((party) =>
-        Object.values(party).some(
+      return partners.filter((partner) =>
+        Object.values(partner).some(
           (field) => typeof field === "string" && regex.test(field)
         )
       );
@@ -181,52 +201,55 @@ export default {
     getData() {
       //get data
       axios
-        .get("api/parties")
+        .get("api/partners")
         .then((res) => {
           //console.log(res.data)
-          this.parties = res.data;
-          console.log(this.parties);
+          this.partners = res.data;
+          console.log(this.partners);
         })
         .catch((err) => console.log(err));
     },
     deleteData(value) {
-      axios.delete("api/parties/delete/" + value).then((res) => {
+      axios.delete("api/partners/delete/" + value).then((res) => {
         console.log(333);
         this.getData();
       });
     },
     exportToCSV() {
-      axios.get("api/parties/export").then((res) => {
-       console.log(res.data)
-        this.exportsData = res.data;
-        const csv = [];
-        const headers = Object.keys(this.exportsData[0]);
-        csv.push(headers.join(",")); // 添加表头行
+      axios
+        .get("api/partners/export")
+        .then((res) => {
+          console.log(res.data);
+          this.exportsData = res.data;
+          const csv = [];
+          const headers = Object.keys(this.exportsData[0]);
+          csv.push(headers.join(",")); // 添加表头行
 
-        for (const partner of this.exportsData) {
-          const row = [];
-          for (const header of headers) {
-            const value = partner[header] !== undefined ? partner[header] : ""; // 如果值为 undefined，则使用空字符串
-            row.push(value);
+          for (const partner of this.exportsData) {
+            const row = [];
+            for (const header of headers) {
+              const value =
+                partner[header] !== undefined ? partner[header] : ""; // 如果值为 undefined，则使用空字符串
+              row.push(value);
+            }
+            csv.push(row.join(",")); // 添加每条数据的行
           }
-          csv.push(row.join(",")); // 添加每条数据的行
-        }
 
-        const csvContent = csv.join("\n");
-        const blob = new Blob([csvContent], {
-          type: "text/csv;charset=utf-8;",
-        });
+          const csvContent = csv.join("\n");
+          const blob = new Blob([csvContent], {
+            type: "text/csv;charset=utf-8;",
+          });
 
-        const downloadLink = document.createElement("a");
-        const url = URL.createObjectURL(blob);
+          const downloadLink = document.createElement("a");
+          const url = URL.createObjectURL(blob);
 
-        downloadLink.href = url;
-        downloadLink.download = "data.csv";
-        downloadLink.click();
+          downloadLink.href = url;
+          downloadLink.download = "data.csv";
+          downloadLink.click();
 
-        URL.revokeObjectURL(url);
-      })
-      .catch((err) => console.log(err));
+          URL.revokeObjectURL(url);
+        })
+        .catch((err) => console.log(err));
     },
     logOut() {
       //clear token

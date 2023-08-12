@@ -26,6 +26,7 @@ router.post("/register", (req, res) => {
             } else {
                 const newUser = new User({
                     name: req.body.name,
+                    cluster:req.body.cluster,
                     email: req.body.email,
                     password: req.body.password,
                     identity: req.body.identity
@@ -75,10 +76,10 @@ router.post("/edit-user/password", passport.authenticate("jwt", { session: false
     });
 
 // $delete user under super-admin
- 
+
 router.delete("/delete/user", passport.authenticate("jwt", { session: false }), (req, res) => {
 
-//lack authenticate control function
+    //lack authenticate control function
 
     const email = req.body.email;
     User.findOneAndRemove({ email })
@@ -91,10 +92,22 @@ router.delete("/delete/user", passport.authenticate("jwt", { session: false }), 
         .catch(err => res.status(500).json({ error: "Error deleting user" }));
 });
 
-// $edit user role for admin 
-router.post("/edit-user/:id", (req, res) => {
+// $edit user role for super-admin 
+router.put("/edit/role", passport.authenticate("jwt", { session: false }), (req, res) => {
+    // lack authenticate control function
 
-})
+    const email = req.body.email;
+    const updatedUserRole = req.body.updatedUserRole; // 这里的updatedUser是包含更新后用户信息的对象
+    
+    User.findOneAndUpdate({ email }, {identity:updatedUserRole}, { new: true })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            res.json({ success: true, user });
+        })
+        .catch(err => res.status(500).json({ error: "Error updating user" }));
+});
 
 // $route get api/users/login
 // @desc return token jwt 
@@ -116,7 +129,7 @@ router.post("/login", (req, res) => {
                         const rule = {
                             id: user.id,
                             name: user.name,
-                            identity: user.identity
+                            identity: user.identity,
                         };
 
                         jwt.sign(rule, keys.secretOrKey, { expiresIn: 600000 }, (err, token) => {
