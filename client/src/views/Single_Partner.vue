@@ -133,8 +133,10 @@
         </div>
       </div>
     </div> -->
-    <div class="edit" >
-      <button @click="requestData('SH')">request data</button>
+    <div class="edit">
+      <button @click="requestData('sh_contact')">request SH contact</button>
+      <button @click="requestData('hz_contact')">request HZ contact</button>
+      <button @click="requestData('bj_contact')">request BJ contact</button>
       <div class="dropdown">
         <button
           class="btn btn-dark"
@@ -193,16 +195,12 @@ const deleteData = (value) => {
 };
 
 const requestData = (value) => {
-   const data ={
-     userId:userIdentity.id,
-     partnerId:props.id,
-     requestedContactLocation:value
-   }
-   axios
-    .post("/api/accessQuests/access-requests", data)
-    .then((res) => {
-      
-    });
+  const data = {
+    userId: userIdentity.id,
+    partnerId: props.id,
+    requestedContactField: value,
+  };
+  axios.post("/api/accessQuests/access-requests", data).then((res) => {});
 };
 
 const getDetail = async (id) => {

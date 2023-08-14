@@ -80,7 +80,7 @@
         
       >
         <div class="card-body">
-          <h5 class="card-title">{{ partner.thrid_partner_name }}</h5>
+          <h5 class="card-title">{{ partner.third_partner_name }}</h5>
           <p class="card-text">
             {{ partner.introduce }}
             {{ partner.service_introduce }}
@@ -107,7 +107,7 @@
         class="card single_item col-lg-3"
       >
         <div class="card-body">
-          <h5 class="card-title">{{ partner.thrid_partner_name }}</h5>
+          <h5 class="card-title">{{ partner.third_partner_name }}</h5>
           <p class="card-text">
             {{ partner.introduce }}
             {{ partner.service_introduce }}

@@ -15,13 +15,14 @@
                       <div class="col-md-6 col-xl-12">
                         <div class="mb-3">
                           <label class="form-label">Cluster</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="服务商类型"
+                           <select
+                            class="form-control form-select"
                             v-model="partner.cluster"
-                            required
-                          />
+                          >
+                            <option value="SH">SH</option>
+                            <option value="HZ">HZ</option>
+                            <option value="BJ">BJ</option>
+                          </select>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">服务商类型</label>
@@ -493,10 +494,10 @@
                             class="form-control form-select"
                             v-model="partner.POC_HZ"
                           >
-                            <option value="jinyang">jinyangz@google.com</option>
-                            <option value="zhimaop">zhimaop@google.com</option>
-                            <option value="qinying">qinying@google.com</option>
-                            <option value="yiduc">yiduc@google.com</option>
+                            <option value="hz-pod-leader-a@google.com">hz-pod-leader-a</option>
+                            <option value="hz-pod-leader-b@google.com">hz-pod-leader-b</option>
+                            <option value="hz-pod-leader-c@google.com">hz-pod-leader-c</option>
+                            <option value="hz-pod-leader-d@google.com">hz-pod-leader-c</option>
                       
                           </select>
                         </div>
@@ -531,10 +532,10 @@
                             class="form-control form-select"
                             v-model="partner.POC_SH"
                           >
-                            <option value="xieyang">xieyang@google.com</option>
-                            <option value="fangfangf">wuyuanyuan@google.com</option>
-                            <option value="fangfangf">zhangtao@google.com</option>
-                            <option value="n@google.com">n@google.com</option>
+                            <option value="sh-pod-leader-a@google.com">sh-pod-leader-a</option>
+                            <option value="sh-pod-leader-b@google.com">sh-pod-leader-b</option>
+                            <option value="sh-pod-leader-c@google.com">sh-pod-leader-c</option>
+                            <option value="sh-pod-leader-d@google.com">sh-pod-leader-d</option>
                           </select>
                         </div>
                         <div class="mb-3">
@@ -561,8 +562,10 @@
                             class="form-control form-select"
                             v-model="partner.POC_BJ"
                           >
-                            <option value="xieyang">AAA</option>
-                            <option value="fangfangf">BBB</option>
+                            <option value="bj-pod-leader-a@google.com">bj-pod-leader-a</option>
+                            <option value="bj-pod-leader-b@google.com ">bj-pod-leader-b</option>
+                             <option value="bj-pod-leader-c@google.com">bj-pod-leader-c</option>
+                              <option value="bj-pod-leader-d@google.com">bj-pod-leader-d</option>
                           </select>
                         </div>
                         <div class="mb-3">
