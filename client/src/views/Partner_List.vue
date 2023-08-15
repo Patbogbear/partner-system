@@ -76,27 +76,33 @@
       <div
         v-for="partner in SearchData(partners, filterInput)"
         :key="partner._id"
-        class="card single_item col-lg-3"
-        
+        class="single_item col-sm-6 col-lg-3"
       >
-        <div class="card-body">
-          <h5 class="card-title">{{ partner.third_partner_name }}</h5>
-          <p class="card-text">
-            {{ partner.introduce }}
-            {{ partner.service_introduce }}
-          </p>
-          <router-link
-            :to="'/single-partner/' + partner._id"
-            class="btn btn-primary"
-            >Partner details</router-link
-          >
-          <router-link
-            v-if="userIdentity.identity == 'Super-Admin'"
-            class="btn btn-primary"
-            :to="'/detials/' + partner._id"
-          >
-            <div>Edit Partner</div>
-          </router-link>
+        <div class="card">
+          <div class="card-body">
+            <div class="title">
+              <div class="h1 mb-3">{{ partner.third_partner_name }}</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="subheader">Vertical:</div>
+              <div class="ms-auto lh-1">
+                {{ partner.vertical }}
+              </div>
+            </div>
+
+            <router-link
+              :to="'/single-partner/' + partner._id"
+              class="btn btn-primary"
+              >Partner details</router-link
+            >
+            <router-link
+              v-if="userIdentity.identity == 'Super-Admin'"
+              class="btn btn-primary"
+              :to="'/detials/' + partner._id"
+            >
+              <div>Edit Partner</div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -106,24 +112,31 @@
         :key="partner._id"
         class="card single_item col-lg-3"
       >
-        <div class="card-body">
-          <h5 class="card-title">{{ partner.third_partner_name }}</h5>
-          <p class="card-text">
-            {{ partner.introduce }}
-            {{ partner.service_introduce }}
-          </p>
-          <router-link
-            :to="'/single-partner/' + partner._id"
-            class="btn btn-primary"
-            >Partner details</router-link
-          >
-          <router-link
-            v-if="userIdentity.identity == 'Super-Admin'"
-            class="btn btn-primary"
-            :to="'/detials/' + partner._id"
-          >
-            <div>Edit Partner</div>
-          </router-link>
+        <div class="card">
+          <div class="card-body">
+            <div class="title">
+              <div class="h1 mb-3">{{ partner.third_partner_name }}</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="subheader">Vertical:</div>
+              <div class="ms-auto lh-1">
+                {{ partner.vertical }}
+              </div>
+            </div>
+
+            <router-link
+              :to="'/single-partner/' + partner._id"
+              class="btn btn-primary"
+              >Partner details</router-link
+            >
+            <router-link
+              v-if="userIdentity.identity == 'Super-Admin'"
+              class="btn btn-primary"
+              :to="'/detials/' + partner._id"
+            >
+              <div>Edit Partner</div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -216,15 +229,17 @@ const SearchData = (partners, value) => {
 </script>
 
 <style scoped>
-.filter{
-  margin-top: 50px;
+.about {
+  margin-top: -35px;
+}
+.filter {
   height: 185px;
   left: calc(50% - 817px / 2 + 91.5px);
-  top: 210px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   border-radius: 1px 4px 4px 1px;
 }
+
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -261,8 +276,33 @@ const SearchData = (partners, value) => {
   margin-left: 250px;
   margin-right: 250px;
   margin-top: 80px;
+  padding-top: 15px;
 }
 .item_one {
   padding-right: 20px;
+}
+@media (min-width: 992px) {
+  .col-lg-3 {
+    flex: 0 0 auto;
+    width: 30%;
+  }
+}
+.row-deck > .col .card,
+.row-deck > [class*="col-"] .card {
+  flex: 1 1 auto;
+}
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1rem;
+}
+.h1,
+h1 {
+  line-height: 1.3333333;
+}
+.align-items-center {
+  align-items: center !important;
+}
+.d-flex {
+  display: flex !important;
 }
 </style>

@@ -397,12 +397,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/002m.jpg);
-                                "
-                              ></span>
+                              
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -419,12 +414,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/003m.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -441,12 +431,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/000f.jpg);
-                                "
-                              ></span>
+                            
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -463,12 +448,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/001f.jpg);
-                                "
-                              ></span>
+                            
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -496,12 +476,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/002f.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -516,12 +491,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/003f.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -551,12 +521,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/006m.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -570,12 +535,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/004f.jpg);
-                                "
-                              ></span>
+                              
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -588,12 +548,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/007m.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -621,12 +576,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/009m.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -640,12 +590,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/010m.jpg);
-                                "
-                              ></span>
+                              
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -659,12 +604,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/005f.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -678,12 +618,7 @@
                         <div>
                           <div class="row">
                             <div class="col-auto">
-                              <span
-                                class="avatar"
-                                style="
-                                  background-image: url(./static/avatars/006f.jpg);
-                                "
-                              ></span>
+                             
                             </div>
                             <div class="col">
                               <div class="text-truncate">
@@ -767,12 +702,7 @@
                     <tbody>
                       <tr>
                         <td class="w-1">
-                          <span
-                            class="avatar avatar-sm"
-                            style="
-                              background-image: url(./static/avatars/000m.jpg);
-                            "
-                          ></span>
+                         
                         </td>
                         <td class="td-truncate">
                           <div class="text-truncate">
@@ -795,12 +725,7 @@
                       </tr>
                       <tr>
                         <td class="w-1">
-                          <span
-                            class="avatar avatar-sm"
-                            style="
-                              background-image: url(./static/avatars/002m.jpg);
-                            "
-                          ></span>
+                         
                         </td>
                         <td class="td-truncate">
                           <div class="text-truncate">
@@ -812,12 +737,7 @@
                       </tr>
                       <tr>
                         <td class="w-1">
-                          <span
-                            class="avatar avatar-sm"
-                            style="
-                              background-image: url(./static/avatars/003m.jpg);
-                            "
-                          ></span>
+                         
                         </td>
                         <td class="td-truncate">
                           <div class="text-truncate">
@@ -828,12 +748,7 @@
                       </tr>
                       <tr>
                         <td class="w-1">
-                          <span
-                            class="avatar avatar-sm"
-                            style="
-                              background-image: url(./static/avatars/000f.jpg);
-                            "
-                          ></span>
+                        
                         </td>
                         <td class="td-truncate">
                           <div class="text-truncate">
@@ -1210,6 +1125,7 @@ export default {
     goto_add() {
       this.$router.push({ path: "/add" });
     },
+   
   },
 };
 </script>

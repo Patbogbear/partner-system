@@ -319,6 +319,7 @@ const requestLists = async () => {
       params: { status: "PENDING" },
     });
     requestList.value = data;
+    console.log(requestList.value)
   } catch (error) {
     console.log("error get request list", error);
   }
