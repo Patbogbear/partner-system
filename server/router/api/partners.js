@@ -120,7 +120,7 @@ let originalPartner = {};
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
-
+        
         if (!partner) {
             return res.status(404).json("no content");
         }
@@ -130,6 +130,7 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
 
         const filteredPartner = await filterProtectedFields(req.user, partner);
 
+       
         res.json(filteredPartner);
 
     } catch (error) {
@@ -139,29 +140,33 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
 
 // below code is authenticated logic
 
-function handleSalesFields(requestedContactField) {
 
-    switch (requestedContactField) {
-        case 'sh_contact':
-            partner.sh_contact = originalPartner.sh_contact;
-            break;
-        case 'hz_contact':
-            partner.hz_contact = originalPartner.hz_contact;
-            break;
-        case 'bj_contact':
-            partner.bj_contact = originalPartner.bj_contact;
-            break;
-    }
-}
 
 async function filterProtectedFields(user, partner) {
 
+    function handleSalesFields(partner,requestedContactField) {
+
+        console.log('handle fields', partner)
+        switch (requestedContactField) {
+            case 'sh_contact':
+                partner.sh_contact = originalPartner.sh_contact;
+                break;
+            case 'hz_contact':
+                partner.hz_contact = originalPartner.hz_contact;
+                break;
+            case 'bj_contact':
+                partner.bj_contact = originalPartner.bj_contact;
+                break;
+        }
+    }
+   
     // super-admin works fine with all access 
     if (user.identity === 'Super-Admin') {
         return partner;
     }
 
     //works fine for team-leader
+    //缺少team leader 申请查看的逻辑
     if (user.identity === 'Team-Leader') {
         // 根据用户的 cluster 来决定他们可以访问的数据
         switch (user.cluster) {
@@ -178,11 +183,20 @@ async function filterProtectedFields(user, partner) {
                 partner.hz_contact = undefined;
                 break;
         }
+        const approvedRequests = await AccessRequest.find({
+            userId: user._id,
+            partnerId: partner._id,
+            status: 'APPROVED'
+        });
+        console.log('here should be the list ' , approvedRequests)
+        approvedRequests.forEach(request => {
+            handleSalesFields(partner,request.requestedContactField);
+        });
         return partner;
     }
 
     //works fine for pod-leader
-
+    //缺少pod leader 申请查看的逻辑
     if (user.identity === 'Pod-Leader') {
         const fullUser = await Users.findOne({ _id: user._id });
         // 如果用户是 pod-lead 并且邮箱与 poc-hz 匹配，只展示 hz-contact
@@ -199,14 +213,24 @@ async function filterProtectedFields(user, partner) {
         } else if (fullUser.email === partner.POC_SH) {
             partner.sh_contact = originalPartner.sh_contact;
         }
-             
+         
+        const approvedRequests = await AccessRequest.find({
+            userId: user._id,
+            partnerId: partner._id,
+            status: 'APPROVED'
+        });
+        console.log('here should be the list ' , approvedRequests)
+        approvedRequests.forEach(request => {
+            handleSalesFields(partner,request.requestedContactField);
+        });
+
         return partner;
     }
 
     //sales works fine 
     if (user.identity === 'Sales') {
         // 默认展示所有字段，除了以下特定字段
-
+        
         partner.sh_contact = undefined;
         partner.hz_contact = undefined;
         partner.bj_contact = undefined;
@@ -217,11 +241,11 @@ async function filterProtectedFields(user, partner) {
             partnerId: partner._id,
             status: 'APPROVED'
         });
-
+        console.log('here should be the list ' , approvedRequests)
         approvedRequests.forEach(request => {
-            handleSalesFields(request.requestedContactField);
+            handleSalesFields(partner,request.requestedContactField);
         });
-
+        console.log(partner)
         return partner;
     }
 }
@@ -308,8 +332,6 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
                     description: `user ${req.user.email} delete partner name:${partner.third_partner_name} partner id:${req.params.id} at :${partner.date}`
                 })
                 newLog.save()
-                console.log(partner)
-                console.log('log success')
                 res.json("delete success");
             })
             .catch(err => res.status(404).json("delete failed "))

@@ -79,17 +79,28 @@
         class="single_item col-sm-6 col-lg-3"
       >
         <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{ partner.third_partner_name }}</h3>
+          </div>
           <div class="card-body">
-            <div class="title">
-              <div class="h1 mb-3">{{ partner.third_partner_name }}</div>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="subheader">Vertical:</div>
-              <div class="ms-auto lh-1">
-                {{ partner.vertical }}
-              </div>
-            </div>
-
+            <dl class="row">
+              <dt class="col-5">Vertical:</dt>
+              <dd class="col-7">{{ partner.vertical }}</dd>
+              <dt class="col-5">Account:</dt>
+              <dd class="col-7">tabler</dd>
+              <dt class="col-5">Location:</dt>
+              <dd class="col-7">
+                <span class="flag flag-country-pl"></span> Poland
+              </dd>
+              <dt class="col-5">IP Address:</dt>
+              <dd class="col-7">46.113.11.3</dd>
+              <dt class="col-5">Operating system:</dt>
+              <dd class="col-7">OS X 10.15.2 64-bit</dd>
+              <dt class="col-5">Browser:</dt>
+              <dd class="col-7">Chrome</dd>
+            </dl>
+          </div>
+          <div class="card-footer">
             <router-link
               :to="'/single-partner/' + partner._id"
               class="btn btn-primary"
@@ -113,17 +124,28 @@
         class="card single_item col-lg-3"
       >
         <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{ partner.third_partner_name }}</h3>
+          </div>
           <div class="card-body">
-            <div class="title">
-              <div class="h1 mb-3">{{ partner.third_partner_name }}</div>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="subheader">Vertical:</div>
-              <div class="ms-auto lh-1">
-                {{ partner.vertical }}
-              </div>
-            </div>
-
+            <dl class="row">
+              <dt class="col-5">Vertical:</dt>
+              <dd class="col-7">{{ partner.vertical }}</dd>
+              <dt class="col-5">Account:</dt>
+              <dd class="col-7">tabler</dd>
+              <dt class="col-5">Location:</dt>
+              <dd class="col-7">
+                <span class="flag flag-country-pl"></span> Poland
+              </dd>
+              <dt class="col-5">IP Address:</dt>
+              <dd class="col-7">46.113.11.3</dd>
+              <dt class="col-5">Operating system:</dt>
+              <dd class="col-7">OS X 10.15.2 64-bit</dd>
+              <dt class="col-5">Browser:</dt>
+              <dd class="col-7">Chrome</dd>
+            </dl>
+          </div>
+          <div class="card-footer">
             <router-link
               :to="'/single-partner/' + partner._id"
               class="btn btn-primary"
@@ -260,7 +282,7 @@ const SearchData = (partners, value) => {
   margin-bottom: 30px;
 }
 .single_item {
-  width: 45%;
+  width: 30%;
   margin: 5px;
   background: #ffffff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
@@ -291,18 +313,67 @@ const SearchData = (partners, value) => {
 .row-deck > [class*="col-"] .card {
   flex: 1 1 auto;
 }
+.card {
+  box-shadow: rgba(35, 46, 60, 0.04) 0 2px 4px 0;
+  border: 1px solid rgba(101, 109, 119, 0.16);
+}
+.card-header {
+  color: inherit;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0;
+  color: #656d77;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(101, 109, 119, 0.16);
+}
+.card-header:first-child {
+  border-radius: 3px 3px 0 0;
+}
+.card-header .card-title {
+  margin: 0.125rem 0;
+}
+.card-title {
+  display: block;
+  margin: 0 0 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+.card-table {
+  margin-bottom: 0 !important;
+}
 .card-body {
   flex: 1 1 auto;
   padding: 1rem 1rem;
 }
-.h1,
-h1 {
-  line-height: 1.3333333;
+.card-body > :last-child {
+  margin-bottom: 0;
 }
-.align-items-center {
-  align-items: center !important;
+.row {
+  --tblr-gutter-x: 1rem;
+  --tblr-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--tblr-gutter-y) * -1);
+  margin-right: calc(var(--tblr-gutter-x) / -2);
+  margin-left: calc(var(--tblr-gutter-x) / -2);
 }
-.d-flex {
-  display: flex !important;
+dl {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.row > * {
+  min-width: 0;
+}
+.col-5 {
+  flex: 0 0 auto;
+  width: 41.6666667%;
+}
+.col-7 {
+  flex: 0 0 auto;
+  width: 58.3333333%;
 }
 </style>

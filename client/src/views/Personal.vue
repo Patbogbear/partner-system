@@ -6,12 +6,6 @@
         {{ userIdentity }}{{ userIdentity.email }}
       </div>
 
-      request List
-      <div v-for="request in requestList" :key="request._id">
-        {{ request }}
-        <button @click="approveRequest(request._id)">approve request</button>
-        <button @click="denyRequest(request._id)">deny request</button>
-      </div>
       <div
         class="toast"
         role="alert"
@@ -73,6 +67,52 @@
               </button>
             </div>
           </form>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recently Requests</h3>
+          </div>
+          <div class="card-table table-responsive">
+            <table class="table table-vcenter">
+              <thead>
+                <tr>
+                  <th>Request User Name</th>
+                  <th>Request User Cluster & Title</th>
+                  <th>Request Data Description</th>
+                  <th colspan="2">Actions</th>
+                </tr>
+              </thead>
+              <tr v-for="request in requestList" :key="request._id">
+                <td>
+                  {{ request.userId.email }}
+                </td>
+                <td class="text-secondary">
+                  {{ request.userId.cluster }}&{{ request.userId.identity }}
+                </td>
+                <td class="text-secondary">
+                  {{request.userId.name}}申请了解{{ request.partnerId.third_partner_name }}的{{
+                    request.requestedContactField
+                  }}区域联系人信息
+                </td>
+                <td class="text-secondary">
+                  <button @click="approveRequest(request._id)">
+                    approve request
+                  </button>
+                  <button @click="denyRequest(request._id)">
+                    deny request
+                  </button>
+                </td>
+                <td class="text-end w-1">
+                  <div
+                    class="chart-sparkline chart-sparkline-sm"
+                    id="sparkline-bounce-rate-1"
+                  ></div>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="user-authentication">
@@ -221,8 +261,6 @@
           </button>
         </div>
       </form>
-      <button>get list</button>
-      <button @click="approveRequest">approve request</button>
     </div>
   </div>
 </template>
@@ -319,7 +357,7 @@ const requestLists = async () => {
       params: { status: "PENDING" },
     });
     requestList.value = data;
-    console.log(requestList.value)
+    console.log(requestList.value);
   } catch (error) {
     console.log("error get request list", error);
   }

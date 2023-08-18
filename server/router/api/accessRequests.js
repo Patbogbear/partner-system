@@ -8,29 +8,27 @@ const AccessRequest = require("../../model/AccessRequests");
 
 
 
-
+//request for partner contact information 
 router.post('/access-requests', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
 
-        const { userId, partnerId, requestedContactLocation } = req.body;
+        const { userId, partnerId, requestedContactField } = req.body;
 
-        // 转换requestedContactLocation到对应的字段名
-        const locationToFieldMapping = {
-            'SH': 'sh_contact',
-            'HZ': 'hz_contact',
-            'BJ': 'bj_contact'
-        };
-        const requestedContactField = locationToFieldMapping[requestedContactLocation];
 
         // 验证userId、partnerId和requestedContactField是否存在
         if (!userId || !partnerId || !requestedContactField) {
-            return res.status(400).send({ message: 'userId, partnerId, and requestedContactLocation are required.' });
+            return res.status(400).send({ message: 'userId, partnerId, and requestedContactField are required.' });
         }
 
         // 检查是否存在重复请求
-        const existingRequest = await AccessRequest.findOne({ userId, partnerId, requestedContactField, status: 'PENDING' });
+        const existingRequest = await AccessRequest.findOne({ userId, partnerId, requestedContactField });
         if (existingRequest) {
-            return res.status(400).send({ message: `You already have a pending request for this partner's ${requestedContactLocation} contact information.` });
+            if (existingRequest.status === 'APPROVED') {
+                return res.status(200).send({ message: 'Access already granted' })
+            } else if (existingRequest.status === 'PENDING') {
+                return res.status(200).send({ message: `You already have a pending request for this partner's ${requestedContactField} contact information.` });
+            }
+
         }
 
         const newRequest = new AccessRequest({ userId, partnerId, requestedContactField });
@@ -41,24 +39,42 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
     }
 });
 
+
+
 router.get('/all-requests', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
-        console.log(req.query)
-        const requests = await AccessRequest.find({ status: 'PENDING' }).populate('userId').populate('partnerId');
-        res.status(200).send(requests);
-    } catch (error) {
-        res.status(500).send({ message: 'Error fetching access requests' })
-    }
-})
+        const filter = { status: 'PENDING' };
+        let requests = await AccessRequest.find(filter).populate('userId').populate('partnerId');
 
-router.put('/all-requests/:requestAccessId', async (req, res) => {
+        // 当用户身份为 Super-Admin
+        if (req.user.identity === 'Super-Admin') {
+            return res.status(200).send(requests);
+        }
+
+        // 当用户身份为 Team-Leader，根据其 cluster 属性筛选 AccessRequest
+        if (req.user.identity === 'Team-Leader') {
+            requests = requests.filter(request => request.userId && request.userId.cluster === req.user.cluster);
+            return res.status(200).send(requests);
+        }
+
+        res.status(403).send({ message: 'Permission denied' });
+
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching access requests' });
+    }
+});
+
+
+
+// approve or deny access by high level user 
+router.put('/all-requests/:requestAccessId', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const { status } = req.body
-        console.log(req.params)
+
         const updatedRequest = await AccessRequest.findByIdAndUpdate(req.params.requestAccessId, { status }, { new: true });
-        
+
         res.status(200).send(updatedRequest)
-       
+
 
     } catch (error) {
         res.status(500).send({ message: 'Error approving requests' })
