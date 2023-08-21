@@ -184,8 +184,10 @@ const select_sh_poc = ref(null);
 const select_bj_poc = ref(null);
 const searchData = ref([]);
 
+
 onMounted(async () => {
   await getData();
+  await requestLists();
 });
 
 const getData = async () => {
@@ -206,6 +208,8 @@ const filteredData = computed(() => {
   };
   return filterData(partners.value, value);
 });
+
+
 
 const filterData = (data, value) => {
   let result = data;

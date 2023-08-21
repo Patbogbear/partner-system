@@ -7,7 +7,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <div class="page-pretitle">Overview</div>
-              <h2 class="page-title">Horizontal layout</h2>
+              <h2 class="page-title">Dash Board</h2>
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
@@ -17,7 +17,6 @@
                   class="btn btn-primary d-none d-sm-inline-block add-new-partner"
                   data-bs-toggle="modal"
                   data-bs-target="#modal-report"
-                
                 >
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                   <svg
@@ -53,7 +52,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">Sales</div>
+                    <div class="subheader">Total Partners</div>
                     <div class="ms-auto lh-1">
                       <div class="dropdown">
                         <a
@@ -122,7 +121,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">Revenue</div>
+                    <div class="subheader">In Cooperation</div>
                     <div class="ms-auto lh-1">
                       <div class="dropdown">
                         <a
@@ -178,7 +177,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">New clients</div>
+                    <div class="subheader">Missing Contact</div>
                     <div class="ms-auto lh-1">
                       <div class="dropdown">
                         <a
@@ -233,7 +232,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">Active users</div>
+                    <div class="subheader">Active Partners</div>
                     <div class="ms-auto lh-1">
                       <div class="dropdown">
                         <a
@@ -306,462 +305,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="row row-cards">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <p class="mb-3">
-                        Using Storage <strong>6854.45 MB </strong>of 8 GB
-                      </p>
-                      <div class="progress progress-separated mb-3">
-                        <div
-                          class="progress-bar bg-primary"
-                          role="progressbar"
-                          style="width: 44%"
-                          aria-label="Regular"
-                        ></div>
-                        <di
-                          class="progress-bar bg-info"
-                          role="progressbar"
-                          style="width: 19%"
-                          aria-label="System"
-                        ></di>
-                        <div
-                          class="progress-bar bg-success"
-                          role="progressbar"
-                          style="width: 9%"
-                          aria-label="Shared"
-                        ></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-auto d-flex align-items-center pe-2">
-                          <span class="legend me-2 bg-primary"></span>
-                          <span>Regular</span>
-                          <span
-                            class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary"
-                            >915MB</span
-                          >
-                        </div>
-                        <div class="col-auto d-flex align-items-center px-2">
-                          <span class="legend me-2 bg-info"></span>
-                          <span>System</span>
-                          <span
-                            class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary"
-                            >415MB</span
-                          >
-                        </div>
-                        <div class="col-auto d-flex align-items-center px-2">
-                          <span class="legend me-2 bg-success"></span>
-                          <span>Shared</span>
-                          <span
-                            class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary"
-                            >201MB</span
-                          >
-                        </div>
-                        <div class="col-auto d-flex align-items-center ps-2">
-                          <span class="legend me-2"></span>
-                          <span>Free</span>
-                          <span
-                            class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary"
-                            >612MB</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="card" style="height: 28rem">
-                    <div
-                      class="card-body card-body-scrollable card-body-scrollable-shadow"
-                    >
-                      <div class="divide-y">
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              <span class="avatar">JL</span>
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Jeffie Lewzey</strong> commented on your
-                                <strong>"I'm not a witch."</strong> post.
-                              </div>
-                              <div class="text-secondary">yesterday</div>
-                            </div>
-                            <div class="col-auto align-self-center">
-                              <div class="badge bg-primary"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                It's <strong>Mallory Hulme</strong>'s birthday.
-                                Wish him well!
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                            <div class="col-auto align-self-center">
-                              <div class="badge bg-primary"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Dunn Slane</strong> posted
-                                <strong>"Well, what do you want?"</strong>.
-                              </div>
-                              <div class="text-secondary">today</div>
-                            </div>
-                            <div class="col-auto align-self-center">
-                              <div class="badge bg-primary"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                            
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Emmy Levet</strong> created a new
-                                project <strong>Morning alarm clock</strong>.
-                              </div>
-                              <div class="text-secondary">4 days ago</div>
-                            </div>
-                            <div class="col-auto align-self-center">
-                              <div class="badge bg-primary"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                            
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Maryjo Lebarree</strong> liked your
-                                photo.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              <span class="avatar">EP</span>
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Egan Poetz</strong> registered new
-                                client as <strong>Trilia</strong>.
-                              </div>
-                              <div class="text-secondary">yesterday</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Kellie Skingley</strong> closed a new
-                                deal on project
-                                <strong>Pen Pineapple Apple Pen</strong>.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Christabel Charlwood</strong> created a
-                                new project for <strong>Wikibox</strong>.
-                              </div>
-                              <div class="text-secondary">4 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              <span class="avatar">HS</span>
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Haskel Shelper</strong> change status of
-                                <strong>Tabler Icons</strong> from
-                                <strong>open</strong> to
-                                <strong>closed</strong>.
-                              </div>
-                              <div class="text-secondary">today</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Lorry Mion</strong> liked
-                                <strong>Tabler UI Kit</strong>.
-                              </div>
-                              <div class="text-secondary">yesterday</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Leesa Beaty</strong> posted new video.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Perren Keemar</strong> and 3 others
-                                followed you.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              <span class="avatar">SA</span>
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Sunny Airey</strong> upload 3 new photos
-                                to category <strong>Inspirations</strong>.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Geoffry Flaunders</strong> made a
-                                <strong>$10</strong> donation.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Thatcher Keel</strong> created a
-                                profile.
-                              </div>
-                              <div class="text-secondary">3 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Dyann Escala</strong> hosted the event
-                                <strong>Tabler UI Birthday</strong>.
-                              </div>
-                              <div class="text-secondary">4 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                             
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Avivah Mugleston</strong> mentioned you
-                                on <strong>Best of 2020</strong>.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-auto">
-                              <span class="avatar">AA</span>
-                            </div>
-                            <div class="col">
-                              <div class="text-truncate">
-                                <strong>Arlie Armstead</strong> sent a Review
-                                Request to <strong>Amanda Blake</strong>.
-                              </div>
-                              <div class="text-secondary">2 days ago</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-header border-0">
-                  <div class="card-title">Development activity</div>
-                </div>
-                <div class="position-relative">
-                  <div class="position-absolute top-0 left-0 px-3 mt-1 w-75">
-                    <div class="row g-2">
-                      <div class="col-auto">
-                        <div
-                          class="chart-sparkline chart-sparkline-square"
-                          id="sparkline-activity"
-                        ></div>
-                      </div>
-                      <div class="col">
-                        <div>Today's Earning: $4,262.40</div>
-                        <div class="text-secondary">
-                          <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-inline text-green"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M3 17l6 -6l4 4l8 -8" />
-                            <path d="M14 7l7 0l0 7" />
-                          </svg>
-                          +5% more than yesterday
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="chart-development-activity"></div>
-                </div>
-                <div class="card-table table-responsive">
-                  <table class="table table-vcenter">
-                    <thead>
-                      <tr>
-                        <th>User</th>
-                        <th>Commit</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="w-1">
-                         
-                        </td>
-                        <td class="td-truncate">
-                          <div class="text-truncate">
-                            Fix dart Sass compatibility (#29755)
-                          </div>
-                        </td>
-                        <td class="text-nowrap text-secondary">28 Nov 2019</td>
-                      </tr>
-                      <tr>
-                        <td class="w-1">
-                          <span class="avatar avatar-sm">JL</span>
-                        </td>
-                        <td class="td-truncate">
-                          <div class="text-truncate">
-                            Change deprecated html tags to text decoration
-                            classes (#29604)
-                          </div>
-                        </td>
-                        <td class="text-nowrap text-secondary">27 Nov 2019</td>
-                      </tr>
-                      <tr>
-                        <td class="w-1">
-                         
-                        </td>
-                        <td class="td-truncate">
-                          <div class="text-truncate">
-                            justify-content:between ⇒
-                            justify-content:space-between (#29734)
-                          </div>
-                        </td>
-                        <td class="text-nowrap text-secondary">26 Nov 2019</td>
-                      </tr>
-                      <tr>
-                        <td class="w-1">
-                         
-                        </td>
-                        <td class="td-truncate">
-                          <div class="text-truncate">
-                            Update change-version.js (#29736)
-                          </div>
-                        </td>
-                        <td class="text-nowrap text-secondary">26 Nov 2019</td>
-                      </tr>
-                      <tr>
-                        <td class="w-1">
-                        
-                        </td>
-                        <td class="td-truncate">
-                          <div class="text-truncate">
-                            Regenerate package-lock.json (#29730)
-                          </div>
-                        </td>
-                        <td class="text-nowrap text-secondary">25 Nov 2019</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            
+            
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
@@ -856,10 +401,7 @@
                       </tr>
                     </thead>
                     <tbody v-if="user">
-                      <tr
-                        v-for="partner in filteredData(partners, filterInput)"
-                        :key="partner._id"
-                      >
+                      <tr v-for="partner in paginatedData" :key="partner._id">
                         <td>
                           <input
                             class="form-check-input m-0 align-middle"
@@ -874,7 +416,7 @@
                         </td>
                         <td>
                           <!-- <a
-                            href="invoice.html"
+                            href=" "
                             class="text-reset"
                             tabindex="-1"
                             >Design Works</a
@@ -959,13 +501,16 @@
                     Showing <span>1</span> to <span>8</span> of
                     <span>16</span> entries
                   </p>
+
                   <ul class="pagination m-0 ms-auto">
-                    <li class="page-item disabled">
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPage === 1 }"
+                    >
                       <a
                         class="page-link"
                         href="#"
-                        tabindex="-1"
-                        aria-disabled="true"
+                        @click.prevent="currentPage--"
                       >
                         <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                         <svg
@@ -986,23 +531,29 @@
                         prev
                       </a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">1</a>
+                    <li
+                      class="page-item"
+                      v-for="page in totalPages"
+                      :key="page"
+                      :class="{ active: page === currentPage }"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click.prevent="currentPage = page"
+                        >{{ page }}</a
+                      >
                     </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">4</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">5</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
+
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPage === totalPages }"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click.prevent="currentPage++"
+                      >
                         next
                         <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
                         <svg
@@ -1042,12 +593,27 @@ export default {
       partners: [],
       filterInput: [],
       exportsData: [],
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
   computed: {
     user() {
       console.log(this.$store.getters.user);
       return this.$store.getters.user;
+    },
+    paginatedData() {
+      const filtered = this.filteredData(this.partners, this.filterInput);
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = this.currentPage * this.itemsPerPage;
+      return filtered.slice(start, end);
+    },
+    // 计算总页数
+    totalPages() {
+      return Math.ceil(
+        this.filteredData(this.partners, this.filterInput).length /
+          this.itemsPerPage
+      );
     },
   },
   created() {
@@ -1069,13 +635,11 @@ export default {
         .then((res) => {
           //console.log(res.data)
           this.partners = res.data;
-          console.log(this.partners);
         })
         .catch((err) => console.log(err));
     },
     deleteData(value) {
       axios.delete("api/partners/delete/" + value).then((res) => {
-        console.log(333);
         this.getData();
       });
     },
@@ -1083,7 +647,6 @@ export default {
       axios
         .get("api/partners/export")
         .then((res) => {
-          console.log(res.data);
           this.exportsData = res.data;
           const csv = [];
           const headers = Object.keys(this.exportsData[0]);
@@ -1125,11 +688,9 @@ export default {
     goto_add() {
       this.$router.push({ path: "/add" });
     },
-   
   },
 };
 </script>
-
 <style scoped>
 .page-wrapper {
   flex: 1;
@@ -1236,34 +797,32 @@ export default {
   white-space: nowrap;
 }
 .btn-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: -0.5rem!important;
-    margin-right: -0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: -0.5rem !important;
+  margin-right: -0.5rem;
 }
-.btn-list>* {
-    margin: 0 0.5rem 0.5rem 0!important;
+.btn-list > * {
+  margin: 0 0.5rem 0.5rem 0 !important;
 }
-.logout{
+.logout {
   background-color: #fff;
   color: #216bc4;
 }
-.add-new-partner{
+.add-new-partner {
   background-color: #216bc4;
   color: #f4f6fa;
 }
 .btn .icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    min-width: 1.25rem;
-    margin: 0 0.5rem 0 -0.25rem;
-    vertical-align: middle;
- 
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  margin: 0 0.5rem 0 -0.25rem;
+  vertical-align: middle;
 }
 @media (min-width: 576px) {
   .d-sm-inline {
     display: inline !important;
   }
 }
-
 </style>
