@@ -187,7 +187,6 @@ const searchData = ref([]);
 
 onMounted(async () => {
   await getData();
-  await requestLists();
 });
 
 const getData = async () => {

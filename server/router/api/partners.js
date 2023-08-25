@@ -32,6 +32,7 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.introduce) partners.introduce = req.body.introduce;
     if (req.body.major_cliens_or_case) partners.major_cliens_or_case = req.body.major_cliens_or_case;
     if (req.body.website) partners.website = req.body.website;
+    if (req.body.coverage_province) partners.coverage_province = req.body.coverage_province;
     if (req.body.sh_tier) partners.sh_tier = req.body.sh_tier;
     if (req.body.hz_tier) partners.hz_tier = req.body.hz_tier;
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;
@@ -267,6 +268,7 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.introduce) partners.introduce = req.body.introduce;
     if (req.body.major_cliens_or_case) partners.major_cliens_or_case = req.body.major_cliens_or_case;
     if (req.body.website) partners.website = req.body.website;
+    if (req.body.coverage_province) partners.coverage_province = req.body.coverage_province;
     if (req.body.sh_tier) partners.sh_tier = req.body.sh_tier;
     if (req.body.hz_tier) partners.hz_tier = req.body.hz_tier;
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;

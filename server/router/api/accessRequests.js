@@ -81,4 +81,31 @@ router.put('/all-requests/:requestAccessId', passport.authenticate("jwt", { sess
     }
 })
 
+router.get('/user-requests/:userId', passport.authenticate("jwt", { session: false }), async (req, res) => {
+    try {
+        const { userId } = req.params;
+      
+        // 只允许用户访问他自己的请求
+        if (req.user.id !== userId) {
+            return res.status(403).send({ message: 'Permission denied' });
+        }
+
+        const filter = {
+            userId: userId,
+            $or: [
+                { status: 'APPROVED' },
+                { status: 'DENIED' }
+            ]
+        };
+
+        let requests = await AccessRequest.find(filter).populate('partnerId');
+        console.log(requests)
+        return res.status(200).send(requests);
+        
+
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching user requests.' });
+    }
+});
+
 module.exports = router;

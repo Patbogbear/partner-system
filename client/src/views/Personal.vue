@@ -1,9 +1,222 @@
 <template>
   <div>
     <div class="header">
-      <div>
-        personal page
-        {{ userIdentity }}{{ userIdentity.email }}
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="row">
+            <div class="card">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <span
+                    class="avatar avatar-xl rounded"
+                   
+                  ></span>
+                </div>
+                <div class="card-title mb-1">{{ userIdentity.name }}</div>
+                <div class="text-secondary">{{ userIdentity.identity }}</div>
+              </div>
+            </div>
+          </div>
+          <form>
+            <fieldset class="form-fieldset">
+              <div class="card-header">
+                <h3 class="card-title">Change Password</h3>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="new password"
+                  v-model="newPassword"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confrim New Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="confrim new password"
+                  v-model="confirmNewPassword"
+                />
+              </div>
+            </fieldset>
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                @click="changePassword()"
+              >
+                Change Password
+              </button>
+            </div>
+          </form>
+          <form @submit.prevent="addUser" v-if="userIdentity.identity === 'Super-Admin'">
+            <fieldset class="form-fieldset">
+              <div class="card-header">
+                <h3 class="card-title">Add user</h3>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label required">User name</label>
+                  <div>
+                    <input
+                      type="name"
+                      class="form-control"
+                      placeholder="Enter name"
+                      v-model="addUserName"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label required">Email address</label>
+                  <div>
+                    <input
+                      type="email"
+                      class="form-control"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter email"
+                      v-model="addUserEmail"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label required">Password</label>
+                  <div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      v-model="addUserPassword"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Select Reader or Editor </label>
+                  <div>
+                    <select
+                      class="form-select"
+                      v-model="addUserIdentity"
+                      required
+                    >
+                      <option>Reader</option>
+                      <option>Editor</option>
+                      <option>Admin</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer text-end">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @onclick="addUser"
+                >
+                  Submit
+                </button>
+              </div>
+            </fieldset>
+            <div class="card-footer text-end"></div>
+          </form>
+        </div>
+
+        <div class="col-xl-8" v-if="userIdentity.identity === 'Super-Admin'">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recently Requests</h3>
+            </div>
+            <div class="card-table table-responsive">
+              <table class="table table-vcenter">
+                <thead>
+                  <tr>
+                    <th>Request User Name</th>
+                    <th>Request User Cluster & Title</th>
+                    <th>Request Data Description</th>
+                    <th colspan="2">Actions</th>
+                  </tr>
+                </thead>
+                <tr v-for="request in requestList" :key="request._id">
+                  <td>
+                    {{ request.userId.email }}
+                  </td>
+                  <td class="text-secondary">
+                    {{ request.userId.cluster }}&{{ request.userId.identity }}
+                  </td>
+                  <td class="text-secondary">
+                    {{ request.userId.name }}申请了解{{
+                      request.partnerId.third_partner_name
+                    }}的{{ request.requestedContactField }}区域联系人信息
+                  </td>
+                  <td class="text-secondary">
+                    <button @click="approveRequest(request._id)">
+                      approve request
+                    </button>
+                    <button @click="denyRequest(request._id)">
+                      deny request
+                    </button>
+                  </td>
+                  <td class="text-end w-1">
+                    <div
+                      class="chart-sparkline chart-sparkline-sm"
+                      id="sparkline-bounce-rate-1"
+                    ></div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8" v-if="userIdentity.identity === 'Sales'">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Requests Feedback</h3>
+            </div>
+            <div class="card-table table-responsive">
+              <table class="table table-vcenter">
+                <thead>
+                  <tr>
+                    <th>Request Partner Name</th>
+                    <th>Request Time </th>
+                    <th>Request Partner Description</th>
+                    <th colspan="2">Actions</th>
+                  </tr>
+                </thead>
+                <tr v-for="request in requestList" :key="request._id">
+                  <td>
+                    {{ request.partnerId.third_partner_name}}
+                  </td>
+                  <td class="text-secondary">
+                    {{ request.requestedAt }}
+                  </td>
+                  <td class="text-secondary">
+                    您申请了解的{{
+                      request.requestedContactField
+                    }}的区域联系人信息，目前已被{{request.status}}
+                  </td>
+                  <td class="text-secondary">
+                    <button v-if="request.status === 'DENIED'">
+                      delete request
+                    </button>
+                    <button v-if="request.status === 'APPROVED'">
+                      view detail
+                    </button>
+                  
+                  </td>
+                  <td class="text-end w-1">
+                    <div
+                      class="chart-sparkline chart-sparkline-sm"
+                      id="sparkline-bounce-rate-1"
+                    ></div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div
@@ -26,96 +239,10 @@
         </div>
         <div class="toast-body">Password updated successfully!</div>
       </div>
-      <div class="change-password">
-        password form
-        <div class="col-12">
-          <form class="card">
-            <div class="card-body">
-              <h3 class="card-title">Change Password</h3>
-              <div class="row row-cards">
-                <div class="col-sm-6 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">New Password</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="new password"
-                      v-model="newPassword"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-6 col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Confrim New Password</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="confrim new password"
-                      v-model="confirmNewPassword"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer text-end">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click="changePassword()"
-              >
-                Change Password
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="col-md-12 col-lg-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Recently Requests</h3>
-          </div>
-          <div class="card-table table-responsive">
-            <table class="table table-vcenter">
-              <thead>
-                <tr>
-                  <th>Request User Name</th>
-                  <th>Request User Cluster & Title</th>
-                  <th>Request Data Description</th>
-                  <th colspan="2">Actions</th>
-                </tr>
-              </thead>
-              <tr v-for="request in requestList" :key="request._id">
-                <td>
-                  {{ request.userId.email }}
-                </td>
-                <td class="text-secondary">
-                  {{ request.userId.cluster }}&{{ request.userId.identity }}
-                </td>
-                <td class="text-secondary">
-                  {{request.userId.name}}申请了解{{ request.partnerId.third_partner_name }}的{{
-                    request.requestedContactField
-                  }}区域联系人信息
-                </td>
-                <td class="text-secondary">
-                  <button @click="approveRequest(request._id)">
-                    approve request
-                  </button>
-                  <button @click="denyRequest(request._id)">
-                    deny request
-                  </button>
-                </td>
-                <td class="text-end w-1">
-                  <div
-                    class="chart-sparkline chart-sparkline-sm"
-                    id="sparkline-bounce-rate-1"
-                  ></div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="user-authentication">
+
+      
+
+      <div class="user-authentication" v-if="userIdentity.identity === 'Super-Admin'">
         user-settings
         <div class="card">
           <div class="card-header">
@@ -201,66 +328,6 @@
           </div>
         </div>
       </div>
-      <form class="card" @submit.prevent="addUser">
-        <div class="card-header">
-          <h3 class="card-title">Add user</h3>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <label class="form-label required">User name</label>
-            <div>
-              <input
-                type="name"
-                class="form-control"
-                placeholder="Enter name"
-                v-model="addUserName"
-                required
-              />
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label required">Email address</label>
-            <div>
-              <input
-                type="email"
-                class="form-control"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-                v-model="addUserEmail"
-                required
-              />
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label required">Password</label>
-            <div>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                v-model="addUserPassword"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Select Reader or Editor </label>
-            <div>
-              <select class="form-select" v-model="addUserIdentity" required>
-                <option>Reader</option>
-                <option>Editor</option>
-                <option>Admin</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer text-end">
-          <button type="submit" class="btn btn-primary" @onclick="addUser">
-            Submit
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 </template>
@@ -281,19 +348,18 @@ const addUserEmail = ref("");
 const addUserPassword = ref("");
 const addUserIdentity = ref("");
 const addUserName = ref("");
-
 const requestList = ref([]);
+
 
 onMounted(async () => {
   await getUsers();
-  await requestLists();
+  await requestLists(userIdentity);
 });
 
 const getUsers = async () => {
   try {
     let { data } = await axios.get("/api/users");
     allUsers.value = data;
-    console.log(allUsers);
   } catch (error) {}
 };
 const changePassword = () => {
@@ -351,17 +417,27 @@ const addUser = async () => {
   }
 };
 
-const requestLists = async () => {
+const requestLists = async (userIdentity) => {
   try {
-    let { data } = await axios.get("/api/accessQuests/all-requests", {
-      params: { status: "PENDING" },
-    });
-    requestList.value = data;
+    console.log(userIdentity)
+    if (userIdentity.value.identity === "Super-Admin") {
+      console.log(111)
+      let { data } = await axios.get("/api/accessQuests/all-requests", {
+        params: { status: "PENDING" },
+      });
+      requestList.value = data;
+    } else if (userIdentity.value.identity === "Sales" || userIdentity.value.identity === "Team-Leader") {
+      let { data } = await axios.get(`/api/accessQuests/user-requests/${userIdentity.value.id}`);
+      console.log(111)
+      requestList.value = data;
+    }
+
     console.log(requestList.value);
   } catch (error) {
     console.log("error get request list", error);
   }
 };
+
 
 const approveRequest = async (value) => {
   try {

@@ -7,7 +7,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <div class="page-pretitle">Overview</div>
-              <h2 class="page-title">Dash Board</h2>
+              <h2 class="page-title">Dashboard</h2>
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
@@ -73,7 +73,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="h1 mb-3">75%</div>
+                  <div class="h1 mb-3">Demo</div>
                   <div class="d-flex mb-2">
                     <div>Conversion rate</div>
                     <div class="ms-auto">
@@ -143,7 +143,7 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-0 me-2">$4,300</div>
+                    <div class="h1 mb-0 me-2">Demo</div>
                     <div class="me-auto">
                       <span
                         class="text-green d-inline-flex align-items-center lh-1"
@@ -199,7 +199,7 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">6,782</div>
+                    <div class="h1 mb-3 me-2">Demo</div>
                     <div class="me-auto">
                       <span
                         class="text-yellow d-inline-flex align-items-center lh-1"
@@ -254,7 +254,7 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">2,986</div>
+                    <div class="h1 mb-3 me-2">Demo</div>
                     <div class="me-auto">
                       <span
                         class="text-green d-inline-flex align-items-center lh-1"
@@ -288,7 +288,7 @@
             <div class="col-lg-6">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">Traffic summary</h3>
+                  <h3 class="card-title">Data Dashboard 1</h3>
                   <div id="chart-mentions" class="chart-lg"></div>
                 </div>
               </div>
@@ -296,7 +296,7 @@
             <div class="col-lg-6">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">Locations</h3>
+                  <h3 class="card-title">Data Dashboard 2</h3>
                   <div class="ratio ratio-21x9">
                     <div>
                       <div id="map-world" class="w-100 h-100"></div>
@@ -305,8 +305,6 @@
                 </div>
               </div>
             </div>
-            
-            
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
@@ -463,7 +461,7 @@
                         <!-- <td>{{ partner.bj_transfer_data }}</td> -->
                         <td class="text-end">
                           <router-link
-                            v-if="user.identity == 'Super-Admin'"
+                          
                             class="single-partner"
                             :to="'/single-partner/' + partner._id"
                           >

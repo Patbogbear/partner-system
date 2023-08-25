@@ -42,6 +42,9 @@ const PartnerSchema = new Schema({
     introduce: {
         type: String
     },
+    coverage_province:{
+        type: String
+    },
     major_clients_or_case: {
         type: String
     },

@@ -4,7 +4,9 @@
       <form method="post" class="card" @submit.prevent="addData()">
         <div class="col-12">
           <div class="card">
-            <div class="card-header">111</div>
+            <div class="card-header">
+              <h3>Add New Partner</h3>
+            </div>
             <div class="card-body">
               <div class="row">
                 <div class="col-xl-4">
@@ -155,17 +157,41 @@
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
-                          <option value="hz-pod-leader-a@google.com">
-                            hz-pod-leader-a
+                          <option value="chenlong@google.com">
+                            chenlong@google.com
                           </option>
-                          <option value="hz-pod-leader-b@google.com">
-                            hz-pod-leader-b
+                          <option value="chjie@google.com">
+                            chjie@google.com
                           </option>
-                          <option value="hz-pod-leader-c@google.com">
-                            hz-pod-leader-c
+                          <option value="congp@google.com">
+                            congp@google.com
                           </option>
-                          <option value="hz-pod-leader-d@google.com">
-                            hz-pod-leader-c
+                          <option value="herong@google.com">
+                            herong@google.com
+                          </option>
+                          <option value="jianlian@google.com">
+                            jianlian@google.com
+                          </option>
+                          <option value="jieyin@google.com">
+                            jieyin@google.com
+                          </option>
+                          <option value="jinyangz@google.com">
+                            jinyangz@google.com
+                          </option>
+                          <option value="qinying@google.com">
+                            qinying@google.com
+                          </option>
+                          <option value="suxin@google.com">
+                            suxin@google.com
+                          </option>
+                           <option value="xincchen@google.com">
+                            xincchen@google.com
+                          </option>
+                          <option value="yiduc@google.com">
+                            yiduc@google.com
+                          </option>
+                          <option value="zhimaop@google.com">
+                            zhimaop@google.com
                           </option>
                         </select>
                       </div>
@@ -200,7 +226,6 @@
                               >渠道方联系方式</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="
@@ -237,7 +262,6 @@
                               >市场活动数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.hz_marketing_data"
@@ -248,7 +272,6 @@
                               >转介绍数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.hz_transfer_data"
@@ -313,7 +336,6 @@
                               >渠道方联系方式</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="
@@ -350,7 +372,6 @@
                               >市场活动数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.sh_marketing_data"
@@ -361,7 +382,6 @@
                               >转介绍数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.sh_transfer_data"
@@ -379,19 +399,10 @@
                         <label class="form-label">BJ-POC</label>
                         <select
                           class="form-control form-select"
-                          v-model="partner.POC_SH"
+                          v-model="partner.POC_BJ"
                         >
-                          <option value="hz-pod-leader-a@google.com">
-                            bj-pod-leader-a
-                          </option>
-                          <option value="hz-pod-leader-b@google.com">
-                            bj-pod-leader-b
-                          </option>
-                          <option value="hz-pod-leader-c@google.com">
-                            bj-pod-leader-c
-                          </option>
-                          <option value="hz-pod-leader-d@google.com">
-                            bj-pod-leader-c
+                          <option value="zhibinzheng@google.com">
+                            zhibinzheng@google.com
                           </option>
                         </select>
                       </div>
@@ -426,7 +437,6 @@
                               >渠道方联系方式</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="
@@ -463,7 +473,6 @@
                               >市场活动数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.bj_marketing_data"
@@ -474,7 +483,6 @@
                               >转介绍数据</label
                             >
                             <input
-                              type="email"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.bj_transfer_data"
@@ -516,6 +524,7 @@ export default {
         introduce: "",
         major_clients_or_case: "",
         website: "",
+        coverage_province:"",
         sh_tier: "",
         hz_tier: "",
         bj_tier: "",
