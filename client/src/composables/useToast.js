@@ -5,21 +5,23 @@ function useToast() {
     const showToast = (message, type) => {
         console.log("Inside showToast function");
 
-        // 创建一个 Toast Vue 实例并挂载到一个新的 div 元素
+        // 创建一个新的 div 元素作为挂载点
         const mountPoint = document.createElement('div');
-        const toastInstance = createApp(Toast,{message}).mount(mountPoint);
-        
-        // 将新创建的 div 元素添加到 body
         document.body.appendChild(mountPoint);
+
+        // 使用 createApp 创建一个新的 Vue app 实例，并将 Toast 组件挂载到 mountPoint 上
+        const toastApp = createApp(Toast, {message});
+        const toastInstance = toastApp.mount(mountPoint);
+
         console.log("Toast added to body");
 
-        // 使用 Toast 实例中的 show 方法显示 toast
+        // 如果 Toast 组件有 show 方法，则调用它
         if (toastInstance && typeof toastInstance.show === 'function') {
             toastInstance.show();
         }
 
         setTimeout(() => {
-            app.unmount(); // 卸载 Vue 实例
+            toastApp.unmount(); // 使用 toastApp 卸载组件
             document.body.removeChild(mountPoint);
             console.log("Toast removed from body");
         }, 3000);  
