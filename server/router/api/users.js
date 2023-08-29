@@ -22,7 +22,7 @@ router.post("/register", (req, res) => {
     User.findOne({ email: req.body.email })
         .then((user) => {
             if (user) {
-                return res.status(400).json({ email: "email been used!" })
+                return res.status(400).json({ message: "email been used!" })
             } else {
                 const newUser = new User({
                     name: req.body.name,
@@ -104,7 +104,7 @@ router.put("/edit/role", passport.authenticate("jwt", { session: false }), (req,
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
-            res.json({ success: true, user });
+            res.json({ success: true, message:"user role update success", user });
         })
         .catch(err => res.status(500).json({ error: "Error updating user" }));
 });
@@ -120,7 +120,7 @@ router.post("/login", (req, res) => {
     User.findOne({ email })
         .then(user => {
             if (!user) {
-                return res.status(404).json({ email: "user not exist" })
+                return res.status(404).json({ message: "user not exist" })
             }
 
             bcrypt.compare(password, user.password)
@@ -141,7 +141,7 @@ router.post("/login", (req, res) => {
                         })
                         //res.json({msg:"password correct"})
                     } else {
-                        return res.status(400).json({ msg: "wrong password" })
+                        return res.status(400).json({ message: "wrong password" })
                     }
                 })
         })

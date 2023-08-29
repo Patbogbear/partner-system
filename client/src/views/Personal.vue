@@ -128,6 +128,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Recently Requests</h3>
+              
             </div>
             <div class="card-table table-responsive">
               <table class="table table-vcenter">
@@ -139,15 +140,15 @@
                     <th colspan="2">Actions</th>
                   </tr>
                 </thead>
-                <tr v-for="request in requestList" :key="request._id">
+                <tr v-for="request in requestList"  :key="request._id + new Date()">
                   <td>
-                    {{ request.userId.email }}
+                    {{ request.userId && request.userId.email ? request.userId.email : 'user has been delete' }}
                   </td>
                   <td class="text-secondary">
-                    {{ request.userId.cluster }}&{{ request.userId.identity }}
+                    {{ request.userId && request.userId.Cluster ? request.userId.Cluster : 'user has been delete' }}&{{ request.userId && request.userId.identity ? request.userId.identity : 'user has been delete' }}
                   </td>
                   <td class="text-secondary">
-                    {{ request.userId.name }}申请了解{{
+                    {{ request.userId && request.userId.name ? request.userId.name : 'user has been delete' }}申请了解{{
                       request.partnerId.third_partner_name
                     }}的{{ request.requestedContactField }}区域联系人信息
                   </td>
@@ -185,9 +186,9 @@
                     <th colspan="2">Actions</th>
                   </tr>
                 </thead>
-                <tr v-for="request in requestList" :key="request._id">
+                <tr v-for="request in requestList" :key="request._id + new Date()">
                   <td>
-                    {{ request.partnerId.third_partner_name}}
+                    {{ request.userId && request.userId.email ? request.userId.email : 'N/A' }}
                   </td>
                   <td class="text-secondary">
                     {{ request.requestedAt }}
@@ -421,14 +422,15 @@ const requestLists = async (userIdentity) => {
   try {
     console.log(userIdentity)
     if (userIdentity.value.identity === "Super-Admin") {
-      console.log(111)
+      
       let { data } = await axios.get("/api/accessQuests/all-requests", {
         params: { status: "PENDING" },
       });
       requestList.value = data;
+      console.log(requestList)
     } else if (userIdentity.value.identity === "Sales" || userIdentity.value.identity === "Team-Leader") {
       let { data } = await axios.get(`/api/accessQuests/user-requests/${userIdentity.value.id}`);
-      console.log(111)
+      
       requestList.value = data;
     }
 

@@ -72,7 +72,7 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
 
     new Partners(partners).save().then((partners) => {
-        res.json(partners)
+        res.json({ partners, message: "add partner success" })
     });
 });
 
@@ -83,11 +83,11 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners) {
-            return res.status(404).json("no content")
+            return res.status(404).json({ message: "no content" })
         }
         res.json(partners)
     })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(404).json({ error: "serve error,could not fetch partner list" }));
 })
 
 // $route get api/partners/export
@@ -97,7 +97,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 router.get("/export", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners || partners.length === 0) {
-            return res.status(404).json("no content")
+            return res.status(404).json({ message: "no content" })
         }
         res.json(partners)
         const userId = req.user.id
@@ -108,7 +108,7 @@ router.get("/export", passport.authenticate("jwt", { session: false }), (req, re
         });
         newLog.save()
     })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(404).json({ error: "serve error,could not export data" }));
 
 })
 
@@ -121,9 +121,9 @@ let originalPartner = {};
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
-        
+
         if (!partner) {
-            return res.status(404).json("no content");
+            return res.status(404).json({ message: "no content" });
         }
 
         // 复制原始的partner数据
@@ -131,11 +131,11 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
 
         const filteredPartner = await filterProtectedFields(req.user, partner);
 
-       
+
         res.json(filteredPartner);
 
     } catch (error) {
-        res.status(404).json(error);
+        res.status(404).json({ error: "serve error,could not get data" });
     }
 });
 
@@ -145,7 +145,7 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
 
 async function filterProtectedFields(user, partner) {
 
-    function handleSalesFields(partner,requestedContactField) {
+    function handleSalesFields(partner, requestedContactField) {
 
         console.log('handle fields', partner)
         switch (requestedContactField) {
@@ -160,7 +160,7 @@ async function filterProtectedFields(user, partner) {
                 break;
         }
     }
-   
+
     // super-admin works fine with all access 
     if (user.identity === 'Super-Admin') {
         return partner;
@@ -189,9 +189,9 @@ async function filterProtectedFields(user, partner) {
             partnerId: partner._id,
             status: 'APPROVED'
         });
-        console.log('here should be the list ' , approvedRequests)
+        console.log('here should be the list ', approvedRequests)
         approvedRequests.forEach(request => {
-            handleSalesFields(partner,request.requestedContactField);
+            handleSalesFields(partner, request.requestedContactField);
         });
         return partner;
     }
@@ -201,11 +201,11 @@ async function filterProtectedFields(user, partner) {
     if (user.identity === 'Pod-Leader') {
         const fullUser = await Users.findOne({ _id: user._id });
         // 如果用户是 pod-lead 并且邮箱与 poc-hz 匹配，只展示 hz-contact
-     
+
         partner.sh_contact = undefined;
         partner.hz_contact = undefined;
         partner.bj_contact = undefined;
-  
+
         // 根据 user 的 ID 与 POC 字段的匹配来决定哪个字段可见
         if (fullUser.email === partner.POC_HZ) {
             partner.hz_contact = originalPartner.hz_contact;  // 确保 originalPartner 是之前存储的完整 partner 对象
@@ -214,15 +214,15 @@ async function filterProtectedFields(user, partner) {
         } else if (fullUser.email === partner.POC_SH) {
             partner.sh_contact = originalPartner.sh_contact;
         }
-         
+
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
             status: 'APPROVED'
         });
-        console.log('here should be the list ' , approvedRequests)
+        console.log('here should be the list ', approvedRequests)
         approvedRequests.forEach(request => {
-            handleSalesFields(partner,request.requestedContactField);
+            handleSalesFields(partner, request.requestedContactField);
         });
 
         return partner;
@@ -231,7 +231,7 @@ async function filterProtectedFields(user, partner) {
     //sales works fine 
     if (user.identity === 'Sales') {
         // 默认展示所有字段，除了以下特定字段
-        
+
         partner.sh_contact = undefined;
         partner.hz_contact = undefined;
         partner.bj_contact = undefined;
@@ -242,9 +242,9 @@ async function filterProtectedFields(user, partner) {
             partnerId: partner._id,
             status: 'APPROVED'
         });
-        console.log('here should be the list ' , approvedRequests)
+        console.log('here should be the list ', approvedRequests)
         approvedRequests.forEach(request => {
-            handleSalesFields(partner,request.requestedContactField);
+            handleSalesFields(partner, request.requestedContactField);
         });
         console.log(partner)
         return partner;
@@ -311,7 +311,7 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
         { _id: req.params.id },
         { $set: partners },
         { new: true }
-    ).then(partners => res.json(partners))
+    ).then(partners => res.json({partners,message:"partner update success"}))
 
 })
 
@@ -325,7 +325,7 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
         Partners.findOneAndRemove({ _id: req.params.id })
             .then(partner => {
                 if (!partner) {
-                    return res.status(404).json("Partner not found")
+                    return res.status(404).json({ message: "Partner not found" })
                 }
                 const userId = req.user.id;
                 const newLog = new Log({
@@ -334,9 +334,9 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
                     description: `user ${req.user.email} delete partner name:${partner.third_partner_name} partner id:${req.params.id} at :${partner.date}`
                 })
                 newLog.save()
-                res.json("delete success");
+                res.json({ message: "delete success" });
             })
-            .catch(err => res.status(404).json("delete failed "))
+            .catch(err => res.status(404).json({ error: "delete failed " }))
 
 
     });

@@ -1,5 +1,8 @@
 <template>
   <div class="body">
+    
+      
+
     <div class="title">{{ partner.third_partner_name }}</div>
     <div class="row row-cards">
       <div class="col-md-6 col-xl-3">
@@ -312,7 +315,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">Vertical</div>
-                  <div class="text-secondary">{{partner.vertical}}</div>
+                  <div class="text-secondary">{{ partner.vertical }}</div>
                 </div>
               </div>
             </div>
@@ -580,61 +583,61 @@ const userIdentity = store.getters.user;
 
 const requestLocation = ref("");
 const partner = ref({
-   cluster: "",
-        third_partner_type: "",
-        third_partner_name: "",
-        b2b_or_b2c: "",
-        partner_location: "",
-        partner_scope: "",
-        introduce: "",
-        major_clients_or_case: "",
-        website: "",
-        coverage_province:"",
-        sh_tier: "",
-        hz_tier: "",
-        bj_tier: "",
-        sh_contact: {
-          channel_contact_information: "",
-          channel_contact: "",
-          channel_contact_position: "",
-        },
-        hz_contact: {
-          channel_contact: "",
-          channel_contact_position: "",
-          channel_contact_information: "",
-        },
-        bj_contact: {
-          channel_contact: "",
-          channel_contact_position: "",
-          channel_contact_information: "",
-        },
-        vertical: "",
-        POC_HZ: "",
-        POC_SH: "",
-        POC_BJ: "",
-        HZ_tracking_process: "",
-        HZ_tracking_process_segment: "",
-        SH_tracking_process: "",
-        SH_tracking_process_segment: "",
-        BJ_tracking_process: "",
-        BJ_tracking_process_segment: "",
-        hz_marketing_data: "",
-        sh_marketing_data: "",
-        bj_marketing_data: "",
-        hz_transfer_data: "",
-        sh_transfer_data: "",
-        bj_transfer_data: "",
+  cluster: "",
+  third_partner_type: "",
+  third_partner_name: "",
+  b2b_or_b2c: "",
+  partner_location: "",
+  partner_scope: "",
+  introduce: "",
+  major_clients_or_case: "",
+  website: "",
+  coverage_province: "",
+  sh_tier: "",
+  hz_tier: "",
+  bj_tier: "",
+  sh_contact: {
+    channel_contact_information: "",
+    channel_contact: "",
+    channel_contact_position: "",
+  },
+  hz_contact: {
+    channel_contact: "",
+    channel_contact_position: "",
+    channel_contact_information: "",
+  },
+  bj_contact: {
+    channel_contact: "",
+    channel_contact_position: "",
+    channel_contact_information: "",
+  },
+  vertical: "",
+  POC_HZ: "",
+  POC_SH: "",
+  POC_BJ: "",
+  HZ_tracking_process: "",
+  HZ_tracking_process_segment: "",
+  SH_tracking_process: "",
+  SH_tracking_process_segment: "",
+  BJ_tracking_process: "",
+  BJ_tracking_process_segment: "",
+  hz_marketing_data: "",
+  sh_marketing_data: "",
+  bj_marketing_data: "",
+  hz_transfer_data: "",
+  sh_transfer_data: "",
+  bj_transfer_data: "",
 });
 
 computed(() => {
   return store.getters.user;
 });
 
+
+
 const props = defineProps({
   id: String,
 });
-
-
 
 const deleteData = (value) => {
   axios.delete("/api/partners/delete/" + value).then((res) => {
@@ -696,6 +699,4 @@ getDetail(props.id);
   flex: 1 1 auto;
   padding: 1rem 1rem;
 }
-
-
 </style>
