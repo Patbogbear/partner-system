@@ -33,7 +33,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         const newRequest = new AccessRequest({ userId, partnerId, requestedContactField });
         await newRequest.save();
-        res.status(201).send(newRequest);
+        res.status(201).send({newRequest,message:"request has been submitted"});
     } catch (error) {
         res.status(500).send({ message: 'Error creating access request.' });
     }
