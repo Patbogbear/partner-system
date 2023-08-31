@@ -6,6 +6,12 @@ const Partners = require("../../model/Partners")
 const Log = require("../../model/Logs")
 const AccessRequest = require("../../model/AccessRequests")
 const Users = require("../../model/Users")
+const multer = require("multer")
+const fs = require("fs")
+const fastcsv = require("fast-csv")
+
+
+
 
 // $route get api/partners/test
 // @desc return require json data 
@@ -311,7 +317,7 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
         { _id: req.params.id },
         { $set: partners },
         { new: true }
-    ).then(partners => res.json({partners,message:"partner update success"}))
+    ).then(partners => res.json({ partners, message: "partner update success" }))
 
 })
 
@@ -342,5 +348,58 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
     });
 
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+
+router.post('/upload', upload.single('csv'), async (req, res) => {
+    const streamifier = require('streamifier');
+    const csvStream = streamifier.createReadStream(req.file.buffer);
+
+    csvStream
+        .pipe(fastcsv.parse({ headers: true }))
+        .on('data', async (row) => {
+            // 处理空值
+            for (let key in row) {
+                if (row[key] === '') {
+                    row[key] = null;
+                }
+            }
+
+            // 根据 third_partner_type 和 third_partner_name 查找是否存在此数据
+            const existingPartner = await Partners.findOne({
+                third_partner_type: row.third_partner_type,
+                third_partner_name: row.third_partner_name
+            });
+
+            // 如果存在，则检查除 third_partner_type 和 third_partner_name 以外的其他列是否有变化，并进行更新
+            if (existingPartner) {
+                let isChanged = false;
+
+                for (let key in row) {
+                    if (key !== 'third_partner_type' && key !== 'third_partner_name' && existingPartner[key] !== row[key]) {
+                        isChanged = true;
+                        existingPartner[key] = row[key];
+                    }
+                }
+
+                if (isChanged) {
+                    await existingPartner.save();
+                }
+            } 
+            // 否则，插入新条目
+            else {
+                await Partners.create(row);
+            }
+        })
+        .on('end', () => {
+            res.status(200).send({message:"upload successfully"});
+        })
+        .on('error', (error) => {
+            console.error(error);
+            res.status(500).send({message:"serve error"});
+        });
+});
 module.exports = router;
 

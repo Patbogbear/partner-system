@@ -195,7 +195,7 @@
             <a href="#" class="dropdown-item">Feedback</a>
             <div class="dropdown-divider"></div>
             <a href="./settings.html" class="dropdown-item">Settings</a>
-            <a href="./sign-in.html" class="dropdown-item">Logout</a>
+            <a href="./sign-in.html" class="dropdown-item" @click="logOut()">Logout</a>
           </div>
         </div>
       </div>
@@ -227,7 +227,14 @@ export default {
         (typeof value === "object" && Object.keys(value).length === 0) ||
         (typeof value === "string" && value.trim().length === 0)
       );
-    }
+    },
+    logOut() {
+      //clear token
+      localStorage.removeItem("userToken");
+      //config vuex store
+      this.$store.dispatch("clearCurrentState");
+      this.$router.push({ path: "/login" });
+    },
   },
 };
 </script>

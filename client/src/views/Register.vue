@@ -81,19 +81,23 @@
           </div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Select Reader or Editor </label>
+          <label class="form-label">Select Role</label>
           <div>
             <select class="form-select" v-model="users.identity" required>
               <option>Sales</option>
-              <option>Pod-Leader</option>
+              <option value="Pod-Leader">Pod-Leader/POC</option>
               <option>Team-Leader</option>
               <!-- only for PM and VPM above lever -->
-              <option>Super-Admin</option>
+               <!-- <option>PM</option> -->
+              <!-- <option>Super-Admin</option> -->
             </select>
           </div>
         </div>
       </div>
       <div class="card-footer text-end">
+        <span class="go_login" @click="gotoLogin()">
+          Does't have a account yet? <span class="p-1 text-primary-emphasis bs-primary-bg-subtle ">Login here</span> 
+        </span>
         <button type="submit" class="btn btn-primary" @onclick="registerUser()">
           Submit
         </button>
@@ -140,6 +144,9 @@ export default {
           console.error(error);
         });
     },
+    gotoLogin(){
+      this.$router.push("/login")
+    }
   },
 };
 </script>

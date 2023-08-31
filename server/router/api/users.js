@@ -39,7 +39,7 @@ router.post("/register", (req, res) => {
                         newUser.password = hash;
 
                         newUser.save()
-                            .then(user => res.json(user))
+                            .then(user => res.json({user,message:"success"}))
                             .catch(err = console.log(err));
                     });
                 });
@@ -80,14 +80,14 @@ router.post("/edit-user/password", passport.authenticate("jwt", { session: false
 router.delete("/delete/user", passport.authenticate("jwt", { session: false }), (req, res) => {
 
     //lack authenticate control function
-
+    
     const email = req.body.email;
     User.findOneAndRemove({ email })
         .then((user) => {
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
-            res.json({ success: true });
+            res.json({ success: true,message:"delete user successful" });
         })
         .catch(err => res.status(500).json({ error: "Error deleting user" }));
 });

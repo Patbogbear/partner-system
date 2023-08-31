@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="card-footer text-end">
-        <span class="go_login" @click="gotoLogin()">
+        <span class="go_register" @click="gotoRegister()">
           Does't have a account yet? <span class="p-1 text-primary-emphasis bs-primary-bg-subtle ">Register here</span> 
         </span>
         <button type="submit" class="btn btn-primary" @onclick="logUser()">
@@ -84,7 +84,7 @@ export default {
         this.$router.push({ path: "/" });
       });
     },
-    gotoLogin() {
+    gotoRegister() {
       this.$router.push({path:'/register'})
     },
     isEmpty(value) {

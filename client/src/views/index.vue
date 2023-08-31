@@ -37,6 +37,7 @@
                   </svg>
                   Add new partner
                 </a>
+                
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
@@ -309,6 +310,7 @@
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">Partner list</h3>
+                   
                 </div>
                 <div class="card-body border-bottom py-3">
                   <div class="d-flex">
@@ -337,12 +339,13 @@
                         />
                       </div>
                     </div>
-                    <button
+                    <!-- <button
                       class="btn btn-outline-success"
                       @click="exportToCSV()"
                     >
                       export
-                    </button>
+                    </button> -->
+                   
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -484,7 +487,7 @@
                               --bs-btn-font-size: 0.75rem;
                             "
                             data-bs-toggle="dropdown"
-                            @click="deleteData(partner._id)"
+                            @click.stop="deleteData(partner._id)"
                             v-if="user.identity == 'Super-Admin'"
                           >
                             delete
@@ -676,6 +679,18 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    uploadFile(event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('csv', file);
+      try {
+        axios.post('api/partners/upload', formData);
+        console.log("success")
+      } catch (err) {
+        alert('上传失败：' + err.message);
+      }
+    },
+
     logOut() {
       //clear token
       localStorage.removeItem("userToken");
