@@ -127,17 +127,17 @@ let originalPartner = {};
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
-
+        // console.log(partner)
         if (!partner) {
             return res.status(404).json({ message: "no content" });
         }
 
         // 复制原始的partner数据
         Object.assign(originalPartner, partner.toObject());
-
+        
         const filteredPartner = await filterProtectedFields(req.user, partner);
 
-
+        console.log(filteredPartner)
         res.json(filteredPartner);
 
     } catch (error) {
@@ -145,9 +145,7 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
     }
 });
 
-// below code is authenticated logic
-
-
+// below code is default authenticated partner logic
 
 async function filterProtectedFields(user, partner) {
 
@@ -186,13 +184,15 @@ async function filterProtectedFields(user, partner) {
         // 处理每一个 contact 字段
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
             if (!partner[field] || isEmptyField(partner[field])) {
+                // 如果字段不存在或其中有空字段，则设置“目前该信息尚未填充”
+                if (!partner[field]) {
+                    partner[field] = {};
+                }
                 setEmptyFieldMessages(partner[field]);
             } else {
                 partner[field] = originalPartner[field];
             }
         });
-    
-        console.log(partner);
         return partner;
     }
 
