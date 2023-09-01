@@ -39,7 +39,7 @@ router.post("/register", (req, res) => {
                         newUser.password = hash;
 
                         newUser.save()
-                            .then(user => res.json({user,message:"success"}))
+                            .then(user => res.status(200).json({user,message:"success"}))
                             .catch(err = console.log(err));
                     });
                 });
@@ -69,7 +69,7 @@ router.post("/edit-user/password", passport.authenticate("jwt", { session: false
                 if (err) throw err;
 
                 User.findByIdAndUpdate(userId, { password: hash })
-                    .then(() => res.json({ message: "Password updated successfully" }))
+                    .then(() => res.status(200).json({ message: "Password updated successfully" }))
                     .catch(err => console.log(err));
             });
         });
@@ -87,7 +87,7 @@ router.delete("/delete/user", passport.authenticate("jwt", { session: false }), 
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
-            res.json({ success: true,message:"delete user successful" });
+            res.status(200).json({ success: true,message:"delete user successful" });
         })
         .catch(err => res.status(500).json({ error: "Error deleting user" }));
 });
@@ -104,7 +104,7 @@ router.put("/edit/role", passport.authenticate("jwt", { session: false }), (req,
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
-            res.json({ success: true, message:"user role update success", user });
+            res.status(200).json({ success: true, message:"user role update success", user });
         })
         .catch(err => res.status(500).json({ error: "Error updating user" }));
 });

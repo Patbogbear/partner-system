@@ -78,7 +78,7 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
 
     new Partners(partners).save().then((partners) => {
-        res.json({ partners, message: "add partner success" })
+        res.status(200).json({ partners, message: "add partner success" })
     });
 });
 
@@ -153,7 +153,7 @@ async function filterProtectedFields(user, partner) {
 
     function handleSalesFields(partner, requestedContactField) {
 
-        console.log('handle fields', partner)
+
         switch (requestedContactField) {
             case 'sh_contact':
                 partner.sh_contact = originalPartner.sh_contact;
@@ -167,94 +167,164 @@ async function filterProtectedFields(user, partner) {
         }
     }
 
+    function isEmptyField(contactData) {
+        const contactProperties = ["channel_contact", "channel_contact_position", "channel_contact_information"];
+        return contactProperties.some(prop => !contactData[prop] || contactData[prop].trim() === "");
+    }
+
+    function setEmptyFieldMessages(contactData) {
+        const contactProperties = ["channel_contact", "channel_contact_position", "channel_contact_information"];
+        contactProperties.forEach(prop => {
+            if (!contactData[prop] || contactData[prop].trim() === "") {
+                contactData[prop] = "目前该信息尚未填充";
+            }
+        });
+    }
+
     // super-admin works fine with all access 
     if (user.identity === 'Super-Admin') {
+        // 处理每一个 contact 字段
+        ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
+            if (!partner[field] || isEmptyField(partner[field])) {
+                setEmptyFieldMessages(partner[field]);
+            } else {
+                partner[field] = originalPartner[field];
+            }
+        });
+    
+        console.log(partner);
         return partner;
     }
 
     //works fine for team-leader
-    //缺少team leader 申请查看的逻辑
     if (user.identity === 'Team-Leader') {
-        // 根据用户的 cluster 来决定他们可以访问的数据
-        switch (user.cluster) {
-            case 'SH':
-                partner.hz_contact = undefined;
-                partner.bj_contact = undefined;
-                break;
-            case 'HZ':
-                partner.sh_contact = undefined;
-                partner.bj_contact = undefined;
-                break;
-            case 'BJ':
-                partner.sh_contact = undefined;
-                partner.hz_contact = undefined;
-                break;
-        }
+        console.log(partner)
+        
+        // 获取已批准的请求
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
             status: 'APPROVED'
         });
-        console.log('here should be the list ', approvedRequests)
+
+        let approvedFields = [];
         approvedRequests.forEach(request => {
-            handleSalesFields(partner, request.requestedContactField);
+            approvedFields.push(request.requestedContactField);
         });
+
+        // 处理已批准的请求
+        ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
+            if (approvedFields.includes(field)) {
+                handleSalesFields(partner, field);
+            } else {
+                if (!partner[field] || isEmptyField(partner[field])) {
+                    if (!partner[field]) {
+                        partner[field] = {};
+                    }
+                    // 对于空字段，设置“目前该信息尚未填充”消息
+                    setEmptyFieldMessages(partner[field]);
+                } else {
+                    // 如果不是空的，但也没有得到批准，将其设置为空对象
+                    partner[field] = {};
+                }
+            }
+        });
+        // 根据 user 的 cluster 来恢复相应的数据
+        if (user.cluster === 'SH') {
+            partner.sh_contact = originalPartner.sh_contact;
+        } else if (user.cluster === 'HZ') {
+            partner.hz_contact = originalPartner.hz_contact;
+        } else if (user.cluster === 'BJ') {
+            partner.bj_contact = originalPartner.bj_contact;
+        }
+        console.log(partner)
         return partner;
     }
 
+
     //works fine for pod-leader
-    //缺少pod leader 申请查看的逻辑
     if (user.identity === 'Pod-Leader') {
         const fullUser = await Users.findOne({ _id: user._id });
-        // 如果用户是 pod-lead 并且邮箱与 poc-hz 匹配，只展示 hz-contact
 
-        partner.sh_contact = undefined;
-        partner.hz_contact = undefined;
-        partner.bj_contact = undefined;
+        const approvedRequests = await AccessRequest.find({
+            userId: user._id,
+            partnerId: partner._id,
+            status: 'APPROVED'
+        });
+
+        let approvedFields = [];
+        approvedRequests.forEach(request => {
+            approvedFields.push(request.requestedContactField);
+        });
+
+        ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
+            if (approvedFields.includes(field)) {
+                handleSalesFields(partner, field);
+            } else {
+                if (!partner[field] || isEmptyField(partner[field])) {
+                    if (!partner[field]) {
+                        partner[field] = {};
+                    }
+                    // 对于空字段，设置“目前该信息尚未填充”消息
+                    setEmptyFieldMessages(partner[field]);
+                } else {
+                    // 如果不是空的，但也没有得到批准，将其设置为空对象
+                    partner[field] = {};
+                }
+            }
+        });
 
         // 根据 user 的 ID 与 POC 字段的匹配来决定哪个字段可见
         if (fullUser.email === partner.POC_HZ) {
-            partner.hz_contact = originalPartner.hz_contact;  // 确保 originalPartner 是之前存储的完整 partner 对象
+            partner.hz_contact = originalPartner.hz_contact;
         } else if (fullUser.email === partner.POC_BJ) {
             partner.bj_contact = originalPartner.bj_contact;
         } else if (fullUser.email === partner.POC_SH) {
             partner.sh_contact = originalPartner.sh_contact;
         }
 
-        const approvedRequests = await AccessRequest.find({
-            userId: user._id,
-            partnerId: partner._id,
-            status: 'APPROVED'
-        });
-        console.log('here should be the list ', approvedRequests)
-        approvedRequests.forEach(request => {
-            handleSalesFields(partner, request.requestedContactField);
-        });
 
+
+        console.log(partner)
         return partner;
     }
 
     //sales works fine 
     if (user.identity === 'Sales') {
-        // 默认展示所有字段，除了以下特定字段
-
-        partner.sh_contact = undefined;
-        partner.hz_contact = undefined;
-        partner.bj_contact = undefined;
-
-        // 检查是否有任何已批准的请求，允许查看特定的联系人字段
+        // 获取已批准的请求列表
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
             status: 'APPROVED'
         });
-        console.log('here should be the list ', approvedRequests)
+
+        let approvedFields = [];
         approvedRequests.forEach(request => {
-            handleSalesFields(partner, request.requestedContactField);
+            approvedFields.push(request.requestedContactField);
         });
-        console.log(partner)
+
+        ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
+            if (approvedFields.includes(field)) {
+                // 已获批准，从原始数据中恢复它
+                handleSalesFields(partner, field);
+            } else {
+                if (!partner[field] || isEmptyField(partner[field])) {
+                    if (!partner[field]) {
+                        partner[field] = {};
+                    }
+                    // 对于空字段，设置“目前该信息尚未填充”消息
+                    setEmptyFieldMessages(partner[field]);
+                } else {
+                    // 如果不是空的，但也没有得到批准，将其设置为空对象
+                    partner[field] = {};
+                }
+            }
+        });
+
         return partner;
     }
+
+
 }
 
 
@@ -280,20 +350,20 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;
 
     // SH, HZ, BJ contact details
-    partners.SH = {
-        channel_contact: req.body.SH?.channel_contact,
-        channel_contact_position: req.body.SH?.channel_contact_position,
-        channel_contact_information: req.body.SH?.channel_contact_information
+    partners.sh_contact = {
+        channel_contact: req.body.sh_contact?.channel_contact,
+        channel_contact_position: req.body.sh_contact?.channel_contact_position,
+        channel_contact_information: req.body.sh_contact?.channel_contact_information
     };
-    partners.HZ = {
-        channel_contact: req.body.HZ?.channel_contact,
-        channel_contact_position: req.body.HZ?.channel_contact_position,
-        channel_contact_information: req.body.HZ?.channel_contact_information
+    partners.hz_contact = {
+        channel_contact: req.body.hz_contact?.channel_contact,
+        channel_contact_position: req.body.hz_contact?.channel_contact_position,
+        channel_contact_information: req.body.hz_contact?.channel_contact_information
     };
-    partners.BJ = {
-        channel_contact: req.body.BJ?.channel_contact,
-        channel_contact_position: req.body.BJ?.channel_contact_position,
-        channel_contact_information: req.body.BJ?.channel_contact_information
+    partners.bj_contact = {
+        channel_contact: req.body.bj_contact?.channel_contact,
+        channel_contact_position: req.body.bj_contact?.channel_contact_position,
+        channel_contact_information: req.body.bj_contact?.channel_contact_information
     };
 
     if (req.body.vertical) partners.vertical = req.body.vertical;
@@ -317,7 +387,7 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
         { _id: req.params.id },
         { $set: partners },
         { new: true }
-    ).then(partners => res.json({ partners, message: "partner update success" }))
+    ).then(partners => res.status(200).json({ partners, message: "partner update success" }))
 
 })
 
@@ -340,7 +410,7 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
                     description: `user ${req.user.email} delete partner name:${partner.third_partner_name} partner id:${req.params.id} at :${partner.date}`
                 })
                 newLog.save()
-                res.json({ message: "delete success" });
+                res.status(200).json({ message: "delete success" });
             })
             .catch(err => res.status(404).json({ error: "delete failed " }))
 
@@ -387,18 +457,18 @@ router.post('/upload', upload.single('csv'), async (req, res) => {
                 if (isChanged) {
                     await existingPartner.save();
                 }
-            } 
+            }
             // 否则，插入新条目
             else {
                 await Partners.create(row);
             }
         })
         .on('end', () => {
-            res.status(200).send({message:"upload successfully"});
+            res.status(200).send({ message: "upload successfully" });
         })
         .on('error', (error) => {
             console.error(error);
-            res.status(500).send({message:"serve error"});
+            res.status(500).send({ message: "serve error" });
         });
 });
 module.exports = router;

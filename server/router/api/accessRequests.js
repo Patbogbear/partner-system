@@ -33,7 +33,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         const newRequest = new AccessRequest({ userId, partnerId, requestedContactField });
         await newRequest.save();
-        res.status(201).send({newRequest,message:"request has been submitted"});
+        res.status(200).send({newRequest,message:"request has been submitted"});
     } catch (error) {
         res.status(500).send({ message: 'Error creating access request.' });
     }
@@ -73,7 +73,7 @@ router.put('/all-requests/:requestAccessId', passport.authenticate("jwt", { sess
 
         const updatedRequest = await AccessRequest.findByIdAndUpdate(req.params.requestAccessId, { status }, { new: true });
 
-        res.status(200).send(updatedRequest)
+        res.status(200).send({updatedRequest,message:"Approved"})
 
 
     } catch (error) {
