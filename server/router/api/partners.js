@@ -11,20 +11,10 @@ const fs = require("fs")
 const fastcsv = require("fast-csv")
 
 
-
-
-// $route get api/partners/test
-// @desc return require json data 
-// @ access public
-
-// router.get("/test", (req, res) => {
-//     res.json({ msg: "partner works" })
-// })
-
-
 // $route get api/partners/add
 // @desc return require json data 
 // @ access private
+
 
 router.post("/add", passport.authenticate("jwt", { session: false }), (req, res) => {
     const partners = {};
@@ -89,11 +79,11 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners) {
-            return res.status(404).json({ message: "no content" })
+            return res.status(400).json({ message: "no content" })
         }
         res.json(partners)
     })
-        .catch(err => res.status(404).json({ error: "serve error,could not fetch partner list" }));
+        .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
 })
 
 // $route get api/partners/export
@@ -103,7 +93,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 router.get("/export", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners || partners.length === 0) {
-            return res.status(404).json({ message: "no content" })
+            return res.status(400).json({ message: "no content" })
         }
         res.json(partners)
         const userId = req.user.id
@@ -114,7 +104,7 @@ router.get("/export", passport.authenticate("jwt", { session: false }), (req, re
         });
         newLog.save()
     })
-        .catch(err => res.status(404).json({ error: "serve error,could not export data" }));
+        .catch(err => res.status(404).json({ error: "serve error,could not export data", message: "serve error could not export data" }));
 
 })
 
@@ -129,19 +119,18 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
         const partner = await Partners.findOne({ _id: req.params.id });
         // console.log(partner)
         if (!partner) {
-            return res.status(404).json({ message: "no content" });
+            return res.status(400).json({ message: "no content" });
         }
 
-        // 复制原始的partner数据
+        // copy origin partner data object
         Object.assign(originalPartner, partner.toObject());
-        
+
         const filteredPartner = await filterProtectedFields(req.user, partner);
 
-        console.log(filteredPartner)
         res.json(filteredPartner);
 
     } catch (error) {
-        res.status(404).json({ error: "serve error,could not get data" });
+        res.status(404).json({ error: "serve error,could not get data", message: "serve error, could not get datat" });
     }
 });
 
@@ -181,7 +170,7 @@ async function filterProtectedFields(user, partner) {
 
     // super-admin works fine with all access 
     if (user.identity === 'Super-Admin') {
-        // 处理每一个 contact 字段
+        // handle all contact data
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
             if (!partner[field] || isEmptyField(partner[field])) {
                 // 如果字段不存在或其中有空字段，则设置“目前该信息尚未填充”
@@ -196,10 +185,7 @@ async function filterProtectedFields(user, partner) {
         return partner;
     }
 
-    //works fine for team-leader
-    if (user.identity === 'Team-Leader') {
-        console.log(partner)
-        
+    if (user.identity === 'PM') {
         // 获取已批准的请求
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
@@ -237,7 +223,52 @@ async function filterProtectedFields(user, partner) {
         } else if (user.cluster === 'BJ') {
             partner.bj_contact = originalPartner.bj_contact;
         }
+
+        return partner;
+    }
+
+    //works fine for team-leader
+    if (user.identity === 'Team-Leader') {
         console.log(partner)
+
+        // 获取已批准的请求
+        const approvedRequests = await AccessRequest.find({
+            userId: user._id,
+            partnerId: partner._id,
+            status: 'APPROVED'
+        });
+
+        let approvedFields = [];
+        approvedRequests.forEach(request => {
+            approvedFields.push(request.requestedContactField);
+        });
+
+        // 处理已批准的请求
+        ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
+            if (approvedFields.includes(field)) {
+                handleSalesFields(partner, field);
+            } else {
+                if (!partner[field] || isEmptyField(partner[field])) {
+                    if (!partner[field]) {
+                        partner[field] = {};
+                    }
+                    // 对于空字段，设置“目前该信息尚未填充”消息
+                    setEmptyFieldMessages(partner[field]);
+                } else {
+                    // 如果不是空的，但也没有得到批准，将其设置为空对象
+                    partner[field] = {};
+                }
+            }
+        });
+        // 根据 user 的 cluster 来恢复相应的数据
+        if (user.cluster === 'SH') {
+            partner.sh_contact = originalPartner.sh_contact;
+        } else if (user.cluster === 'HZ') {
+            partner.hz_contact = originalPartner.hz_contact;
+        } else if (user.cluster === 'BJ') {
+            partner.bj_contact = originalPartner.bj_contact;
+        }
+
         return partner;
     }
 
@@ -283,9 +314,6 @@ async function filterProtectedFields(user, partner) {
             partner.sh_contact = originalPartner.sh_contact;
         }
 
-
-
-        console.log(partner)
         return partner;
     }
 
@@ -320,11 +348,8 @@ async function filterProtectedFields(user, partner) {
                 }
             }
         });
-
         return partner;
     }
-
-
 }
 
 
@@ -401,7 +426,7 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
         Partners.findOneAndRemove({ _id: req.params.id })
             .then(partner => {
                 if (!partner) {
-                    return res.status(404).json({ message: "Partner not found" })
+                    return res.status(400).json({ message: "Partner not found" })
                 }
                 const userId = req.user.id;
                 const newLog = new Log({
@@ -421,9 +446,11 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// $route delete api/partners/upload
+// @desc return require json data 
+// @ access private  
 
-
-router.post('/upload', upload.single('csv'), async (req, res) => {
+router.post('/upload', passport.authenticate("jwt", { session: false }), upload.single('csv'), async (req, res) => {
     const streamifier = require('streamifier');
     const csvStream = streamifier.createReadStream(req.file.buffer);
 
@@ -468,8 +495,9 @@ router.post('/upload', upload.single('csv'), async (req, res) => {
         })
         .on('error', (error) => {
             console.error(error);
-            res.status(500).send({ message: "serve error" });
+            res.status(404).send({ message: "serve error" });
         });
 });
+
 module.exports = router;
 

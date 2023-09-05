@@ -157,6 +157,9 @@
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
+                         <option value="hz-pod-lead-a@google.com">
+                            hz-pod-lead-a@google.com
+                          </option>
                           <option value="chenlong@google.com">
                             chenlong@google.com
                           </option>

@@ -357,7 +357,7 @@
           </div>
         </div>
 
-        <div class="col-xl-12" v-if="userIdentity.identity === 'Super-Admin'">
+        <div class="col-xl-12" v-if="userIdentity.identity === 'Super-Admin' || userIdentity.identity === 'Team-Leader'">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Recently Requests</h3>
@@ -441,7 +441,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-12" v-if="userIdentity.identity === 'Sales'">
+        <div class="col-xl-12" v-if="userIdentity.identity === 'Sales' ||userIdentity.identity === 'Team-Leader'">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Requests Feedback</h3>

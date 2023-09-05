@@ -17,14 +17,12 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     response => {
-        console.log("successful response:", response)
+        
         const { showToast } = useToast();
-
-        console.log("successful response:", response.data.message);
 
         // 判断是否存在 message 并显示 toast
         if (response.data && response.data.message) {
-            showToast(response.data.message, 'success');
+            showToast(response.data.message, response.status);
         }
         return response
     },
@@ -39,14 +37,12 @@ axios.interceptors.response.use(
 
             // 为特定的状态码设置特殊处理
             if (status === 401) {
-                showToast('Token invalid. Please login again.', 'error');
+                showToast('Token invalid. Please login again.', status,'error');
                 localStorage.removeItem('userToken');
                 router.push('/login');
             } else {
                 // 对于其他状态码，直接显示后端返回的错误信息
-                console.log("about to call showToast")
-                showToast(errorMessage, 'error');
-                console.log("called showtoast")
+                showToast(errorMessage, status);
             }
         } else {
             // 如果没有 error.response，可能是网络问题或其他问题

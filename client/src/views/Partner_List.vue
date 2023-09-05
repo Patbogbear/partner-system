@@ -72,7 +72,8 @@
         </div>
       </div>
     </div>
-    <div v-if="filterInput" class="row">
+    <div v-if="filterInput" class="row-section">
+      
       <div
         v-for="partner in SearchData(partners, filterInput)"
         :key="partner._id"
@@ -80,7 +81,7 @@
       >
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">{{ partner.third_partner_name }}</h3>
+            <h5 class="card-title">{{ partner.third_partner_name }}</h5>
           </div>
           <div class="card-body">
             <dl class="row">
@@ -117,7 +118,9 @@
         </div>
       </div>
     </div>
-    <div v-else class="row">
+    <div v-else class="row-section">
+     
+
       <div
         v-for="partner in filteredData"
         :key="partner._id"
@@ -125,7 +128,7 @@
       >
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">{{ partner.third_partner_name }}</h3>
+            <h5 class="card-title">{{ partner.third_partner_name }}</h5>
           </div>
           <div class="card-body">
             <dl class="row">
@@ -160,7 +163,7 @@
             </router-link>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -184,7 +187,6 @@ const select_sh_poc = ref(null);
 const select_bj_poc = ref(null);
 const searchData = ref([]);
 
-
 onMounted(async () => {
   await getData();
 });
@@ -207,8 +209,6 @@ const filteredData = computed(() => {
   };
   return filterData(partners.value, value);
 });
-
-
 
 const filterData = (data, value) => {
   let result = data;
@@ -265,7 +265,7 @@ const SearchData = (partners, value) => {
   border-radius: 1px 4px 4px 1px;
 }
 
-.row {
+.row-section {
   display: flex;
   flex-wrap: wrap;
   margin-left: 100px;
@@ -291,12 +291,15 @@ const SearchData = (partners, value) => {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
   border-radius: 1px 4px 4px 1px;
 }
-/* @media (min-width: 992px) {
+.card{
+  margin: 5px;
+}
+@media (min-width: 992px) {
   .col-lg-3 {
     flex: 0 0 auto;
     width: 50%;
   }
-} */
+}
 .custom_search {
   margin-left: 250px;
   margin-right: 250px;
@@ -311,7 +314,7 @@ const SearchData = (partners, value) => {
     flex: 0 0 auto;
     width: 30%;
   }
-}
+} 
 .row-deck > .col .card,
 .row-deck > [class*="col-"] .card {
   flex: 1 1 auto;
@@ -378,5 +381,5 @@ dl {
 .col-7 {
   flex: 0 0 auto;
   width: 58.3333333%;
-}
+} 
 </style>

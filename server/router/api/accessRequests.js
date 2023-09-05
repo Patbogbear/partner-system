@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport")
-
 const AccessRequest = require("../../model/AccessRequests");
-
-//const { route } = require("./partners");
-
 
 
 //request for partner contact information 
+// $route get api/accessQuests/access-requests
+// @desc return require json data 
+// @ access public
+
 router.post('/access-requests', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
 
         const { userId, partnerId, requestedContactField } = req.body;
-
 
         // 验证userId、partnerId和requestedContactField是否存在
         if (!userId || !partnerId || !requestedContactField) {
@@ -35,11 +34,15 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
         await newRequest.save();
         res.status(200).send({newRequest,message:"request has been submitted"});
     } catch (error) {
-        res.status(500).send({ message: 'Error creating access request.' });
+        res.status(404).send({ message: 'Error creating access request.' });
     }
 });
 
 
+//request for partner contact information 
+// $route get api/accessQuests/all-requests
+// @desc return require json data 
+// @ access public
 
 router.get('/all-requests', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
@@ -51,13 +54,26 @@ router.get('/all-requests', passport.authenticate("jwt", { session: false }), as
             return res.status(200).send(requests);
         }
 
+        // 当用户身份为 PM，根据其 cluster 属性筛选 AccessRequest
+        if (req.user.identity === 'PM') {
+            requests = requests.filter(request => request.userId && request.userId.cluster === req.user.cluster);
+            return res.status(200).send(requests);
+        }
         // 当用户身份为 Team-Leader，根据其 cluster 属性筛选 AccessRequest
         if (req.user.identity === 'Team-Leader') {
             requests = requests.filter(request => request.userId && request.userId.cluster === req.user.cluster);
             return res.status(200).send(requests);
         }
 
-        res.status(403).send({ message: 'Permission denied' });
+        // when user identity is pod-leader, 
+        if(req.user.identity ==="Pod-Leader"){
+            const pocField = `POC_${req.user.cluster}`;
+            requests = requests.filter(request => request.partnerId && request.partnerId[pocField] === req.user.email);
+            return res.status(200).send(requests);
+        }
+
+
+        res.status(400).send({ message: 'Permission denied' });
 
     } catch (error) {
         res.status(500).send({ message: 'Error fetching access requests' });
@@ -69,17 +85,47 @@ router.get('/all-requests', passport.authenticate("jwt", { session: false }), as
 // approve or deny access by high level user 
 router.put('/all-requests/:requestAccessId', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
-        const { status } = req.body
+        const { status } = req.body;
+
+        // 请求体验证
+        if (!['APPROVED', 'DENIED'].includes(status)) {
+            return res.status(400).send({ message: 'Invalid status value' });
+        }
+
+        // 获取要处理的请求
+        const requestToProcess = await AccessRequest.findById(req.params.requestAccessId).populate('userId').populate('partnerId');
+
+        if (!requestToProcess) {
+            return res.status(400).send({ message: 'Request not found' });
+        }
+
+        // 检查状态是否为PENDING
+        if (requestToProcess.status !== 'PENDING') {
+            return res.status(400).send({ message: 'Only PENDING requests can be processed' });
+        }
+
+        // 身份验证
+        if (req.user.identity === 'Pod-Leader') {
+            return res.status(403).send({ message: 'You do not have permission to approve or deny requests' });
+        }
+
+        if (req.user.identity === 'Team-Leader') {
+            if (!requestToProcess.userId || requestToProcess.userId.cluster !== req.user.cluster) {
+                return res.status(403).send({ message: 'You do not have permission to approve or deny this request' });
+            }
+        }
 
         const updatedRequest = await AccessRequest.findByIdAndUpdate(req.params.requestAccessId, { status }, { new: true });
 
-        res.status(200).send({updatedRequest,message:"Approved"})
+        // 根据更新的状态提供响应消息
+        const message = status === 'APPROVED' ? 'Request approved' : 'Request denied';
 
+        res.status(200).send({ updatedRequest, message });
 
     } catch (error) {
-        res.status(500).send({ message: 'Error approving requests' })
+        res.status(500).send({ message: 'Error processing request' });
     }
-})
+});
 
 router.get('/user-requests/:userId', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
@@ -99,7 +145,7 @@ router.get('/user-requests/:userId', passport.authenticate("jwt", { session: fal
         };
 
         let requests = await AccessRequest.find(filter).populate('partnerId');
-        console.log(requests)
+     
         return res.status(200).send(requests);
         
 

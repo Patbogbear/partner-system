@@ -1,8 +1,5 @@
 <template>
   <div class="body">
-    
-      
-
     <div class="title">{{ partner.third_partner_name }}</div>
     <div class="row row-cards">
       <div class="col-md-6 col-xl-3">
@@ -376,17 +373,15 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ partner.POC - SH }}</td>
+                  <td>{{ partner.POC_SH }}</td>
                   <td class="text-secondary">
-                    {{ partner.sh_contact.channel_contact }}
+                    {{ partner.sh_contact && partner.sh_contact.channel_contact ? partner.sh_contact.channel_contact : '尚未获取查看权限' }}
                   </td>
                   <td class="text-secondary">
-                    <span href="#" class="text-reset">{{
-                      partner.sh_contact.channel_contact_position
-                    }}</span>
+                    <span href="#" class="text-reset">{{ partner.sh_contact && partner.sh_contact.channel_contact_position ? partner.sh_contact.channel_contact_position : '尚未获取查看权限' }}</span>
                   </td>
                   <td class="text-secondary">
-                    {{ partner.sh_contact.channel_contact_information }}
+                    {{ partner.sh_contact && partner.sh_contact.channel_contact_information ? partner.sh_contact.channel_contact_information : '尚未获取查看权限' }}
                   </td>
                 </tr>
               </tbody>
@@ -436,17 +431,19 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ partner.POC - HZ }}</td>
+                  <td>{{ partner.POC_HZ }}</td>
                   <td class="text-secondary">
-                    {{ partner.hz_contact.channel_contact }}
+                    {{ partner.hz_contact && partner.hz_contact.channel_contact ? partner.hz_contact.channel_contact : '尚未获取查看权限' }}
                   </td>
                   <td class="text-secondary">
-                    <span href="#" class="text-reset">{{
-                      partner.hz_contact.channel_contact_position
-                    }}</span>
+                    <span href="#" class="text-reset">
+                    {{ partner.hz_contact && partner.hz_contact.channel_contact_position ? partner.hz_contact.channel_contact_position : '尚未获取查看权限' }}
+                    </span>
                   </td>
                   <td class="text-secondary">
-                    {{ partner.hz_contact.channel_contact_information }}
+                   <span href="#" class="text-reset">
+                    {{ partner.hz_contact && partner.hz_contact.channel_contact_information ? partner.hz_contact.channel_contact_information : '尚未获取查看权限' }}
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -496,17 +493,15 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ partner.POC - BJ }}</td>
+                  <td>{{ partner.POC_BJ }}</td>
                   <td class="text-secondary">
-                    {{ partner.bj_contact.channel_contact }}
+                      {{ partner.bj_contact && partner.bj_contact.channel_contact ? partner.bj_contact.channel_contact : '尚未获取查看权限' }}
                   </td>
                   <td class="text-secondary">
-                    <a href="#" class="text-reset">{{
-                      partner.bj_contact.channel_contact_position
-                    }}</a>
+                    {{ partner.bj_contact && partner.bj_contact.channel_contact_position ? partner.bj_contact.channel_contact_position : '尚未获取查看权限' }}
                   </td>
                   <td class="text-secondary">
-                    {{ partner.bj_contact.channel_contact_information }}
+                     {{ partner.bj_contact && partner.bj_contact.channel_contact_information ? partner.bj_contact.channel_contact_information : '尚未获取查看权限' }}
                   </td>
                 </tr>
               </tbody>
@@ -634,7 +629,6 @@ computed(() => {
 });
 
 
-
 const props = defineProps({
   id: String,
 });
@@ -656,7 +650,7 @@ const requestData = (value) => {
 
 const getDetail = async (id) => {
   try {
-    console.log(id);
+    console.log(id)
     let { data } = await axios.get("/api/partners/" + id);
     partner.value = data;
     console.log(partner);
