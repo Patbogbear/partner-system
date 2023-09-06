@@ -1,7 +1,6 @@
 <template>
   <div class="body">
-    <div class="title">{{ partner.third_partner_name }}</div>
-    <div class="row row-cards">
+    <div class="row row-cards outer-div">
       <div class="col-md-6 col-xl-3">
         <div class="row row-cards">
           <div class="card card-sm">
@@ -13,8 +12,8 @@
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -23,10 +22,13 @@
                       stroke-linejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                      <path d="M12 21l0 .01" />
+                      <path d="M3 9l0 .01" />
+                      <path d="M21 9l0 .01" />
+                      <path d="M8 20.1a9 9 0 0 1 -5 -7.1" />
+                      <path d="M16 20.1a9 9 0 0 0 5 -7.1" />
+                      <path d="M6.2 5a9 9 0 0 1 11.4 0" />
                     </svg>
                   </span>
                 </div>
@@ -43,25 +45,27 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
+                  <span class="bg-light text-white avatar"
                     ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
-                      stroke="currentColor"
+                      stroke="#0b6efd"
                       fill="none"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h1l3 3l3 -3h1"></path>
+                      <line x1="8" y1="15" x2="10" y2="15"></line>
+                      <line x1="14" y1="15" x2="16" y2="15"></line>
+                      <line x1="9" y1="9" x2="9" y2="15"></line>
+                      <line x1="15" y1="9" x2="15" y2="15"></line>
                     </svg>
                   </span>
                 </div>
@@ -78,13 +82,15 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #79dfc1"
                     ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -92,11 +98,9 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <circle cx="9.5" cy="9.5" r="6.5"></circle>
+                      <rect x="10" y="10" width="11" height="11" rx="2"></rect>
                     </svg>
                   </span>
                 </div>
@@ -115,13 +119,15 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #198754"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/current-location -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -130,16 +136,20 @@
                       stroke-linejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <circle cx="12" cy="12" r="3" />
+                      <circle cx="12" cy="12" r="8" />
+                      <line x1="12" y1="2" x2="12" y2="4" />
+                      <line x1="12" y1="20" x2="12" y2="22" />
+                      <line x1="20" y1="12" x2="22" y2="12" />
+                      <line x1="2" y1="12" x2="4" y2="12" />
                     </svg>
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">上传Cluster</div>
-                  <div class="text-secondary">{{ partner.cluster }}</div>
+                  <div class="font-weight-medium">所在地</div>
+                  <div class="text-secondary">
+                    {{ partner.partner_location }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,25 +158,25 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span class="bg-light text-white avatar"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/flag -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
-                      stroke="currentColor"
+                      stroke="#198754"
                       fill="none"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <path stroke="#198754" d="M0 0h24v24H0z" fill="none" />
+                      <line x1="5" y1="5" x2="5" y2="21" />
+                      <line x1="19" y1="5" x2="19" y2="14" />
+                      <path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0" />
+                      <path d="M5 14a5 5 0 0 1 7 0a5 5 0 0 0 7 0" />
                     </svg>
                   </span>
                 </div>
@@ -181,13 +191,15 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #e35d6a"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/location -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -197,9 +209,8 @@
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
+                        d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5"
                       />
-                      <path d="M12 3v3m0 12v3" />
                     </svg>
                   </span>
                 </div>
@@ -220,13 +231,15 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #fd7e14"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/letter-case-upper -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -235,10 +248,10 @@
                       stroke-linejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <path d="M3 19v-10.5a3.5 3.5 0 0 1 7 0v10.5" />
+                      <path d="M3 13h7" />
+                      <path d="M14 19v-10.5a3.5 3.5 0 0 1 7 0v10.5" />
+                      <path d="M14 13h7" />
                     </svg>
                   </span>
                 </div>
@@ -255,25 +268,29 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #f1aeb5"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/link -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
-                      stroke="currentColor"
+                      stroke="#dc3545"
                       fill="none"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path stroke="#dc3545" d="M0 0h24v24H0z" fill="none" />
                       <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
+                        d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
                       />
-                      <path d="M12 3v3m0 12v3" />
+                      <path
+                        d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                      />
                     </svg>
                   </span>
                 </div>
@@ -288,13 +305,15 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <span class="bg-primary text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                  <span
+                    class="text-white avatar"
+                    style="background-color: #1b8654"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/flip-vertical -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="icon"
-                      width="24"
-                      height="24"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
@@ -303,10 +322,9 @@
                       stroke-linejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                      />
-                      <path d="M12 3v3m0 12v3" />
+                      <line x1="12" y1="3" x2="12" y2="21" />
+                      <polyline points="16 7 16 17 21 17 16 7" />
+                      <polyline points="8 7 8 17 3 17 8 7" />
                     </svg>
                   </span>
                 </div>
@@ -319,50 +337,29 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-xl-3 d-flex align-items-stretch">
-        <div class="card card-sm">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
-                <span class="bg-primary text-white avatar"
-                  ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="icon"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path
-                      d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                    />
-                    <path d="M12 3v3m0 12v3" />
-                  </svg>
-                </span>
-              </div>
-              <div class="col">
-                <div class="font-weight-medium">公司介绍</div>
-                <div class="text-secondary">{{ partner.introduce }}</div>
+      <div class="col-md-6 col-xl-3 fourth-column-card">
+        <div class="row row-cards">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="font-weight-medium">公司介绍</div>
+                  <div class="text-secondary">{{ partner.introduce }}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row row-cards">
+    <div class=" outer-div">
       <div class="col-12">
-        <div class="card">
+        <div class="table-container">
           <div class="card-header">
-            <h4 class="card-title">上海</h4>
+            <h4 class="card-title">上海区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table">
+            <table class="table table-vcenter card-table table-striped">
               <thead>
                 <tr>
                   <th>POC-SH</th>
@@ -375,13 +372,27 @@
                 <tr>
                   <td>{{ partner.POC_SH }}</td>
                   <td class="text-secondary">
-                    {{ partner.sh_contact && partner.sh_contact.channel_contact ? partner.sh_contact.channel_contact : '尚未获取查看权限' }}
+                    {{
+                      partner.sh_contact && partner.sh_contact.channel_contact
+                        ? partner.sh_contact.channel_contact
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                   <td class="text-secondary">
-                    <span href="#" class="text-reset">{{ partner.sh_contact && partner.sh_contact.channel_contact_position ? partner.sh_contact.channel_contact_position : '尚未获取查看权限' }}</span>
+                    <span href="#" class="text-reset">{{
+                      partner.sh_contact &&
+                      partner.sh_contact.channel_contact_position
+                        ? partner.sh_contact.channel_contact_position
+                        : "尚未获取查看权限"
+                    }}</span>
                   </td>
                   <td class="text-secondary">
-                    {{ partner.sh_contact && partner.sh_contact.channel_contact_information ? partner.sh_contact.channel_contact_information : '尚未获取查看权限' }}
+                    {{
+                      partner.sh_contact &&
+                      partner.sh_contact.channel_contact_information
+                        ? partner.sh_contact.channel_contact_information
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                 </tr>
               </tbody>
@@ -408,16 +419,16 @@
                 </tr>
               </tbody>
             </table>
-            <button @click="requestData('sh_contact')">
+            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('sh_contact')" class="btn btn-primary btn-sm">
               request SH contact
             </button>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <div class="card">
+        <div class="table-container">
           <div class="card-header">
-            <h4 class="card-title">杭州</h4>
+            <h4 class="card-title">杭州区域</h4>
           </div>
           <div class="table-responsive">
             <table class="table table-vcenter card-table table-striped">
@@ -433,16 +444,30 @@
                 <tr>
                   <td>{{ partner.POC_HZ }}</td>
                   <td class="text-secondary">
-                    {{ partner.hz_contact && partner.hz_contact.channel_contact ? partner.hz_contact.channel_contact : '尚未获取查看权限' }}
+                    {{
+                      partner.hz_contact && partner.hz_contact.channel_contact
+                        ? partner.hz_contact.channel_contact
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                   <td class="text-secondary">
                     <span href="#" class="text-reset">
-                    {{ partner.hz_contact && partner.hz_contact.channel_contact_position ? partner.hz_contact.channel_contact_position : '尚未获取查看权限' }}
+                      {{
+                        partner.hz_contact &&
+                        partner.hz_contact.channel_contact_position
+                          ? partner.hz_contact.channel_contact_position
+                          : "尚未获取查看权限"
+                      }}
                     </span>
                   </td>
                   <td class="text-secondary">
-                   <span href="#" class="text-reset">
-                    {{ partner.hz_contact && partner.hz_contact.channel_contact_information ? partner.hz_contact.channel_contact_information : '尚未获取查看权限' }}
+                    <span href="#" class="text-reset">
+                      {{
+                        partner.hz_contact &&
+                        partner.hz_contact.channel_contact_information
+                          ? partner.hz_contact.channel_contact_information
+                          : "尚未获取查看权限"
+                      }}
                     </span>
                   </td>
                 </tr>
@@ -470,16 +495,16 @@
                 </tr>
               </tbody>
             </table>
-            <button @click="requestData('hz_contact')">
+            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('hz_contact')" class="btn btn-primary btn-sm">
               request HZ contact
             </button>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <div class="card">
+        <div class="table-container">
           <div class="card-header">
-            <h4 class="card-title">北京</h4>
+            <h4 class="card-title">北京区域</h4>
           </div>
           <div class="table-responsive">
             <table class="table table-vcenter card-table table-striped">
@@ -495,13 +520,27 @@
                 <tr>
                   <td>{{ partner.POC_BJ }}</td>
                   <td class="text-secondary">
-                      {{ partner.bj_contact && partner.bj_contact.channel_contact ? partner.bj_contact.channel_contact : '尚未获取查看权限' }}
+                    {{
+                      partner.bj_contact && partner.bj_contact.channel_contact
+                        ? partner.bj_contact.channel_contact
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                   <td class="text-secondary">
-                    {{ partner.bj_contact && partner.bj_contact.channel_contact_position ? partner.bj_contact.channel_contact_position : '尚未获取查看权限' }}
+                    {{
+                      partner.bj_contact &&
+                      partner.bj_contact.channel_contact_position
+                        ? partner.bj_contact.channel_contact_position
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                   <td class="text-secondary">
-                     {{ partner.bj_contact && partner.bj_contact.channel_contact_information ? partner.bj_contact.channel_contact_information : '尚未获取查看权限' }}
+                    {{
+                      partner.bj_contact &&
+                      partner.bj_contact.channel_contact_information
+                        ? partner.bj_contact.channel_contact_information
+                        : "尚未获取查看权限"
+                    }}
                   </td>
                 </tr>
               </tbody>
@@ -528,38 +567,30 @@
                 </tr>
               </tbody>
             </table>
-            <button @click="requestData('bj_contact')">
+            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('bj_contact')" class="btn btn-primary btn-sm">
               request BJ contact
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </div> 
   </div>
 
   <div class="edit">
     <div class="dropdown">
       <button
         class="btn btn-dark"
-        style="
-          --bs-btn-padding-y: 0.25rem;
-          --bs-btn-padding-x: 0.5rem;
-          --bs-btn-font-size: 0.75rem;
-        "
+       
         data-bs-toggle="dropdown"
         @click="deleteData(partner._id)"
-        v-if="userIdentity.identity == 'Super-Admin'"
+        v-if="userIdentity.identity == 'Super-Admin' || userIdentity.identity == 'PM' || userIdentity.identity =='Team-Leader'"
       >
         delete
       </button>
       <router-link
-        v-if="userIdentity.identity == 'Super-Admin'"
+        v-if="userIdentity.identity !== 'Sales'"
         class="btn btn-primary"
-        style="
-          --bs-btn-padding-y: 0.25rem;
-          --bs-btn-padding-x: 0.5rem;
-          --bs-btn-font-size: 0.75rem;
-        "
+       
         :to="'/detials/' + partner._id"
       >
         <div>Edit Partner</div>
@@ -575,7 +606,6 @@ import { useStore } from "vuex";
 import router from "../router";
 const store = useStore();
 const userIdentity = store.getters.user;
-
 const requestLocation = ref("");
 const partner = ref({
   cluster: "",
@@ -623,11 +653,9 @@ const partner = ref({
   sh_transfer_data: "",
   bj_transfer_data: "",
 });
-
 computed(() => {
   return store.getters.user;
 });
-
 
 const props = defineProps({
   id: String,
@@ -650,7 +678,7 @@ const requestData = (value) => {
 
 const getDetail = async (id) => {
   try {
-    console.log(id)
+    console.log(id);
     let { data } = await axios.get("/api/partners/" + id);
     partner.value = data;
     console.log(partner);
@@ -668,29 +696,63 @@ getDetail(props.id);
 @media (min-width: 1200px) {
   .col-xl-3 {
     flex: 0 0 auto;
-    width: 25%;
+    width: 23%;
   }
 }
+.outer-div{
+  width: 1400px;
+  margin: 0 auto;
+}
+.row-cards {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* 卡片之间的间距 */
+}
+
 .card {
   box-shadow: rgba(35, 46, 60, 0.04) 0 2px 4px 0;
   border: 1px solid rgba(101, 109, 119, 0.16);
-}
-.card {
+  width: 100%;
+  height: 130px; /* 卡片的固定高度 */
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(101, 109, 119, 0.16);
   border-radius: 4px;
 }
+
 .card-sm > .card-body {
   padding: 0.75rem;
 }
 .card-body {
   flex: 1 1 auto;
   padding: 1rem 1rem;
+}
+.fourth-column-card .card {
+  height: calc((130px + 20px) * 3 - 40px); /* 这里考虑到每个卡片的底部间距，所以使用 20px */
+}
+span.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px; /* 确保宽度与SVG一致 */
+  height: 60px; /* 确保高度与SVG一致 */
+  overflow: visible; /* 确保SVG的任何部分都不会被裁切 */
+}
+.table-container{
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+}
+.table-container .card-title{
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+/* 调整表头文字的大小和颜色 */
+.table thead th {
+  font-size: 14px;          
+  color: #888;             /* 设为较浅的颜色使其不那么突出 */
+  font-weight: normal;     /* 设为正常字体粗细，不要使用bold */
+  padding: 8px;            /* 调整内边距以获得合适的间距，您可以根据需要调整这个值 */
 }
 </style>

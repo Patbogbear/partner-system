@@ -16,13 +16,9 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col-xl-4">
           <div class="row">
-            <a
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#modal-team"
-            >
+            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-team">
               Change Password
             </a>
             <div
@@ -79,11 +75,7 @@
                 </div>
               </div>
             </div>
-            <a
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#addUser"
-            >
+            <a href="#" data-bs-toggle="modal" data-bs-target="#addUser">
               Add User
             </a>
             <div
@@ -199,12 +191,14 @@
                 </div>
               </div>
             </div>
+           
+          </div>
+        </div>
+        <div class="col-xl-4">
+          <div class="row">
+
             <div class="row">
-              <a
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteUser"
-              >
+              <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUser">
                 Delete User
               </a>
               <div
@@ -329,7 +323,7 @@
                                   v-model="selectedRole"
                                 >
                                   <option value="Sales">Sales</option>
-                                  <option value="Pod-Leader">Pod-Leader</option>
+                                  <option value="Pod-Leader">Pod-Leader/POC</option>
                                   <option value="Team-Leader">
                                     Team-Leader
                                   </option>
@@ -356,141 +350,154 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div
+            class="col-xl-12"
+            v-if="
+              userIdentity.identity === 'Super-Admin' ||
+              userIdentity.identity === 'Team-Leader'
+            "
+          >
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Recently Requests</h3>
+              </div>
+              <div class="card-table table-responsive">
+                <table class="table table-vcenter">
+                  <thead>
+                    <tr>
+                      <th>Request User Name</th>
+                      <th>Request User Cluster & Title</th>
+                      <th>Request Data Description</th>
+                      <th colspan="2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tr
+                    v-for="request in requestList"
+                    :key="request._id + new Date()"
+                  >
+                    <td>
+                      {{
+                        request.userId && request.userId.email
+                          ? request.userId.email
+                          : "user has been delete"
+                      }}
+                    </td>
+                    <td class="text-secondary">
+                      {{
+                        request.userId && request.userId.Cluster
+                          ? request.userId.Cluster
+                          : "user has been delete"
+                      }}&{{
+                        request.userId && request.userId.identity
+                          ? request.userId.identity
+                          : "user has been delete"
+                      }}
+                    </td>
+                    <td class="text-secondary">
+                      {{
+                        request.userId && request.userId.name
+                          ? request.userId.name
+                          : "user has been delete"
+                      }}申请了解{{
+                        request.partnerId
+                          ? request.partnerId.third_partner_name
+                          : "unknown partner"
+                      }}的{{ request.requestedContactField }}区域联系人信息
+                    </td>
+                    <td class="text-secondary">
+                      <button
+                        class="btn"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                        "
+                        @click="approveRequest(request._id)"
+                      >
+                        approve request
+                      </button>
 
-        <div class="col-xl-12" v-if="userIdentity.identity === 'Super-Admin' || userIdentity.identity === 'Team-Leader'">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Recently Requests</h3>
-            </div>
-            <div class="card-table table-responsive">
-              <table class="table table-vcenter">
-                <thead>
-                  <tr>
-                    <th>Request User Name</th>
-                    <th>Request User Cluster & Title</th>
-                    <th>Request Data Description</th>
-                    <th colspan="2">Actions</th>
+                      <button
+                        class="btn"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                        "
+                        @click="denyRequest(request._id)"
+                      >
+                        deny request
+                      </button>
+                    </td>
+                    <td class="text-end w-1">
+                      <div
+                        class="chart-sparkline chart-sparkline-sm"
+                        id="sparkline-bounce-rate-1"
+                      ></div>
+                    </td>
                   </tr>
-                </thead>
-                <tr
-                  v-for="request in requestList"
-                  :key="request._id + new Date()"
-                >
-                  <td>
-                    {{
-                      request.userId && request.userId.email
-                        ? request.userId.email
-                        : "user has been delete"
-                    }}
-                  </td>
-                  <td class="text-secondary">
-                    {{
-                      request.userId && request.userId.Cluster
-                        ? request.userId.Cluster
-                        : "user has been delete"
-                    }}&{{
-                      request.userId && request.userId.identity
-                        ? request.userId.identity
-                        : "user has been delete"
-                    }}
-                  </td>
-                  <td class="text-secondary">
-                    {{
-                      request.userId && request.userId.name
-                        ? request.userId.name
-                        : "user has been delete"
-                    }}申请了解{{
-                      request.partnerId
-                        ? request.partnerId.third_partner_name
-                        : "unknown partner"
-                    }}的{{ request.requestedContactField }}区域联系人信息
-                  </td>
-                  <td class="text-secondary">
-                    <button
-                      class="btn"
-                      style="
-                        --bs-btn-padding-y: 0.25rem;
-                        --bs-btn-padding-x: 0.5rem;
-                        --bs-btn-font-size: 0.75rem;
-                      "
-                      @click="approveRequest(request._id)"
-                    >
-                      approve request
-                    </button>
-
-                    <button
-                      class="btn"
-                      style="
-                        --bs-btn-padding-y: 0.25rem;
-                        --bs-btn-padding-x: 0.5rem;
-                        --bs-btn-font-size: 0.75rem;
-                      "
-                      @click="denyRequest(request._id)"
-                    >
-                      deny request
-                    </button>
-                  </td>
-                  <td class="text-end w-1">
-                    <div
-                      class="chart-sparkline chart-sparkline-sm"
-                      id="sparkline-bounce-rate-1"
-                    ></div>
-                  </td>
-                </tr>
-              </table>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-xl-12" v-if="userIdentity.identity === 'Sales' ||userIdentity.identity === 'Team-Leader'">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Requests Feedback</h3>
-            </div>
-            <div class="card-table table-responsive">
-              <table class="table table-vcenter">
-                <thead>
-                  <tr>
-                    <th>Request Partner Name</th>
-                    <th>Request Time</th>
-                    <th>Request Partner Description</th>
-                    <th colspan="2">Actions</th>
+          <div
+            class="col-xl-12"
+            v-if="
+              userIdentity.identity === 'Sales' ||
+              userIdentity.identity === 'Team-Leader'
+            "
+          >
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Requests Feedback</h3>
+              </div>
+              <div class="card-table table-responsive">
+                <table class="table table-vcenter">
+                  <thead>
+                    <tr>
+                      <th>Request Partner Name</th>
+                      <th>Request Time</th>
+                      <th>Request Partner Description</th>
+                      <th colspan="2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tr
+                    v-for="request in requestList"
+                    :key="request._id + new Date()"
+                  >
+                    <td>
+                      {{
+                        request.userId && request.userId.email
+                          ? request.userId.email
+                          : "N/A"
+                      }}
+                    </td>
+                    <td class="text-secondary">
+                      {{ request.requestedAt }}
+                    </td>
+                    <td class="text-secondary">
+                      您申请了解的{{
+                        request.requestedContactField
+                      }}的区域联系人信息，目前已被{{ request.status }}
+                    </td>
+                    <td class="text-secondary">
+                      <button v-if="request.status === 'DENIED'">
+                        delete request
+                      </button>
+                      <button v-if="request.status === 'APPROVED'">
+                        view detail
+                      </button>
+                    </td>
+                    <td class="text-end w-1">
+                      <div
+                        class="chart-sparkline chart-sparkline-sm"
+                        id="sparkline-bounce-rate-1"
+                      ></div>
+                    </td>
                   </tr>
-                </thead>
-                <tr
-                  v-for="request in requestList"
-                  :key="request._id + new Date()"
-                >
-                  <td>
-                    {{
-                      request.userId && request.userId.email
-                        ? request.userId.email
-                        : "N/A"
-                    }}
-                  </td>
-                  <td class="text-secondary">
-                    {{ request.requestedAt }}
-                  </td>
-                  <td class="text-secondary">
-                    您申请了解的{{
-                      request.requestedContactField
-                    }}的区域联系人信息，目前已被{{ request.status }}
-                  </td>
-                  <td class="text-secondary">
-                    <button v-if="request.status === 'DENIED'">
-                      delete request
-                    </button>
-                    <button v-if="request.status === 'APPROVED'">
-                      view detail
-                    </button>
-                  </td>
-                  <td class="text-end w-1">
-                    <div
-                      class="chart-sparkline chart-sparkline-sm"
-                      id="sparkline-bounce-rate-1"
-                    ></div>
-                  </td>
-                </tr>
-              </table>
+                </table>
+              </div>
             </div>
           </div>
         </div>
