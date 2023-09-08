@@ -1,6 +1,7 @@
 <template>
-  <div class="about">
-    <div class="filter">
+  <div>
+    <div class="head-search">
+      <div class="part-list">Partner List</div>
       <div class="search_form">
         <form class="d-flex custom_search" role="search">
           <input
@@ -13,26 +14,36 @@
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
+    </div>
+    <div class="filter">
       <div class="select_section">
         <div class="category">
           <div class="left">
             <div>服务商类型</div>
           </div>
           <div class="right">
-            <div class="item_one">
+            <div class="filter-item">
               <label class="form-label">2B或2C</label>
               <select v-model="select_2b_or_2c">
                 <option value="2B">2B</option>
                 <option value="2C">2C</option>
+                <option value="MIX">MIX</option>
               </select>
             </div>
-            <div class="item_one">
-              <label class="form-label">选择级别</label>
+            <div class="filter-item">
+              <label class="form-label">服务商评级</label>
               <select v-model="select_tier">
-                <option value="A1">A1</option>
-                <option value="A2">A2</option>
-                <option value="B1">B1</option>
-                <option value="B2">B2</option>
+                <option value="金">金</option>
+                <option value="银">银</option>
+                <option value="铜">铜</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <label class="form-label">Cluster</label>
+              <select v-model="select_cluster">
+                <option value="SH">SH</option>
+                <option value="HZ">HZ</option>
+                <option value="BJ">BJ</option>
               </select>
             </div>
           </div>
@@ -40,15 +51,8 @@
         <div class="category">
           <div class="left">服务商情况</div>
           <div class="right">
-            <div class="item_one">
-              是否第一次合作
-              <select v-model="select_first_time">
-                <option value="是">是</option>
-                <option value="否">否</option>
-              </select>
-            </div>
-            <div class="item_one">
-              POC-HZ
+            <div class="filter-item">
+              <label class="form-label">POC-HZ </label>
               <select v-model="select_hz_poc">
                 <option value="jinyang">jinyang</option>
                 <option value="zhimaop">zhimaop</option>
@@ -56,14 +60,16 @@
                 <option value="yiduc">yiduc</option>
               </select>
             </div>
-            <div class="item_one">
-              POC-SH<select v-model="select_sh_poc">
+            <div class="filter-item">
+              <label class="form-label">POC-SH</label>
+              <select v-model="select_sh_poc">
                 <option value="xieyang">xieyang</option>
                 <option value="fangfangf">fangfangf</option>
               </select>
             </div>
-            <div class="item_one">
-              POC-BJ<select v-model="select_bj_poc">
+            <div class="filter-item">
+              <label class="form-label"> POC-BJ</label>
+              <select v-model="select_bj_poc">
                 <option value="xieyang">xieyang</option>
                 <option value="fangfangf">fangfangf</option>
               </select>
@@ -73,97 +79,108 @@
       </div>
     </div>
     <div v-if="filterInput" class="row-section">
-      
-      <div
-        v-for="partner in SearchData(partners, filterInput)"
-        :key="partner._id"
-        class="single_item col-sm-6 col-lg-3"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">{{ partner.third_partner_name }}</h5>
-          </div>
-          <div class="card-body">
-            <dl class="row">
-              <dt class="col-5">Vertical:</dt>
-              <dd class="col-7">{{ partner.vertical }}</dd>
-              <dt class="col-5">Account:</dt>
-              <dd class="col-7">tabler</dd>
-              <dt class="col-5">Location:</dt>
-              <dd class="col-7">
-                <span class="flag flag-country-pl"></span> Poland
-              </dd>
-              <dt class="col-5">IP Address:</dt>
-              <dd class="col-7">46.113.11.3</dd>
-              <dt class="col-5">Operating system:</dt>
-              <dd class="col-7">OS X 10.15.2 64-bit</dd>
-              <dt class="col-5">Browser:</dt>
-              <dd class="col-7">Chrome</dd>
-            </dl>
-          </div>
-          <div class="card-footer">
-            <router-link
-              :to="'/single-partner/' + partner._id"
-              class="btn btn-primary"
-              >Partner details</router-link
-            >
-            <router-link
-              v-if="userIdentity.identity == 'Super-Admin'"
-              class="btn btn-primary"
-              :to="'/detials/' + partner._id"
-            >
-              <div>Edit Partner</div>
-            </router-link>
+      <div class="item-wrap">
+        <div
+          v-for="partner in SearchData(partners, filterInput)"
+          :key="partner._id"
+          class="single_item col-sm-6 col-lg-3"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">{{ partner.third_partner_name }}</h5>
+              <div class="links">
+                <router-link
+                  v-if="userIdentity.identity == 'Super-Admin'"
+                  class="btn btn-secondary"
+                  style="
+                    --bs-btn-padding-y: 0.25rem;
+                    --bs-btn-padding-x: 0.5rem;
+                    --bs-btn-font-size: 0.75rem;
+                  "
+                  :to="'/detials/' + partner._id"
+                >
+                  <div>Edit Partner</div>
+                </router-link>
+                <router-link
+                  :to="'/single-partner/' + partner._id"
+                  class="btn btn-primary"
+                  style="
+                    --bs-btn-padding-y: 0.25rem;
+                    --bs-btn-padding-x: 0.5rem;
+                    --bs-btn-font-size: 0.75rem;
+                  "
+                  >Partner details</router-link
+                >
+              </div>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-5">服务商类型:</dt>
+                <dd class="col-7">{{ partner.third_partner_type }}</dd>
+                <dt class="col-5">Vertical:</dt>
+                <dd class="col-7">{{ partner.vertical }}</dd>
+                <dt class="col-5">服务商介绍:</dt>
+                <dd class="col-7"></dd>
+              </dl>
+              <div class="footer-introduce">{{ partner.introduce }}</div>
+              
+            </div>
+            
           </div>
         </div>
       </div>
     </div>
     <div v-else class="row-section">
-     
-
-      <div
-        v-for="partner in filteredData"
-        :key="partner._id"
-        class="card single_item col-lg-3"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">{{ partner.third_partner_name }}</h5>
-          </div>
-          <div class="card-body">
-            <dl class="row">
-              <dt class="col-5">Vertical:</dt>
-              <dd class="col-7">{{ partner.vertical }}</dd>
-              <dt class="col-5">Account:</dt>
-              <dd class="col-7">tabler</dd>
-              <dt class="col-5">Location:</dt>
-              <dd class="col-7">
-                <span class="flag flag-country-pl"></span> Poland
-              </dd>
-              <dt class="col-5">IP Address:</dt>
-              <dd class="col-7">46.113.11.3</dd>
-              <dt class="col-5">Operating system:</dt>
-              <dd class="col-7">OS X 10.15.2 64-bit</dd>
-              <dt class="col-5">Browser:</dt>
-              <dd class="col-7">Chrome</dd>
-            </dl>
-          </div>
-          <div class="card-footer">
-            <router-link
-              :to="'/single-partner/' + partner._id"
-              class="btn btn-primary"
-              >Partner details</router-link
-            >
-            <router-link
-              v-if="userIdentity.identity == 'Super-Admin'"
-              class="btn btn-primary"
-              :to="'/detials/' + partner._id"
-            >
-              <div>Edit Partner</div>
-            </router-link>
+      <div class="item-wrap">
+        <div
+          v-for="partner in filteredData"
+          :key="partner._id"
+          class="card single_item col-lg-3"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">{{ partner.third_partner_name }}</h5>
+              <div class="links">
+                <router-link
+                  v-if="userIdentity.identity == 'Super-Admin'"
+                  class="btn btn-secondary"
+                  style="
+                    --bs-btn-padding-y: 0.25rem;
+                    --bs-btn-padding-x: 0.5rem;
+                    --bs-btn-font-size: 0.75rem;
+                  "
+                  :to="'/detials/' + partner._id"
+                >
+                  <div>Edit Partner</div>
+                </router-link>
+                <router-link
+                  :to="'/single-partner/' + partner._id"
+                  class="btn btn-primary"
+                  style="
+                    --bs-btn-padding-y: 0.25rem;
+                    --bs-btn-padding-x: 0.5rem;
+                    --bs-btn-font-size: 0.75rem;
+                  "
+                  >Partner details</router-link
+                >
+              </div>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-5">服务商类型:</dt>
+                <dd class="col-7">{{ partner.third_partner_type }}</dd>
+                <dt class="col-5">Vertical:</dt>
+                <dd class="col-7">{{ partner.vertical }}</dd>
+                <dt class="col-5">服务商介绍:</dt>
+                <dd class="col-7"></dd>
+              </dl>
+              <div class="footer-introduce">{{ partner.introduce }}</div>
+              
+            </div>
+            
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -200,7 +217,6 @@ const getData = async () => {
 const filteredData = computed(() => {
   const value = {
     select_2b_or_2c: select_2b_or_2c.value,
-    select_agent_or_partner: select_agent_or_partner.value,
     select_tier: select_tier.value,
     select_first_time: select_first_time.value,
     select_hz_poc: select_hz_poc.value,
@@ -217,19 +233,10 @@ const filterData = (data, value) => {
       (partner) => partner.b2b_or_b2c === value.select_2b_or_2c
     );
   }
-  if (value.select_agent_or_partner) {
-    result = result.filter(
-      (partner) => partner.thrid_partner_type === value.select_agent_or_partner
-    );
-  }
   if (value.select_tier) {
     result = result.filter((partner) => partner.tier === value.select_tier);
   }
-  if (value.select_first_time) {
-    result = result.filter(
-      (partner) => partner.first_time_cooperate === value.select_first_time
-    );
-  }
+
   if (value.select_hz_poc) {
     result = result.filter((partner) => partner.POC_HZ === value.select_hz_poc);
   }
@@ -254,67 +261,71 @@ const SearchData = (partners, value) => {
 </script>
 
 <style scoped>
-.about {
-  margin-top: -35px;
+.head-search {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
+
 .filter {
-  height: 185px;
   left: calc(50% - 817px / 2 + 91.5px);
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 1px 4px 4px 1px;
-}
-
-.row-section {
+  border-radius: 4px;
   display: flex;
-  flex-wrap: wrap;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 50px;
-}
-.category {
-  display: flex;
-  padding-left: 250px;
-  padding-top: 30px;
-}
-.right {
-  display: flex;
-  margin-left: 50px;
-}
-.select_section {
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
   margin-bottom: 30px;
 }
+.select_section .category {
+  display: flex;
+  align-items: flex-start;
+}
+.select_section .category:last-child {
+  padding-bottom: 0;
+}
+.category .left {
+  flex: 0.2;
+  border-bottom: 1px solid white;
+  padding: 20px;
+  background-color: #0d6efd;
+  color: white;
+}
+.category:last-child .left {
+  border-bottom: 0;
+}
+.category .right {
+  flex: 0.8;
+  margin-right: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.filter-item {
+  margin: 16px;
+}
+.filter-item .form-label {
+  margin-right: 10px;
+}
+
+.item-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
 .single_item {
-  width: 30%;
-  margin: 5px;
   background: #ffffff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
   border-radius: 1px 4px 4px 1px;
+  flex: 0 0 calc(50% - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
-.card{
-  margin: 5px;
+.single_item:nth-child(2n) {
+  margin-right: 0;
 }
-@media (min-width: 992px) {
-  .col-lg-3 {
-    flex: 0 0 auto;
-    width: 50%;
-  }
-}
-.custom_search {
-  margin-left: 250px;
-  margin-right: 250px;
-  margin-top: 80px;
-  padding-top: 15px;
-}
-.item_one {
-  padding-right: 20px;
-}
-@media (min-width: 992px) {
-  .col-lg-3 {
-    flex: 0 0 auto;
-    width: 30%;
-  }
-} 
+
 .row-deck > .col .card,
 .row-deck > [class*="col-"] .card {
   flex: 1 1 auto;
@@ -323,63 +334,26 @@ const SearchData = (partners, value) => {
   box-shadow: rgba(35, 46, 60, 0.04) 0 2px 4px 0;
   border: 1px solid rgba(101, 109, 119, 0.16);
 }
-.card-header {
-  color: inherit;
+.card .card-header {
   display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0;
-  color: #656d77;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(101, 109, 119, 0.16);
+  justify-content: space-between;
+  border-bottom:#6c757d
 }
-.card-header:first-child {
-  border-radius: 3px 3px 0 0;
+.card .card-body {
+  text-align: left;
 }
-.card-header .card-title {
-  margin: 0.125rem 0;
+.card-body .col-5 {
+  color: #2d3d50;
+  font-weight: 400;
 }
-.card-title {
-  display: block;
-  margin: 0 0 1rem;
+
+.card-body .col-7 {
+  color: #2d3d50;
   font-weight: 500;
-  line-height: 1.5rem;
+  font-size: 1rem;
 }
-.card-table {
-  margin-bottom: 0 !important;
+.card-body .footer-introduce{
+  font-weight: 400;
+  font-size: 0.9rem;
 }
-.card-body {
-  flex: 1 1 auto;
-  padding: 1rem 1rem;
-}
-.card-body > :last-child {
-  margin-bottom: 0;
-}
-.row {
-  --tblr-gutter-x: 1rem;
-  --tblr-gutter-y: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: calc(var(--tblr-gutter-y) * -1);
-  margin-right: calc(var(--tblr-gutter-x) / -2);
-  margin-left: calc(var(--tblr-gutter-x) / -2);
-}
-dl {
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-}
-.row > * {
-  min-width: 0;
-}
-.col-5 {
-  flex: 0 0 auto;
-  width: 41.6666667%;
-}
-.col-7 {
-  flex: 0 0 auto;
-  width: 58.3333333%;
-} 
 </style>

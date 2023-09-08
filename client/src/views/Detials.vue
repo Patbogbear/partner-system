@@ -1,6 +1,6 @@
 <template>
   <div class="update">
-    <h1>This is an update page</h1>
+    <h2>Update Partner</h2>
     <div class="page-body">
       <form method="post" class="card" @submit.prevent="updateData()">
         <div class="col-12">
@@ -71,10 +71,10 @@
                         <option value="A&A">A&A</option>
                         <option value="BIM">BIM</option>
                         <option value="Medical">Medical</option>
-                        <option value="Medical">Mechinery</option>
-                        <option value="Medical">Manufacturing</option>
-                        <option value="Medical">Chemical</option>
-                        <option value="Medical">Others</option>
+                        <option value="Mechinery">Mechinery</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Chemical">Chemical</option>
+                        <option value="Others">Others</option>
                       </select>
                     </div>
                     <div class="mb-3">
@@ -498,7 +498,7 @@
             </div>
             <div class="card-footer text-end">
               <div class="d-flex">
-                <a href="#" class="btn btn-link" @click="gotoHome()">Cancel</a>
+                <a href="#" class="btn btn-link" @click="jumpBack()">Cancel</a>
                 <button type="submit" class="btn btn-primary ms-auto">
                   Send data
                 </button>
