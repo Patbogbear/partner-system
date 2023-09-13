@@ -10,37 +10,7 @@ const partners = require("./server/router/api/partners")
 const logs = require("./server/router/api/logs");
 const accessRequests = require("./server/router/api/accessRequests");
 
-//excel 
-// const XLSX = require('xlsx')
 
-// const collectionName = 'parties'
-// const fields = {
-//     '服务商类型': 'thrid_partner_type',
-//     '服务商名称': 'thrid_partner_name',
-//     '2B/2C': 'b2b_or_b2c',   
-// }
-
-// const desktopPath = path.join(require('os').homedir(), 'Desktop');
-// const filePath = path.join(desktopPath, '222.xlsx')
-// const workbook = XLSX.readFile(filePath)
-// const worksheet = workbook.Sheets['Sheet1'];
-// const eData = XLSX.utils.sheet_to_json(worksheet)
-
-// //console.log(eData)
-
-
-// const formattedData = eData.map(item => {
-//     const formattedItem = {};
-//     Object.keys(item).forEach(key => {
-//         formattedItem[fields[key]] = item[key];
-//     })
-
-//     return formattedItem;
-// })
-
-// console.log(formattedData)
-
-//excel end
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
