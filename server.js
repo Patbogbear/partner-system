@@ -76,7 +76,6 @@ app.use("/api/logs",logs);
 app.use("/api/accessQuests",accessRequests);
 
 
-
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/dist'));
     app.get('*', (req, res) => {

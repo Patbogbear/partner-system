@@ -20,7 +20,6 @@ const PartnerSchema = new Schema({
     },
     cluster: {
         type: String,
-        required: true
     },
     third_partner_type: {
         type: String,
