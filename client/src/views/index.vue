@@ -7,7 +7,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <div class="page-pretitle">Overview</div>
-              <h2 class="page-title">Dashboard</h2>
+              <h2 class="page-title">Dashboard{{ currentData }}</h2>
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
@@ -37,10 +37,12 @@
                   </svg>
                   Add new partner
                 </a>
-                
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
+                <!-- <div>
+                  <input type="file" @change="uploadFile">
+                </div> -->
               </div>
             </div>
           </div>
@@ -54,58 +56,22 @@
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <div class="subheader">Total Partners</div>
-                    <div class="ms-auto lh-1">
-                      <div class="dropdown">
-                        <a
-                          class="dropdown-toggle text-secondary"
-                          href="#"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                          >Last 7 days</a
-                        >
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item active" href="#"
-                            >Last 7 days</a
-                          >
-                          <a class="dropdown-item" href="#">Last 30 days</a>
-                          <a class="dropdown-item" href="#">Last 3 months</a>
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                  <div class="h1 mb-3">Demo</div>
+                  <div class="h1 mb-3">{{ partners.length }}</div>
                   <div class="d-flex mb-2">
-                    <div>Conversion rate</div>
+                    <div>contact rate</div>
                     <div class="ms-auto">
                       <span
                         class="text-green d-inline-flex align-items-center lh-1"
                       >
-                        7%
-                        <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon ms-1"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M3 17l6 -6l4 4l8 -8" />
-                          <path d="M14 7l7 0l0 7" />
-                        </svg>
+                        {{ contactPercentage }}%
                       </span>
                     </div>
                   </div>
                   <div class="progress progress-sm">
                     <div
                       class="progress-bar bg-primary"
-                      style="width: 75%"
+                      :style="{ width: contactPercentage + '%' }"
                       role="progressbar"
                       aria-valuenow="75"
                       aria-valuemin="0"
@@ -122,56 +88,66 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">In Cooperation</div>
+                    <div class="subheader">In collaboration</div>
                     <div class="ms-auto lh-1">
-                      <div class="dropdown">
+                      <a
+                        class="dropdown-toggle text-secondary"
+                        href="#"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        >{{ selectedCity }}</a
+                      >
+                      <div class="dropdown-menu dropdown-menu-end">
                         <a
-                          class="dropdown-toggle text-secondary"
-                          href="#"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                          >Last 7 days</a
+                          class="dropdown-item active"
+                          @click="selectCity('SH')"
+                          >SH</a
                         >
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item active" href="#"
-                            >Last 7 days</a
-                          >
-                          <a class="dropdown-item" href="#">Last 30 days</a>
-                          <a class="dropdown-item" href="#">Last 3 months</a>
-                        </div>
+                        <a class="dropdown-item" @click="selectCity('HZ')"
+                          >HZ</a
+                        >
+                        <a class="dropdown-item" @click="selectCity('BJ')"
+                          >BJ</a
+                        >
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-0 me-2">Demo</div>
-                    <div class="me-auto">
-                      <span
-                        class="text-green d-inline-flex align-items-center lh-1"
-                      >
-                        8%
-                        <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon ms-1"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M3 17l6 -6l4 4l8 -8" />
-                          <path d="M14 7l7 0l0 7" />
-                        </svg>
+                  <div class="d-flex" style="align-items: center">
+                    <div
+                      class="h1 mb-0 me-2"
+                      style="width: 100px; height: 100px"
+                    >
+                      <canvas ref="chart"></canvas>
+                    </div>
+                    <div class="me-auto lh-1">
+                      <span class="text-green">
+                        <ul style="list-style-type: none; padding-left: 0">
+                          <li
+                            v-for="(label, index) in labels"
+                            :key="label"
+                            style="
+                              display: flex;
+                              align-items: center;
+                              margin-bottom: 8px;
+                              font-size: 12px;
+                            "
+                          >
+                            <div
+                              :style="{
+                                background: backgroundColors[index],
+                                width: '10px',
+                                height: '10px',
+                                marginRight: '10px',
+                              }"
+                            ></div>
+                            {{ label }}
+                          </li>
+                        </ul>
                       </span>
                     </div>
                   </div>
                 </div>
-                <div id="chart-revenue-bg" class="chart-sm"></div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-3">
@@ -310,7 +286,6 @@
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">Partner list</h3>
-                   
                 </div>
                 <div class="card-body border-bottom py-3">
                   <div class="d-flex">
@@ -345,7 +320,6 @@
                     >
                       export
                     </button> -->
-                   
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -361,43 +335,10 @@
                             aria-label="Select all invoices"
                           />
                         </th>
-                        <th class="w-1">Cluster</th>
                         <th>Partner Type</th>
                         <th>Partner Name</th>
                         <th>2B/2C</th>
-                        <!-- <th scope="col">公司所在地</th> -->
-                        <!-- <th scope="col">服务覆盖范围</th> -->
-                        <!-- <th scope="col">公司介绍</th> -->
-                        <!-- <th scope="col">主要客户/成功案例</th> -->
-                        <!-- <th scope="col">网址</th> -->
-                        <!-- <th scope="col">服务商评级(SH)</th> -->
-                        <!-- <th scope="col">服务商评级(HZ)</th> -->
-                        <!-- <th scope="col">服务商评级(BJ)</th> -->
-                        <!-- <th scope="col">SH渠道方对接人</th> -->
-                        <!-- <th scope="col">SH渠道方对接职位</th> -->
-                        <!-- <th scope="col">SH渠道方对接联系方式</th> -->
-                        <!-- <th scope="col">HZ渠道方对接人</th> -->
-                        <!-- <th scope="col">HZ渠道方对接职位</th> -->
-                        <!-- <th scope="col">HZ渠道方对接联系方式</th> -->
-                        <!-- <th scope="col">BJ渠道方对接人</th> -->
-                        <!-- <th scope="col">BJ渠道方对接职位</th> -->
-                        <!-- <th scope="col">BJ渠道方对接联系方式</th> -->
                         <th>Vertical</th>
-                        <!-- <th scope="col">POC-HZ</th> -->
-                        <!-- <th scope="col">POC-SH</th> -->
-                        <!-- <th scope="col">POC-BJ</th> -->
-                        <!-- <th scope="col">HZ跟进情况</th> -->
-                        <!-- <th scope="col">杭州合作状态细分</th> -->
-                        <!-- <th scope="col">SH跟进情况</th> -->
-                        <!-- <th scope="col">上海合作状态细分</th> -->
-                        <!-- <th scope="col">BJ跟进情况</th> -->
-                        <!-- <th scope="col">北京合作状态细分</th> -->
-                        <!-- <th scope="col">市场活动数据(HZ)</th> -->
-                        <!-- <th scope="col">转介绍数据(HZ)</th> -->
-                        <!-- <th scope="col">市场活动数据(SH)</th> -->
-                        <!-- <th scope="col">转介绍数据(SH)</th> -->
-                        <!-- <th scope="col">市场活动数据(BJ)</th> -->
-                        <!-- <th scope="col">转介绍数据(BJ)</th> -->
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -411,17 +352,6 @@
                           />
                         </td>
                         <td>
-                          <span class="text-secondary">{{
-                            partner.cluster
-                          }}</span>
-                        </td>
-                        <td>
-                          <!-- <a
-                            href=" "
-                            class="text-reset"
-                            tabindex="-1"
-                            >Design Works</a
-                          > -->
                           {{ partner.third_partner_type }}
                         </td>
                         <td>
@@ -429,42 +359,9 @@
                           {{ partner.third_partner_name }}
                         </td>
                         <td>{{ partner.b2b_or_b2c }}</td>
-                        <!-- <td>{{ partner.partner_location }}</td> -->
-                        <!-- <td>{{ partner.partner_scope }}</td> -->
-                        <!-- <td>{{ partner.introduce }}</td> -->
-                        <!-- <td>{{ partner.major_cliens_or_case }}</td> -->
-                        <!-- <td>{{ partner.website }}</td> -->
-                        <!-- <td>{{ partner.sh_tier }}</td> -->
-                        <!-- <td>{{ partner.hz_tier }}</td> -->
-                        <!-- <td>{{ partner.bj_tier }}</td> -->
-                        <!-- <td>{{ partner.sh_channel_contact }}</td> -->
-                        <!-- <td>{{ partner.sh_channel_contact_position }}</td> -->
-                        <!-- <td>{{ partner.sh_channel_contact_information }}</td> -->
-                        <!-- <td>{{ partner.hz_channel_contact }}</td> -->
-                        <!-- <td>{{ partner.hz_channel_contact_position }}</td> -->
-                        <!-- <td>{{ partner.hz_channel_contact_information }}</td> -->
-                        <!-- <td>{{ partner.bj_channel_contact }}</td> -->
-                        <!-- <td>{{ partner.bj_channel_contact_position }}</td> -->
-                        <!-- <td>{{ partner.bj_channel_contact_information }}</td> -->
                         <td>{{ partner.vertical }}</td>
-                        <!-- <td>{{ partner.POC_HZ }}</td> -->
-                        <!-- <td>{{ partner.POC_SH }}</td> -->
-                        <!-- <td>{{ partner.POC_BJ }}</td> -->
-                        <!-- <td>{{ partner.HZ_tracking_process }}</td> -->
-                        <!-- <td>{{ partner.HZ_tracking_process_segment }}</td> -->
-                        <!-- <td>{{ partner.SH_tracking_process }}</td> -->
-                        <!-- <td>{{ partner.SH_tracking_process_segment }}</td> -->
-                        <!-- <td>{{ partner.BJ_tracking_process }}</td> -->
-                        <!-- <td>{{ partner.BJ_tracking_process_segment }}</td> -->
-                        <!-- <td>{{ partner.hz_marketing_data }}</td> -->
-                        <!-- <td>{{ partner.sh_marketing_data }}</td> -->
-                        <!-- <td>{{ partner.bj_marketing_data }}</td> -->
-                        <!-- <td>{{ partner.sh_transfer_data }}</td> -->
-                        <!-- <td>{{ partner.hz_transfer_data }}</td> -->
-                        <!-- <td>{{ partner.bj_transfer_data }}</td> -->
                         <td class="text-end">
                           <router-link
-                          
                             class="single-partner"
                             :to="'/single-partner/' + partner._id"
                           >
@@ -510,38 +407,24 @@
                     >
                       <a
                         class="page-link"
-                        href="#"
-                        @click.prevent="currentPage--"
+                        href=" "
+                        @click.prevent="moveWindow(-1)"
                       >
-                        <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M15 6l-6 6l6 6" />
-                        </svg>
+                        <!-- SVG for 'prev' ... -->
                         prev
                       </a>
                     </li>
+
                     <li
                       class="page-item"
-                      v-for="page in totalPages"
+                      v-for="page in visiblePages"
                       :key="page"
                       :class="{ active: page === currentPage }"
                     >
                       <a
                         class="page-link"
                         href="#"
-                        @click.prevent="currentPage = page"
+                        @click.prevent="setCurrentPage(page)"
                         >{{ page }}</a
                       >
                     </li>
@@ -552,26 +435,11 @@
                     >
                       <a
                         class="page-link"
-                        href="#"
-                        @click.prevent="currentPage++"
+                        href=" "
+                        @click.prevent="moveWindow(1)"
                       >
                         next
-                        <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M9 6l6 6l-6 6" />
-                        </svg>
+                        <!-- SVG for 'next' ... -->
                       </a>
                     </li>
                   </ul>
@@ -584,67 +452,236 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
+import {useRouter} from 'vue-router';
 import axios from "../http";
-export default {
-  name: "index",
-  components: {},
-  data() {
-    return {
-      partners: [],
-      filterInput: [],
-      exportsData: [],
-      currentPage: 1,
-      itemsPerPage: 10,
-    };
-  },
-  computed: {
-    user() {
-      console.log(this.$store.getters.user);
-      return this.$store.getters.user;
+import { ref, computed, onMounted, watch, nextTick } from "vue";
+import {
+  Chart,
+  DoughnutController,
+  ArcElement,
+  CategoryScale,
+  Tooltip,
+} from "chart.js";
+import { useStore } from "vuex";
+
+Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip);
+
+const router = useRouter()
+const store = useStore();
+const partners = ref([]);
+const filterInput = ref([]);
+const exportsData = ref([]);
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const chart = ref(null);
+const labels = ref([
+  "collaborating",
+  "pending collaboration",
+  "collaboration paused",
+]);
+const backgroundColors = ref(["#0d6efd", "#3d8bfd", "#9ec5fe"]);
+const selectedCity = ref("SH");
+const chartInstance = ref(null); // 存储图表实例
+
+const user = computed(() => store.getters.user);
+
+const pageWindowStart = ref(1); // Start page for sliding window
+const windowSize = ref(3);     // Number of pages to display in the sliding window
+
+const visiblePages = computed(() => {
+    let end = pageWindowStart.value + windowSize.value;
+    if (end > totalPages.value) end = totalPages.value;
+    return Array.from({ length: end - pageWindowStart.value }, (_, i) => i + pageWindowStart.value);
+});
+
+
+const getData = () => {
+  axios
+    .get("api/partners")
+    .then((res) => {
+      partners.value = res.data;
+    })
+    .catch((err) => console.log(err));
+};
+
+const goto_add = () => {
+  router.push({ path: "/add" });
+};
+
+const logOut = () =>{
+  localStorage.removeItem("userToken");
+      //config vuex store
+      store.dispatch("clearCurrentState");
+      router.push({ path: "/login" });
+}
+
+const deleteData = (id) => {
+  axios.delete("api/partners/delete/" + id);
+  getData();
+};
+
+
+const paginatedData = computed(() => {
+    const filtered = filteredData(partners.value, filterInput.value);
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = currentPage.value * itemsPerPage.value;
+    return filtered.slice(start, end);
+});
+
+
+function setCurrentPage(page) {
+    currentPage.value = page;
+}
+
+function moveWindow(direction) {
+    const newStart = pageWindowStart.value + direction * windowSize.value;
+    if (newStart >= 1 && newStart + windowSize.value <= totalPages.value + 1) {
+        pageWindowStart.value = newStart;
+    }
+}
+
+
+const totalPages = computed(() => {
+    return Math.ceil(
+        filteredData(partners.value, filterInput.value).length / itemsPerPage.value
+    );
+});
+
+
+
+const filteredData = (partners, value) => {
+  const regex = new RegExp(value, "i");
+  return partners.filter((partner) =>
+    Object.values(partner).some(
+      (field) => typeof field === "string" && regex.test(field)
+    )
+  );
+};
+
+const contactPercentage = computed(() => {
+  const partnersWithContact = partners.value.filter((partner) => {
+    const hasSHContact =
+      partner.sh_contact && Object.keys(partner.sh_contact).length > 0;
+    const hasHZContact =
+      partner.hz_contact && Object.keys(partner.hz_contact).length > 0;
+    const hasBJContact =
+      partner.bj_contact && Object.keys(partner.bj_contact).length > 0;
+    return hasSHContact || hasHZContact || hasBJContact;
+  }).length;
+
+  if (partners.value.length === 0) return 0;
+  const percentage = (partnersWithContact / partners.value.length) * 100;
+  return parseFloat(percentage.toFixed(2));
+});
+
+const selectCity = (city) => {
+  selectedCity.value = city;
+};
+
+const currentData = computed(() => {
+  if (!partners.value || partners.value.length === 0) return [0, 0, 0];
+
+  const statusMapping = {
+    "A. 待合作": "待合作",
+    "C. 合作中": "合作中",
+    "B. 合作暂停": "暂停合作",
+  };
+  const counts = {
+    合作中: 0,
+    待合作: 0,
+    暂停合作: 0,
+  };
+
+  partners.value.forEach((partner) => {
+    let trackingProcess;
+
+    switch (selectedCity.value) {
+      case "SH":
+        trackingProcess = partner.SH_tracking_process || null;
+        break;
+      case "HZ":
+        trackingProcess = partner.HZ_tracking_process || null;
+        break;
+      case "BJ":
+        trackingProcess = partner.BJ_tracking_process || null;
+        break;
+      default:
+        trackingProcess = null;
+    }
+
+    if (trackingProcess && statusMapping[trackingProcess]) {
+      const key = statusMapping[trackingProcess];
+      if (counts[key] !== undefined) {
+        counts[key]++;
+      }
+    }
+  });
+  return [counts["合作中"], counts["待合作"], counts["暂停合作"]];
+});
+
+const initChart = () => {
+  const ctx = chart.value.getContext("2d");
+  chartInstance.value = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: labels.value,
+      datasets: [
+        {
+          data: currentData.value, // 注意这里使用 `.value` 获取计算属性的值
+          backgroundColor: backgroundColors.value,
+        },
+      ],
     },
-    paginatedData() {
-      const filtered = this.filteredData(this.partners, this.filterInput);
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = this.currentPage * this.itemsPerPage;
-      return filtered.slice(start, end);
+    options: {
+      cutout: "80%",
+      responsive: true,
+      maintainAspectRatio: false,
     },
-    // 计算总页数
-    totalPages() {
-      return Math.ceil(
-        this.filteredData(this.partners, this.filterInput).length /
-          this.itemsPerPage
-      );
-    },
-  },
-  created() {
-    this.getData();
-  },
-  methods: {
-    filteredData(partners, value) {
-      const regex = new RegExp(value, "i");
-      return partners.filter((partner) =>
-        Object.values(partner).some(
-          (field) => typeof field === "string" && regex.test(field)
-        )
-      );
-    },
-    getData() {
-      //get data
-      axios
-        .get("api/partners")
-        .then((res) => {
-          //console.log(res.data)
-          this.partners = res.data;
-        })
-        .catch((err) => console.log(err));
-    },
-    deleteData(value) {
-      axios.delete("api/partners/delete/" + value).then((res) => {
-        this.getData();
-      });
-    },
-    exportToCSV() {
+  });
+};
+
+onMounted(() => {
+  const fetchDataAndInitChart = async () => {
+    await getData();
+    initChart();
+  };
+  fetchDataAndInitChart();
+});
+
+watch(currentData, (newData) => {
+  if (chartInstance.value) {
+    chartInstance.value.destroy(); // 销毁旧实例
+    // 重新实例化新图表
+    const ctx = chart.value.getContext("2d");
+    chartInstance.value = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels.value,
+        datasets: [{ data: newData, backgroundColor: backgroundColors.value }],
+      },
+      options: {
+        cutout: "80%",
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+  }
+});
+
+const uploadFile = async (event) => {
+  const file = event.target.files[0];
+  const formData = new FormData();
+  formData.append("csv", file);
+  try {
+    await axios.post("api/partners/upload", formData);
+    alert("上传成功！");
+  } catch (err) {
+    alert("上传失败：" + err.message);
+  }
+};
+
+const exportToCSV = ()=> {
       axios
         .get("api/partners/export")
         .then((res) => {
@@ -678,32 +715,9 @@ export default {
           URL.revokeObjectURL(url);
         })
         .catch((err) => console.log(err));
-    },
-    uploadFile(event) {
-      const file = event.target.files[0];
-      const formData = new FormData();
-      formData.append('csv', file);
-      try {
-        axios.post('api/partners/upload', formData);
-        console.log("success")
-      } catch (err) {
-        alert('上传失败：' + err.message);
-      }
-    },
-
-    logOut() {
-      //clear token
-      localStorage.removeItem("userToken");
-      //config vuex store
-      this.$store.dispatch("clearCurrentState");
-      this.$router.push({ path: "/login" });
-    },
-    goto_add() {
-      this.$router.push({ path: "/add" });
-    },
-  },
-};
+    }
 </script>
+
 <style scoped>
 .page-wrapper {
   flex: 1;

@@ -1,5 +1,5 @@
 <template>
-  <div class="add">
+  <div class="container-xl">
     <div class="page-body">
       <form method="post" class="card" @submit.prevent="addData()">
         <div class="col-12">
@@ -579,6 +579,15 @@ export default {
 };
 </script>
 <style scoped>
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1199px;
+  }
+}
 .form-fieldset {
   padding: 1rem;
   margin-bottom: 1rem;

@@ -1,5 +1,5 @@
 <template>
-  <div class="update">
+  <div class="container-xl">
     <h2>Update Partner</h2>
     <div class="page-body">
       <form method="post" class="card" @submit.prevent="updateData()">
@@ -593,3 +593,14 @@ export default {
   },
 };
 </script>
+<style scoped>
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1199px;
+  }
+}
+</style>

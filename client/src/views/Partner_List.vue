@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-xl">
     <div class="head-search">
       <div class="part-list">Partner List</div>
       <div class="search_form">
@@ -23,11 +23,28 @@
           </div>
           <div class="right">
             <div class="filter-item">
-              <label class="form-label">2B或2C</label>
-              <select v-model="select_2b_or_2c">
-                <option value="2B">2B</option>
-                <option value="2C">2C</option>
-                <option value="MIX">MIX</option>
+              <label class="form-label">具体类型</label>
+              <select v-model="select_third_partner_type">
+                <option value="支付">支付</option>
+                <option value="物流">物流</option>
+                <option value="建站&代运营">建站&代运营</option>
+                <option value="ERP&CRM">ERP&CRM</option>
+                <option value="KOL内容营销">KOL内容营销</option>
+                <option value="培训机构">培训机构</option>
+                <option value="媒体">媒体</option>
+                <option value="保险">保险</option>
+                <option value="出口认证">出口认证</option>
+                <option value="财税&VAT">财税&VAT</option>
+                <option value="展会">展会</option>
+                <option value="代理商&谷歌代运营">代理商&谷歌代运营</option>
+                <option value="商会">商会</option>
+                <option value="协会">协会</option>
+                <option value="服务平台">服务平台</option>
+                <option value="服务中心">服务中心</option>
+                <option value="政府/产业园">政府/产业园</option>
+                <option value="VC">VC</option>
+                <option value="其他">其他</option>
+                <option value="all">All</option>
               </select>
             </div>
             <div class="filter-item">
@@ -36,14 +53,7 @@
                 <option value="金">金</option>
                 <option value="银">银</option>
                 <option value="铜">铜</option>
-              </select>
-            </div>
-            <div class="filter-item">
-              <label class="form-label">Cluster</label>
-              <select v-model="select_cluster">
-                <option value="SH">SH</option>
-                <option value="HZ">HZ</option>
-                <option value="BJ">BJ</option>
+                <option value="all">All</option>
               </select>
             </div>
           </div>
@@ -52,26 +62,21 @@
           <div class="left">服务商情况</div>
           <div class="right">
             <div class="filter-item">
-              <label class="form-label">POC-HZ </label>
-              <select v-model="select_hz_poc">
-                <option value="jinyang">jinyang</option>
-                <option value="zhimaop">zhimaop</option>
-                <option value="qinying">qinying</option>
-                <option value="yiduc">yiduc</option>
+              <label class="form-label">2B或2C</label>
+              <select v-model="select_2b_or_2c">
+                <option value="2B">2B</option>
+                <option value="2C">2C</option>
+                <option value="MIX">MIX</option>
+                <option value="all">All</option>
               </select>
             </div>
             <div class="filter-item">
-              <label class="form-label">POC-SH</label>
-              <select v-model="select_sh_poc">
-                <option value="xieyang">xieyang</option>
-                <option value="fangfangf">fangfangf</option>
-              </select>
-            </div>
-            <div class="filter-item">
-              <label class="form-label"> POC-BJ</label>
-              <select v-model="select_bj_poc">
-                <option value="xieyang">xieyang</option>
-                <option value="fangfangf">fangfangf</option>
+              <label class="form-label">Cluster</label>
+              <select v-model="select_cluster">
+                <option value="SH">SH</option>
+                <option value="HZ">HZ</option>
+                <option value="BJ">BJ</option>
+                <option value="all">ALl</option>
               </select>
             </div>
           </div>
@@ -123,9 +128,7 @@
                 <dd class="col-7"></dd>
               </dl>
               <div class="footer-introduce">{{ partner.introduce }}</div>
-              
             </div>
-            
           </div>
         </div>
       </div>
@@ -175,9 +178,7 @@
                 <dd class="col-7"></dd>
               </dl>
               <div class="footer-introduce">{{ partner.introduce }}</div>
-              
             </div>
-            
           </div>
         </div>
       </div>
@@ -196,12 +197,9 @@ const filterInput = ref("");
 const store = useStore();
 const userIdentity = computed(() => store.getters.user);
 const select_2b_or_2c = ref(null);
-const select_agent_or_partner = ref(null);
+const select_cluster = ref(null);
 const select_tier = ref(null);
-const select_first_time = ref(null);
-const select_hz_poc = ref(null);
-const select_sh_poc = ref(null);
-const select_bj_poc = ref(null);
+const select_third_partner_type = ref(null);
 const searchData = ref([]);
 
 onMounted(async () => {
@@ -218,37 +216,38 @@ const filteredData = computed(() => {
   const value = {
     select_2b_or_2c: select_2b_or_2c.value,
     select_tier: select_tier.value,
-    select_first_time: select_first_time.value,
-    select_hz_poc: select_hz_poc.value,
-    select_sh_poc: select_sh_poc.value,
-    select_bj_poc: select_bj_poc.value,
+    select_cluster: select_cluster.value,
+    select_third_partner_type: select_third_partner_type.value,
   };
   return filterData(partners.value, value);
 });
 
 const filterData = (data, value) => {
   let result = data;
-  if (value.select_2b_or_2c) {
+  if (value.select_2b_or_2c && value.select_2b_or_2c !== "all") {
     result = result.filter(
       (partner) => partner.b2b_or_b2c === value.select_2b_or_2c
     );
   }
-  if (value.select_tier) {
+  if (value.select_tier && value.select_tier !== "all") {
     result = result.filter((partner) => partner.tier === value.select_tier);
   }
-
-  if (value.select_hz_poc) {
-    result = result.filter((partner) => partner.POC_HZ === value.select_hz_poc);
+  if (value.select_cluster && value.select_cluster !== "all") {
+    result = result.filter(
+      (partner) => partner.cluster === value.select_cluster
+    );
   }
-  if (value.select_sh_poc) {
-    result = result.filter((partner) => partner.POC_SH === value.select_sh_poc);
-  }
-  if (value.select_bj_poc) {
-    result = result.filter((partner) => partner.POC_BJ === value.select_bj_poc);
+  if (
+    value.select_third_partner_type &&
+    value.select_third_partner_type !== "all"
+  ) {
+    result = result.filter(
+      (partner) =>
+        partner.third_partner_type === value.select_third_partner_type
+    );
   }
   return result;
 };
-
 const SearchData = (partners, value) => {
   console.log(value);
   const regex = new RegExp(value, "i");
@@ -261,6 +260,15 @@ const SearchData = (partners, value) => {
 </script>
 
 <style scoped>
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1199px;
+  }
+}
 .head-search {
   display: flex;
   justify-content: space-between;
@@ -337,7 +345,7 @@ const SearchData = (partners, value) => {
 .card .card-header {
   display: flex;
   justify-content: space-between;
-  border-bottom:#6c757d
+  border-bottom: #6c757d;
 }
 .card .card-body {
   text-align: left;
@@ -352,7 +360,7 @@ const SearchData = (partners, value) => {
   font-weight: 500;
   font-size: 1rem;
 }
-.card-body .footer-introduce{
+.card-body .footer-introduce {
   font-weight: 400;
   font-size: 0.9rem;
 }

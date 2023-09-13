@@ -43,11 +43,6 @@ const routes = [
     component: () => import('../views/Personal.vue')
   },
   {
-    path: '/form-template',
-    name: 'form-template',
-    component: () => import('../views/form-template.vue')
-  },
-  {
     path: '/:catchAll(.*)',
     name: '/404',
     component: () => import('../views/404.vue')

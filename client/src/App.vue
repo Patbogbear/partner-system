@@ -70,6 +70,46 @@
                     <span class="nav-link-title"> Partner List </span>
                   </router-link>
                 </li>
+
+                <li class="nav-item active dropdown">
+                  <router-link
+                    to="/personal"
+                    class="nav-link"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"
+                      ><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+                        />
+                        <path
+                          d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+                        />
+                        <path
+                          d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+                        />
+                        <path
+                          d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="nav-link-title"> Personal Page </span>
+                  </router-link>
+                </li>
                 <li class="nav-item dropdown">
                   <a
                     class="nav-link dropdown-toggle"
@@ -106,70 +146,30 @@
                   <div class="dropdown-menu">
                     <div class="dropdown-menu-columns">
                       <div class="dropdown-menu-column">
-                        <a class="dropdown-item" href="./alerts.html">
+                        <router-link class="dropdown-item" to="/personal">
                           Change Password
-                        </a>
-                        <a class="dropdown-item" href="./accordion.html">
+                        </router-link>
+                        <router-link class="dropdown-item" to="/personal">
                           Add New User
-                        </a>
-                       
-                        <a class="dropdown-item" href="./blank.html">
+                        </router-link>
+
+                        <router-link class="dropdown-item" to="/">
                           Add Partner
-                        </a>
-                        <a class="dropdown-item" href="./badges.html">
+                        </router-link>
+                        <router-link class="dropdown-item" to="/personal">
                           Personal Page
                           <span
                             class="badge badge-sm bg-green-lt text-uppercase ms-auto"
                             >New</span
                           >
-                        </a>
-                        <a class="dropdown-item" href="./buttons.html">
+                        </router-link>
+                        <router-link class="dropdown-item" to="/personal">
                           Recently Request
-                        </a>
-                      
+                        </router-link>
                       </div>
-                    
                     </div>
                   </div>
                 </li>
-                <li class="nav-item active dropdown">
-                  <router-link to="/personal"
-                    class="nav-link"
-                    role="button"
-                    aria-expanded="false"
-                  >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"
-                      ><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                          d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-                        />
-                        <path
-                          d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-                        />
-                        <path
-                          d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-                        />
-                        <path
-                          d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-                        />
-                      </svg>
-                    </span>
-                    <span class="nav-link-title"> Personal Page </span>
-                  </router-link>
-                </li>     
               </ul>
             </div>
           </div>
@@ -183,10 +183,9 @@
             data-bs-toggle="dropdown"
             aria-label="Open user menu"
           >
-            
             <div class="d-none d-xl-block ps-2">
-              <div>User A</div>
-              <div class="mt-1 small text-secondary">Sales</div>
+              <div>user name</div>
+              <div class="mt-1 small text-secondary">user identity</div>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -195,7 +194,9 @@
             <a href="#" class="dropdown-item">Feedback</a>
             <div class="dropdown-divider"></div>
             <a href="./settings.html" class="dropdown-item">Settings</a>
-            <a href="./sign-in.html" class="dropdown-item" @click="logOut()">Logout</a>
+            <a href="./sign-in.html" class="dropdown-item" @click="logOut()"
+              >Logout</a
+            >
           </div>
         </div>
       </div>
@@ -217,8 +218,10 @@ export default {
 
       this.$store.dispatch("setAuthenticated", !this.isEmpty(decoded));
       this.$store.dispatch("setUser", decoded);
+      // const userIdentity = this.$store.getters.user
     }
   },
+
   methods: {
     isEmpty(value) {
       return (

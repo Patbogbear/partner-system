@@ -1,24 +1,24 @@
 <template>
-  <div>
+  <div class="container-xl">
     <div class="header">
       <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-4 px-3">
           <div class="row">
             <div class="card">
               <div class="card-body text-center">
                 <div class="mb-3">
-                  <span class="avatar avatar-xl rounded"></span>
+                  <span class="avatar avatar-xl rounded">default</span>
                 </div>
                 <div class="card-title mb-1">{{ userIdentity.name }}</div>
-                <div class="text-secondary">{{ userIdentity.identity }}</div>
+                <div class="text-muted">{{ userIdentity.identity }}</div>
                 <div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 px-3 d-flex align-items-center">
           <div class="row">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-team">
+            <a class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-team">
               Change Password
             </a>
             <div
@@ -75,7 +75,7 @@
                 </div>
               </div>
             </div>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#addUser">
+            <a class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addUser">
               Add User
             </a>
             <div
@@ -194,11 +194,11 @@
            
           </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 px-3 d-flex align-items-center">
           <div class="row">
 
             <div class="row">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUser">
+              <a  class="btn btn-secondary btn-sm custom-btn"  data-bs-toggle="modal" data-bs-target="#deleteUser">
                 Delete User
               </a>
               <div
@@ -268,7 +268,7 @@
                 </div>
               </div>
               <a
-                href="#"
+                class="btn btn-secondary btn-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#userAuthenticate"
               >
@@ -407,7 +407,7 @@
                     </td>
                     <td class="text-secondary">
                       <button
-                        class="btn"
+                        class="btn btn-primary btn-sm"
                         style="
                           --bs-btn-padding-y: 0.25rem;
                           --bs-btn-padding-x: 0.5rem;
@@ -419,7 +419,7 @@
                       </button>
 
                       <button
-                        class="btn"
+                        class="btn btn-warning"
                         style="
                           --bs-btn-padding-y: 0.25rem;
                           --bs-btn-padding-x: 0.5rem;
@@ -482,10 +482,20 @@
                       }}的区域联系人信息，目前已被{{ request.status }}
                     </td>
                     <td class="text-secondary">
-                      <button v-if="request.status === 'DENIED'">
+                      <button class="btn btn-warning  btn-sm"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                        " v-if="request.status === 'DENIED'">
                         delete request
                       </button>
-                      <button v-if="request.status === 'APPROVED'">
+                      <button class="btn btn-primary"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                        " v-if="request.status === 'APPROVED'">
                         view detail
                       </button>
                     </td>
@@ -637,6 +647,21 @@ const denyRequest = async (value) => {
 };
 </script>
 <style scoped>
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1199px;
+  }
+}
+.row{
+  padding: 0;
+}
+.col-xl-4{
+  text-align: center;
+}
 .modal-content .btn-close {
   position: absolute;
   top: 0;
@@ -647,34 +672,19 @@ const denyRequest = async (value) => {
   padding: 0;
   z-index: 10;
 }
-.btn-ghost-primary,
-.btn-outline-primary,
-.btn-primary {
-  --tblr-btn-color: 32, 107, 196;
-  --tblr-btn-color-darker: 29, 96, 176;
-  --tblr-btn-color-text: #f4f6fa;
+.btn{
+  margin: 10px;
 }
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.custom-btn{
 
-  border-color: rgba(101, 109, 119, 0.24);
-  white-space: nowrap;
 }
-.btn-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: -0.5rem !important;
-  margin-right: -0.5rem;
+.btn-primary{
+  background-color: #216bc4;
 }
-.btn-list > * {
-  margin: 0 0.5rem 0.5rem 0 !important;
+.btn-warning{
+  background-color: #ffc107;
 }
-.logout {
-  background-color: #fff;
-  color: #216bc4;
-}
+
 .add-new-partner {
   background-color: #216bc4;
   color: #f4f6fa;
@@ -685,5 +695,56 @@ const denyRequest = async (value) => {
   min-width: 1.25rem;
   margin: 0 0.5rem 0 -0.25rem;
   vertical-align: middle;
+}
+.card {
+    box-shadow: rgba(35,46,60,.04) 0 2px 4px 0;
+    border: 1px solid rgba(101,109,119,.16);
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(101,109,119,.16);
+    border-radius: 4px;
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: 1rem 1rem;
+}
+.mb-3 {
+    margin-bottom: 1rem!important;
+}
+.card-title {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+.text-muted {
+    color: #656d77!important;
+}
+.avatar-xl {
+    --tblr-avatar-size: 7rem;
+}
+.avatar-rounded {
+    border-radius: 100rem;
+}
+.avatar { 
+    position: relative;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #656d77;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: bottom;
+    background: #f0f2f6 no-repeat center/cover;
+    border-radius: 4px;
 }
 </style>
