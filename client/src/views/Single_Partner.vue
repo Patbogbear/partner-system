@@ -34,7 +34,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务商类型</div>
-                  <div class="text-secondary">
+                  <div  >
                     {{ partner.third_partner_type }}
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务商名称</div>
-                  <div class="text-secondary">
+                  <div  >
                     {{ partner.third_partner_name }}
                   </div>
                 </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">2B/2C</div>
-                  <div class="text-secondary">{{ partner.b2b_or_b2c }}</div>
+                  <div  >{{ partner.b2b_or_b2c }}</div>
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">所在地</div>
-                  <div class="text-secondary">
+                  <div  >
                     {{ partner.partner_location }}
                   </div>
                 </div>
@@ -182,7 +182,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务覆盖范围</div>
-                  <div class="text-secondary">{{ partner.partner_scope }}</div>
+                  <div  >{{ partner.partner_scope }}</div>
                 </div>
               </div>
             </div>
@@ -216,7 +216,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">重点覆盖城市</div>
-                  <div class="text-secondary">
+                  <div  >
                     {{ partner.coverage_province }}
                   </div>
                 </div>
@@ -257,7 +257,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">主要客户/成功案例</div>
-                  <div class="text-secondary">
+                  <div  >
                     {{ partner.major_clients_or_case }}
                   </div>
                 </div>
@@ -296,7 +296,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">网址</div>
-                  <div class="text-secondary">{{ partner.website }}</div>
+                  <div  >{{ partner.website }}</div>
                 </div>
               </div>
             </div>
@@ -330,7 +330,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">Vertical</div>
-                  <div class="text-secondary">{{ partner.vertical }}</div>
+                  <div  >{{ partner.vertical }}</div>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@
               <div class="row align-items-center">
                 <div class="col">
                   <div class="font-weight-medium">公司介绍</div>
-                  <div class="text-secondary">{{ partner.introduce }}</div>
+                  <div  >{{ partner.introduce }}</div>
                 </div>
               </div>
             </div>
@@ -371,14 +371,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_SH }}</td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.sh_contact && partner.sh_contact.channel_contact
                         ? partner.sh_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     <span href="#" class="text-reset">{{
                       partner.sh_contact &&
                       partner.sh_contact.channel_contact_position
@@ -386,7 +386,7 @@
                         : "尚未获取查看权限"
                     }}</span>
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.sh_contact &&
                       partner.sh_contact.channel_contact_information
@@ -402,20 +402,22 @@
                   <th>合作状态细分</th>
                   <th>市场活动数据</th>
                   <th>转介绍数据</th>
+                  <th>上海区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.SH_tracking_process }}</td>
-                  <td class="text-secondary">
+                  <td  >
                     {{ partner.SH_tracking_process_segment }}
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     <span href="#" class="text-reset">{{
                       partner.sh_marketing_data
                     }}</span>
                   </td>
-                  <td class="text-secondary">{{ partner.sh_transfer_data }}</td>
+                  <td  >{{ partner.sh_transfer_data }}</td>
+                  <td>{{partner.sh_tier}}</td>
                 </tr>
               </tbody>
             </table>
@@ -443,14 +445,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_HZ }}</td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.hz_contact && partner.hz_contact.channel_contact
                         ? partner.hz_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     <span href="#" class="text-reset">
                       {{
                         partner.hz_contact &&
@@ -460,7 +462,7 @@
                       }}
                     </span>
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     <span href="#" class="text-reset">
                       {{
                         partner.hz_contact &&
@@ -478,20 +480,22 @@
                   <th>合作状态细分</th>
                   <th>市场活动数据</th>
                   <th>转介绍数据</th>
+                  <th>杭州区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.HZ_tracking_process }}</td>
-                  <td class="text-secondary">
+                  <td  >
                     {{ partner.HZ_tracking_process_segment }}
                   </td>
-                  <td class="text-secondary">
+                  <td >
                     <span href="#" class="text-reset">{{
                       partner.hz_marketing_data
                     }}</span>
                   </td>
-                  <td class="text-secondary">{{ partner.hz_transfer_data }}</td>
+                  <td >{{ partner.hz_transfer_data }}</td>
+                  <td>{{partner.hz_tier}}</td>
                 </tr>
               </tbody>
             </table>
@@ -519,14 +523,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_BJ }}</td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.bj_contact && partner.bj_contact.channel_contact
                         ? partner.bj_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.bj_contact &&
                       partner.bj_contact.channel_contact_position
@@ -534,7 +538,7 @@
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td class="text-secondary">
+                  <td  >
                     {{
                       partner.bj_contact &&
                       partner.bj_contact.channel_contact_information
@@ -550,20 +554,22 @@
                   <th>合作状态细分</th>
                   <th>市场活动数据</th>
                   <th>转介绍数据</th>
+                  <th>北京区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.BJ_tracking_process }}</td>
-                  <td class="text-secondary">
+                  <td >
                     {{ partner.BJ_tracking_process_segment }}
                   </td>
-                  <td class="text-secondary">
+                  <td >
                     <span href="#" class="text-reset">{{
                       partner.bj_marketing_data
                     }}</span>
                   </td>
-                  <td class="text-secondary">{{ partner.bj_transfer_data }}</td>
+                  <td >{{ partner.bj_transfer_data }}</td>
+                  <td>{{partner.bj_tier}}</td>
                 </tr>
               </tbody>
             </table>
@@ -750,9 +756,9 @@ span.avatar {
 }
 /* 调整表头文字的大小和颜色 */
 .table thead th {
-  font-size: 14px;          
-  color: #888;             /* 设为较浅的颜色使其不那么突出 */
-  font-weight: normal;     /* 设为正常字体粗细，不要使用bold */
-  padding: 8px;            /* 调整内边距以获得合适的间距，您可以根据需要调整这个值 */
+  /* font-size: 14px;           */
+  /* color: #888;             
+  font-weight: normal;      */
+  padding: 8px;           
 }
 </style>

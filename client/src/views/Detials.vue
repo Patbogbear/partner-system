@@ -1,13 +1,10 @@
 <template>
   <div class="container-xl">
     <h2>Update Partner</h2>
-    <div class="page-body">
-      <form method="post" class="card" @submit.prevent="updateData()">
+     <div class="page-body">
+      <form method="post" class="card" @submit.prevent="addData()">
         <div class="col-12">
           <div class="card">
-            <div class="card-header">
-              <h3>Edit Partner</h3>
-            </div>
             <div class="card-body">
               <div class="row">
                 <div class="col-xl-4">
@@ -71,10 +68,10 @@
                         <option value="A&A">A&A</option>
                         <option value="BIM">BIM</option>
                         <option value="Medical">Medical</option>
-                        <option value="Mechinery">Mechinery</option>
-                        <option value="Manufacturing">Manufacturing</option>
-                        <option value="Chemical">Chemical</option>
-                        <option value="Others">Others</option>
+                        <option value="Medical">Mechinery</option>
+                        <option value="Medical">Manufacturing</option>
+                        <option value="Medical">Chemical</option>
+                        <option value="Medical">Others</option>
                       </select>
                     </div>
                     <div class="mb-3">
@@ -158,6 +155,9 @@
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
+                          <option value="hz-pod-lead-a@google.com">
+                            hz-pod-lead-a@google.com
+                          </option>
                           <option value="chenlong@google.com">
                             chenlong@google.com
                           </option>
@@ -239,24 +239,52 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
+                            <label class="form-label required">HZ合作评级</label>
+                            <select
+                              type="text"
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.hz_tier"
+                            >
+                              <option value="金牌">金牌</option>
+                              <option value="银牌">银牌</option>
+                              <option value="铜牌">铜牌</option>
+                            </select>
+                          </div>
+                          
+                        </fieldset>
+                      </div>
+                      <div class="mb-3">
+                        <fieldset class="form-fieldset">
+                          <div class="mb-3">
                             <label class="form-label required">合作状态</label>
-                            <input
+                            <select
                               type="text"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.HZ_tracking_process"
-                            />
+                            >
+                              <option value="A. 待合作">A. 待合作</option>
+                              <option value="B. 合作暂停">B. 合作暂停</option>
+                              <option value="C. 合作中">C. 合作中</option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
                               >合作状态细分</label
                             >
-                            <input
-                              type="text"
+                            <select
                               class="form-control"
-                              autocomplete="off"
                               v-model="partner.HZ_tracking_process_segment"
-                            />
+                            >
+                              <option
+                                v-for="segment in filteredSegmentsHZ"
+                                :key="segment"
+                                :value="segment"
+                              >
+                                {{ segment }}
+                              </option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
@@ -349,24 +377,52 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
+                            <label class="form-label required">SH合作评级</label>
+                            <select
+                              type="text"
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.sh_tier"
+                            >
+                              <option value="金牌">金牌</option>
+                              <option value="银牌">银牌</option>
+                              <option value="铜牌">铜牌</option>
+                            </select>
+                          </div>
+                          
+                        </fieldset>
+                      </div>
+                      <div class="mb-3">
+                        <fieldset class="form-fieldset">
+                          <div class="mb-3">
                             <label class="form-label required">合作状态</label>
-                            <input
+                            <select
                               type="text"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.SH_tracking_process"
-                            />
+                            >
+                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="B. 合作暂停">B. 合作暂停</option>
+                              <option value="C. 合作中">C. 合作中</option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
                               >合作状态细分</label
                             >
-                            <input
-                              type="text"
+                            <select
                               class="form-control"
-                              autocomplete="off"
                               v-model="partner.SH_tracking_process_segment"
-                            />
+                            >
+                              <option
+                                v-for="segment in filteredSegmentsSH"
+                                :key="segment"
+                                :value="segment"
+                              >
+                                {{ segment }}
+                              </option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
@@ -447,27 +503,55 @@
                           </div>
                         </fieldset>
                       </div>
+                       <div class="mb-3">
+                        <fieldset class="form-fieldset">
+                          <div class="mb-3">
+                            <label class="form-label required">BJ合作评级</label>
+                            <select
+                              type="text"
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.bj_tier"
+                            >
+                              <option value="金牌">金牌</option>
+                              <option value="银牌">银牌</option>
+                              <option value="铜牌">铜牌</option>
+                            </select>
+                          </div>
+                          
+                        </fieldset>
+                      </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
                             <label class="form-label required">合作状态</label>
-                            <input
+                            <select
                               type="text"
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.BJ_tracking_process"
-                            />
+                            >
+                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="B. 合作暂停">B. 合作暂停</option>
+                              <option value="C. 合作中">C. 合作中</option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
                               >合作状态细分</label
                             >
-                            <input
-                              type="text"
+                            <select
                               class="form-control"
-                              autocomplete="off"
                               v-model="partner.BJ_tracking_process_segment"
-                            />
+                            >
+                              <option
+                                v-for="segment in filteredSegmentsBJ"
+                                :key="segment"
+                                :value="segment"
+                              >
+                                {{ segment }}
+                              </option>
+                            </select>
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
@@ -498,7 +582,7 @@
             </div>
             <div class="card-footer text-end">
               <div class="d-flex">
-                <a href="#" class="btn btn-link" @click="jumpBack()">Cancel</a>
+                <a href="#" class="btn btn-link" @click="gotoHome()">Cancel</a>
                 <button type="submit" class="btn btn-primary ms-auto">
                   Send data
                 </button>
@@ -566,6 +650,24 @@ export default {
         sh_transfer_data: "",
         bj_transfer_data: "",
       },
+      segments: {
+        A: [
+          "A. 还未找到KP",
+          "A. 已对接KP，已详细聊过，客户画像匹配度低，需找其他合作点",
+          "A. 已对接KP，还未详谈",
+          "A. 已对接KP，已详细聊过，可以共同邀约客户，目前还没有找到合作",
+        ],
+        B: [
+          "B. 活动效果不好，需找其他KP或者重新谈合作",
+          "B. 对方邀约能力差，转化率低",
+          "B. 动效果OK, 目前还没有 找合作时机",
+        ],
+        C: [
+          "C. 已对接KP, 客户转介绍中",
+          "C. 已对接KP，活动推进中",
+          "C. 已对接KP, 客户转介绍+活动推进中",
+        ],
+      },
     };
   },
 
@@ -575,7 +677,7 @@ export default {
         .get("/api/partners/" + this.$route.params.id)
         .then((res) => {
           this.partner = res.data;
-          //console.log(this.partner)
+          console.log(this.partner)
         });
     },
     updateData() {
@@ -589,6 +691,30 @@ export default {
     },
     jumpBack() {
       this.$router.push({ path: "/" });
+    },
+  },
+  computed: {
+     filteredSegmentsHZ() {
+        if (!this.partner.HZ_tracking_process) {
+            return [];
+        }
+        const selected = this.partner.HZ_tracking_process[0];
+        return this.segments[selected] || [];
+    },
+
+     filteredSegmentsSH() {
+        if (!this.partner.SH_tracking_process) {
+            return [];
+        }
+        const selected = this.partner.SH_tracking_process[0];
+        return this.segments[selected] || [];
+    },
+    filteredSegmentsBJ() {
+        if (!this.partner.BJ_tracking_process) {
+            return [];
+        }
+        const selected = this.partner.BJ_tracking_process[0];
+        return this.segments[selected] || [];
     },
   },
 };
