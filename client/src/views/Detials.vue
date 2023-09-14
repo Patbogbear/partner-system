@@ -2,7 +2,7 @@
   <div class="container-xl">
     <h2>Update Partner</h2>
      <div class="page-body">
-      <form method="post" class="card" @submit.prevent="addData()">
+      <form method="post" class="card" @submit.prevent="updateData()">
         <div class="col-12">
           <div class="card">
             <div class="card-body">
@@ -68,10 +68,10 @@
                         <option value="A&A">A&A</option>
                         <option value="BIM">BIM</option>
                         <option value="Medical">Medical</option>
-                        <option value="Medical">Mechinery</option>
-                        <option value="Medical">Manufacturing</option>
-                        <option value="Medical">Chemical</option>
-                        <option value="Medical">Others</option>
+                        <option value="Mechinery">Mechinery</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Chemical">Chemical</option>
+                        <option value="Others">Others</option>
                       </select>
                     </div>
                     <div class="mb-3">

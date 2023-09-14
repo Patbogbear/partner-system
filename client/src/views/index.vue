@@ -154,51 +154,11 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">Missing Contact</div>
-                    <div class="ms-auto lh-1">
-                      <div class="dropdown">
-                        <a
-                          class="dropdown-toggle text-secondary"
-                          href="#"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                          >Last 7 days</a
-                        >
-                        <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item active" href="#"
-                            >Last 7 days</a
-                          >
-                          <a class="dropdown-item" href="#">Last 30 days</a>
-                          <a class="dropdown-item" href="#">Last 3 months</a>
-                        </div>
-                      </div>
-                    </div>
+                    <div class="subheader">Vertical</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">Demo</div>
-                    <div class="me-auto">
-                      <span
-                        class="text-yellow d-inline-flex align-items-center lh-1"
-                      >
-                        0%
-                        <!-- Download SVG icon from http://tabler-icons.io/i/minus -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon ms-1"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M5 12l14 0" />
-                        </svg>
-                      </span>
+                    <div class="h1 mb-3 me-2" style="width:250px; height:120px">
+                      <canvas ref="verticalChart" width="220" height="130"></canvas>
                     </div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
@@ -265,7 +225,7 @@
             <div class="col-lg-6">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">Data Dashboard 1</h3>
+                  <h3 class="card-title">Data Dashboard 1{{ verticalData }}</h3>
                   <div id="chart-mentions" class="chart-lg"></div>
                 </div>
               </div>
@@ -453,21 +413,32 @@
   </div>
 </template>
 <script setup>
-import {useRouter} from 'vue-router';
+import { useRouter } from "vue-router";
 import axios from "../http";
 import { ref, computed, onMounted, watch, nextTick } from "vue";
 import {
   Chart,
   DoughnutController,
+  BarController,
   ArcElement,
   CategoryScale,
   Tooltip,
+  LinearScale,
+  BarElement,
 } from "chart.js";
 import { useStore } from "vuex";
 
-Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip);
+Chart.register(
+  DoughnutController,
+  BarController,
+  ArcElement,
+  CategoryScale,
+  Tooltip,
+  LinearScale,
+  BarElement
+);
 
-const router = useRouter()
+const router = useRouter();
 const store = useStore();
 const partners = ref([]);
 const filterInput = ref([]);
@@ -475,6 +446,8 @@ const exportsData = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const chart = ref(null);
+
+const verticalChart = ref(null);
 const labels = ref([
   "collaborating",
   "pending collaboration",
@@ -483,18 +456,21 @@ const labels = ref([
 const backgroundColors = ref(["#0d6efd", "#3d8bfd", "#9ec5fe"]);
 const selectedCity = ref("SH");
 const chartInstance = ref(null); // 存储图表实例
+const verticalChartInstance = ref(null);
 
 const user = computed(() => store.getters.user);
 
 const pageWindowStart = ref(1); // Start page for sliding window
-const windowSize = ref(3);     // Number of pages to display in the sliding window
+const windowSize = ref(3); // Number of pages to display in the sliding window
 
 const visiblePages = computed(() => {
-    let end = pageWindowStart.value + windowSize.value;
-    if (end > totalPages.value) end = totalPages.value;
-    return Array.from({ length: end - pageWindowStart.value }, (_, i) => i + pageWindowStart.value);
+  let end = pageWindowStart.value + windowSize.value;
+  if (end > totalPages.value) end = totalPages.value;
+  return Array.from(
+    { length: end - pageWindowStart.value },
+    (_, i) => i + pageWindowStart.value
+  );
 });
-
 
 const getData = () => {
   axios
@@ -509,46 +485,41 @@ const goto_add = () => {
   router.push({ path: "/add" });
 };
 
-const logOut = () =>{
+const logOut = () => {
   localStorage.removeItem("userToken");
-      //config vuex store
-      store.dispatch("clearCurrentState");
-      router.push({ path: "/login" });
-}
+  //config vuex store
+  store.dispatch("clearCurrentState");
+  router.push({ path: "/login" });
+};
 
 const deleteData = (id) => {
   axios.delete("api/partners/delete/" + id);
   getData();
 };
 
-
 const paginatedData = computed(() => {
-    const filtered = filteredData(partners.value, filterInput.value);
-    const start = (currentPage.value - 1) * itemsPerPage.value;
-    const end = currentPage.value * itemsPerPage.value;
-    return filtered.slice(start, end);
+  const filtered = filteredData(partners.value, filterInput.value);
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = currentPage.value * itemsPerPage.value;
+  return filtered.slice(start, end);
 });
 
-
 function setCurrentPage(page) {
-    currentPage.value = page;
+  currentPage.value = page;
 }
 
 function moveWindow(direction) {
-    const newStart = pageWindowStart.value + direction * windowSize.value;
-    if (newStart >= 1 && newStart + windowSize.value <= totalPages.value + 1) {
-        pageWindowStart.value = newStart;
-    }
+  const newStart = pageWindowStart.value + direction * windowSize.value;
+  if (newStart >= 1 && newStart + windowSize.value <= totalPages.value + 1) {
+    pageWindowStart.value = newStart;
+  }
 }
 
-
 const totalPages = computed(() => {
-    return Math.ceil(
-        filteredData(partners.value, filterInput.value).length / itemsPerPage.value
-    );
+  return Math.ceil(
+    filteredData(partners.value, filterInput.value).length / itemsPerPage.value
+  );
 });
-
-
 
 const filteredData = (partners, value) => {
   const regex = new RegExp(value, "i");
@@ -640,6 +611,57 @@ const initChart = () => {
     },
   });
 };
+//verical chart
+const createChart = () => {
+  const frequencyMap = new Map();
+
+  for (const partner of partners.value) {
+    if (partner && partner.vertical) {
+      const count = frequencyMap.get(partner.vertical) || 0;
+      frequencyMap.set(partner.vertical, count + 1);
+    }
+  }
+
+  const verticalLabels = Array.from(frequencyMap.keys());
+  const verticalData = Array.from(frequencyMap.values());
+
+  if (verticalChartInstance.value) {
+    verticalChartInstance.value.destroy();
+  }
+  const ctx2 = verticalChart.value.getContext("2d");
+  verticalChartInstance.value = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: verticalLabels,
+      datasets: [
+        {
+          label: "Count",
+          data: verticalData,
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive:false,
+      scales: {
+        x: {
+          type: "category",
+          maxBarThickness:10,
+        },
+        y: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Count",
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
 
 onMounted(() => {
   const fetchDataAndInitChart = async () => {
@@ -668,6 +690,15 @@ watch(currentData, (newData) => {
     });
   }
 });
+watch(
+  partners,
+  (newVal) => {
+    if (newVal && newVal.length > 0) {
+      createChart();
+    }
+  },
+  { deep: true }
+);
 
 const uploadFile = async (event) => {
   const file = event.target.files[0];
@@ -681,41 +712,40 @@ const uploadFile = async (event) => {
   }
 };
 
-const exportToCSV = ()=> {
-      axios
-        .get("api/partners/export")
-        .then((res) => {
-          this.exportsData = res.data;
-          const csv = [];
-          const headers = Object.keys(this.exportsData[0]);
-          csv.push(headers.join(",")); // 添加表头行
+const exportToCSV = () => {
+  axios
+    .get("api/partners/export")
+    .then((res) => {
+      this.exportsData = res.data;
+      const csv = [];
+      const headers = Object.keys(this.exportsData[0]);
+      csv.push(headers.join(",")); // 添加表头行
 
-          for (const partner of this.exportsData) {
-            const row = [];
-            for (const header of headers) {
-              const value =
-                partner[header] !== undefined ? partner[header] : ""; // 如果值为 undefined，则使用空字符串
-              row.push(value);
-            }
-            csv.push(row.join(",")); // 添加每条数据的行
-          }
+      for (const partner of this.exportsData) {
+        const row = [];
+        for (const header of headers) {
+          const value = partner[header] !== undefined ? partner[header] : ""; // 如果值为 undefined，则使用空字符串
+          row.push(value);
+        }
+        csv.push(row.join(",")); // 添加每条数据的行
+      }
 
-          const csvContent = csv.join("\n");
-          const blob = new Blob([csvContent], {
-            type: "text/csv;charset=utf-8;",
-          });
+      const csvContent = csv.join("\n");
+      const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
 
-          const downloadLink = document.createElement("a");
-          const url = URL.createObjectURL(blob);
+      const downloadLink = document.createElement("a");
+      const url = URL.createObjectURL(blob);
 
-          downloadLink.href = url;
-          downloadLink.download = "data.csv";
-          downloadLink.click();
+      downloadLink.href = url;
+      downloadLink.download = "data.csv";
+      downloadLink.click();
 
-          URL.revokeObjectURL(url);
-        })
-        .catch((err) => console.log(err));
-    }
+      URL.revokeObjectURL(url);
+    })
+    .catch((err) => console.log(err));
+};
 </script>
 
 <style scoped>
