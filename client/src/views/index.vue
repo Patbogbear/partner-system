@@ -459,13 +459,10 @@ import { ref, computed, onMounted, watch, nextTick } from "vue";
 import {
   Chart,
   DoughnutController,
-  ArcElement,
-  CategoryScale,
-  Tooltip,
 } from "chart.js";
 import { useStore } from "vuex";
 
-Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip);
+Chart.register(DoughnutController);
 
 const router = useRouter()
 const store = useStore();
