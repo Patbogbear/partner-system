@@ -34,7 +34,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务商类型</div>
-                  <div  >
+                  <div>
                     {{ partner.third_partner_type }}
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务商名称</div>
-                  <div  >
+                  <div>
                     {{ partner.third_partner_name }}
                   </div>
                 </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">2B/2C</div>
-                  <div  >{{ partner.b2b_or_b2c }}</div>
+                  <div>{{ partner.b2b_or_b2c }}</div>
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">所在地</div>
-                  <div  >
+                  <div>
                     {{ partner.partner_location }}
                   </div>
                 </div>
@@ -182,7 +182,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">服务覆盖范围</div>
-                  <div  >{{ partner.partner_scope }}</div>
+                  <div>{{ partner.partner_scope }}</div>
                 </div>
               </div>
             </div>
@@ -216,7 +216,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">重点覆盖城市</div>
-                  <div  >
+                  <div>
                     {{ partner.coverage_province }}
                   </div>
                 </div>
@@ -257,7 +257,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">主要客户/成功案例</div>
-                  <div  >
+                  <div>
                     {{ partner.major_clients_or_case }}
                   </div>
                 </div>
@@ -296,7 +296,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">网址</div>
-                  <div  >{{ partner.website }}</div>
+                  <div>{{ partner.website }}</div>
                 </div>
               </div>
             </div>
@@ -330,7 +330,7 @@
                 </div>
                 <div class="col">
                   <div class="font-weight-medium">Vertical</div>
-                  <div  >{{ partner.vertical }}</div>
+                  <div>{{ partner.vertical }}</div>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@
               <div class="row align-items-center">
                 <div class="col">
                   <div class="font-weight-medium">公司介绍</div>
-                  <div  >{{ partner.introduce }}</div>
+                  <div>{{ partner.introduce }}</div>
                 </div>
               </div>
             </div>
@@ -352,7 +352,7 @@
         </div>
       </div>
     </div>
-    <div class=" outer-div">
+    <div class="outer-div">
       <div class="col-12">
         <div class="table-container">
           <div class="card-header">
@@ -371,14 +371,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_SH }}</td>
-                  <td  >
+                  <td>
                     {{
                       partner.sh_contact && partner.sh_contact.channel_contact
                         ? partner.sh_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td  >
+                  <td>
                     <span href="#" class="text-reset">{{
                       partner.sh_contact &&
                       partner.sh_contact.channel_contact_position
@@ -386,7 +386,7 @@
                         : "尚未获取查看权限"
                     }}</span>
                   </td>
-                  <td  >
+                  <td>
                     {{
                       partner.sh_contact &&
                       partner.sh_contact.channel_contact_information
@@ -400,28 +400,50 @@
                 <tr>
                   <th>合作状态</th>
                   <th>合作状态细分</th>
-                  <th>市场活动数据</th>
-                  <th>转介绍数据</th>
                   <th>上海区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.SH_tracking_process }}</td>
-                  <td  >
+                  <td>
                     {{ partner.SH_tracking_process_segment }}
                   </td>
-                  <td  >
+                  <td>
+                    {{ partner.sh_tier }}
+                  </td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>市场活动数据 leads</th>
+                  <th>市场活动数据 CW%</th>
+                  <th>转介绍数据 leads</th>
+                  <th>转介绍数据 CW%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span href="#" class="text-reset">{{
+                      partner.sh_marketing_data_leads
+                    }}</span>
+                  </td>
+                  <td>
                     <span href="#" class="text-reset">{{
                       partner.sh_marketing_data
                     }}</span>
                   </td>
-                  <td  >{{ partner.sh_transfer_data }}</td>
-                  <td>{{partner.sh_tier}}</td>
+                  <td>{{ partner.sh_transfer_data_leads }}</td>
+                  <td>{{ partner.sh_transfer_data }}</td>
                 </tr>
               </tbody>
             </table>
-            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('sh_contact')" class="btn btn-primary btn-sm">
+            <button
+              v-if="userIdentity.identity !== 'Super-Admin'"
+              @click="requestData('sh_contact')"
+              class="btn btn-primary btn-sm"
+            >
               request SH contact
             </button>
           </div>
@@ -445,14 +467,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_HZ }}</td>
-                  <td  >
+                  <td>
                     {{
                       partner.hz_contact && partner.hz_contact.channel_contact
                         ? partner.hz_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td  >
+                  <td>
                     <span href="#" class="text-reset">
                       {{
                         partner.hz_contact &&
@@ -462,7 +484,7 @@
                       }}
                     </span>
                   </td>
-                  <td  >
+                  <td>
                     <span href="#" class="text-reset">
                       {{
                         partner.hz_contact &&
@@ -478,28 +500,48 @@
                 <tr>
                   <th>合作状态</th>
                   <th>合作状态细分</th>
-                  <th>市场活动数据</th>
-                  <th>转介绍数据</th>
-                  <th>杭州区域评级</th>
+                  <th>上海区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.HZ_tracking_process }}</td>
-                  <td  >
+                  <td>
                     {{ partner.HZ_tracking_process_segment }}
                   </td>
-                  <td >
+                  <td>{{ partner.hz_tier }}</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr>
+                  <th>市场活动数据 leads</th>
+                  <th>市场活动数据 CW%</th>
+                  <th>转介绍数据 leads</th>
+                  <th>转介绍数据 CW%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span href="#" class="text-reset">{{
+                      partner.hz_marketing_data_leads
+                    }}</span>
+                  </td>
+                  <td>
                     <span href="#" class="text-reset">{{
                       partner.hz_marketing_data
                     }}</span>
                   </td>
-                  <td >{{ partner.hz_transfer_data }}</td>
-                  <td>{{partner.hz_tier}}</td>
+                  <td>{{ partner.hz_transfer_data_leads }}</td>
+                  <td>{{ partner.hz_transfer_data }}</td>
                 </tr>
               </tbody>
             </table>
-            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('hz_contact')" class="btn btn-primary btn-sm">
+            <button
+              v-if="userIdentity.identity !== 'Super-Admin'"
+              @click="requestData('hz_contact')"
+              class="btn btn-primary btn-sm"
+            >
               request HZ contact
             </button>
           </div>
@@ -523,14 +565,14 @@
               <tbody>
                 <tr>
                   <td>{{ partner.POC_BJ }}</td>
-                  <td  >
+                  <td>
                     {{
                       partner.bj_contact && partner.bj_contact.channel_contact
                         ? partner.bj_contact.channel_contact
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td  >
+                  <td>
                     {{
                       partner.bj_contact &&
                       partner.bj_contact.channel_contact_position
@@ -538,7 +580,7 @@
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  <td  >
+                  <td>
                     {{
                       partner.bj_contact &&
                       partner.bj_contact.channel_contact_information
@@ -546,57 +588,78 @@
                         : "尚未获取查看权限"
                     }}
                   </td>
+                  
                 </tr>
               </tbody>
               <thead>
                 <tr>
                   <th>合作状态</th>
                   <th>合作状态细分</th>
-                  <th>市场活动数据</th>
-                  <th>转介绍数据</th>
                   <th>北京区域评级</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ partner.BJ_tracking_process }}</td>
-                  <td >
+                  <td>
                     {{ partner.BJ_tracking_process_segment }}
                   </td>
-                  <td >
-                    <span href="#" class="text-reset">{{
-                      partner.bj_marketing_data
-                    }}</span>
-                  </td>
-                  <td >{{ partner.bj_transfer_data }}</td>
-                  <td>{{partner.bj_tier}}</td>
+                  <td>{{ partner.bj_tier }}</td>
                 </tr>
               </tbody>
+              <thead>
+                <tr>
+                  <th>市场活动数据 leads</th>
+                  <th>市场活动数据 CW%</th>
+                  <th>转介绍数据 leads</th>
+                  <th>转介绍数据 CW%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <td>
+                  <span href="#" class="text-reset">{{
+                    partner.bj_marketing_data_leads
+                  }}</span>
+                </td>
+                <td>
+                  <span href="#" class="text-reset">{{
+                    partner.bj_marketing_data
+                  }}</span>
+                </td>
+                <td>{{ partner.bj_transfer_data_leads }}</td>
+                <td>{{ partner.bj_transfer_data }}</td>
+              </tbody>
             </table>
-            <button v-if="userIdentity.identity !== 'Super-Admin'" @click="requestData('bj_contact')" class="btn btn-primary btn-sm">
+            <button
+              v-if="userIdentity.identity !== 'Super-Admin'"
+              @click="requestData('bj_contact')"
+              class="btn btn-primary btn-sm"
+            >
               request BJ contact
             </button>
           </div>
         </div>
       </div>
-    </div> 
+    </div>
   </div>
 
   <div class="edit">
     <div class="dropdown">
       <button
         class="btn btn-dark"
-       
         data-bs-toggle="dropdown"
         @click="deleteData(partner._id)"
-        v-if="userIdentity.identity == 'Super-Admin' || userIdentity.identity == 'PM' || userIdentity.identity =='Team-Leader'"
+        v-if="
+          userIdentity.identity == 'Super-Admin' ||
+          userIdentity.identity == 'PM' ||
+          userIdentity.identity == 'Team-Leader'
+        "
       >
         delete
       </button>
       <router-link
         v-if="userIdentity.identity !== 'Sales'"
         class="btn btn-primary"
-       
         :to="'/detials/' + partner._id"
       >
         <div>Edit Partner</div>
@@ -705,7 +768,7 @@ getDetail(props.id);
     width: 23%;
   }
 }
-.outer-div{
+.outer-div {
   width: 1400px;
   margin: 0 auto;
 }
@@ -735,7 +798,9 @@ getDetail(props.id);
   padding: 1rem 1rem;
 }
 .fourth-column-card .card {
-  height: calc((130px + 20px) * 3 - 40px); /* 这里考虑到每个卡片的底部间距，所以使用 20px */
+  height: calc(
+    (130px + 20px) * 3 - 40px
+  ); /* 这里考虑到每个卡片的底部间距，所以使用 20px */
 }
 span.avatar {
   display: flex;
@@ -745,12 +810,12 @@ span.avatar {
   height: 60px; /* 确保高度与SVG一致 */
   overflow: visible; /* 确保SVG的任何部分都不会被裁切 */
 }
-.table-container{
+.table-container {
   background-color: white;
   margin: 20px;
   padding: 20px;
 }
-.table-container .card-title{
+.table-container .card-title {
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -759,6 +824,6 @@ span.avatar {
   /* font-size: 14px;           */
   /* color: #888;             
   font-weight: normal;      */
-  padding: 8px;           
+  padding: 8px;
 }
 </style>

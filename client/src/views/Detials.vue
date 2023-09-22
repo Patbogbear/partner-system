@@ -288,7 +288,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.hz_marketing_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -298,7 +308,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >转介绍数据</label
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.hz_transfer_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -426,7 +446,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.sh_marketing_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -436,7 +466,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >转介绍数据</label
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.sh_transfer_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -555,12 +595,32 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.bj_marketing_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
                               autocomplete="off"
                               v-model="partner.bj_marketing_data"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.bj_transfer_data_leads"
                             />
                           </div>
                           <div class="mb-3">
@@ -643,12 +703,18 @@ export default {
         SH_tracking_process_segment: "",
         BJ_tracking_process: "",
         BJ_tracking_process_segment: "",
-        hz_marketing_data: "",
+         hz_marketing_data: "",
+        hz_marketing_data_leads: "",
         sh_marketing_data: "",
+        sh_marketing_data_leads: "",
         bj_marketing_data: "",
+        bj_marketing_data_leads: "",
         hz_transfer_data: "",
+        hz_transfer_data_leads:"",
         sh_transfer_data: "",
+        sh_transfer_data_leads: "",
         bj_transfer_data: "",
+        bj_transfer_data_leads: "",
       },
       segments: {
         A: [

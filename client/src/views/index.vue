@@ -40,9 +40,9 @@
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
-                <!-- <div>
+                <div>
                   <input type="file" @change="uploadFile">
-                </div> -->
+                </div>
               </div>
             </div>
           </div>

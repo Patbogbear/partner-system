@@ -101,19 +101,37 @@ const PartnerSchema = new Schema({
     hz_marketing_data: {
         type: String
     },
+    hz_marketing_data_leads: {
+        type: String
+    },
     sh_marketing_data: {
+        type: String
+    },
+    sh_marketing_data_leads: {
         type: String
     },
     bj_marketing_data: {
         type: String
     },
+    bj_marketing_data_leads: {
+        type: String
+    },
     hz_transfer_data: {
+        type: String
+    },
+    hz_transfer_data_leads: {
         type: String
     },
     sh_transfer_data: {
         type: String
     },
+    sh_transfer_data_leads: {
+        type: String
+    },
     bj_transfer_data: {
+        type: String
+    },
+    bj_transfer_data_leads: {
         type: String
     }
 });

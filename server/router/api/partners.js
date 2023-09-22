@@ -61,11 +61,17 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.BJ_tracking_process) partners.BJ_tracking_process = req.body.BJ_tracking_process;
     if (req.body.BJ_tracking_process_segment) partners.BJ_tracking_process_segment = req.body.BJ_tracking_process_segment;
     if (req.body.hz_marketing_data) partners.hz_marketing_data = req.body.hz_marketing_data;
+    if (req.body.hz_marketing_data_leads) partners.hz_marketing_data_leads = req.body.hz_marketing_data_leads;
     if (req.body.sh_marketing_data) partners.sh_marketing_data = req.body.sh_marketing_data;
+    if (req.body.sh_marketing_data_leads) partners.sh_marketing_data_leads = req.body.sh_marketing_data_leads;
     if (req.body.bj_marketing_data) partners.bj_marketing_data = req.body.bj_marketing_data;
+    if (req.body.bj_marketing_data_leads) partners.bj_marketing_data_leads = req.body.bj_marketing_data_leads;
     if (req.body.sh_transfer_data) partners.sh_transfer_data = req.body.sh_transfer_data;
+    if (req.body.sh_transfer_data_leads) partners.sh_transfer_data_leads = req.body.sh_transfer_data_leads;
     if (req.body.hz_transfer_data) partners.hz_transfer_data = req.body.hz_transfer_data;
+    if (req.body.hz_transfer_data_leads) partners.hz_transfer_data_leads = req.body.hz_transfer_data_leads;
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
+    if (req.body.bj_transfer_data_leads) partners.bj_transfer_data_leads = req.body.bj_transfer_data_leads;
 
     new Partners(partners).save().then((partners) => {
         res.status(200).json({ partners, message: "add partner success" })
@@ -125,6 +131,7 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
         // copy origin partner data object
         Object.assign(originalPartner, partner.toObject());
 
+        
         const filteredPartner = await filterProtectedFields(req.user, partner);
 
         res.json(filteredPartner);
@@ -136,10 +143,33 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
 
 // below code is default authenticated partner logic
 
+function setFieldMessages(obj) {
+    const unauthorizedMessage = "尚未获得查看权限";
+    const emptyFieldMessage = "目前该信息尚未填充";
+    const contactProperties = ['channel_contact', 'channel_contact_position', 'channel_contact_information'];
+    
+    contactProperties.forEach(field => {
+        if (!obj[field] || obj[field].trim() === "" || obj[field] === emptyFieldMessage)
+            obj[field] = emptyFieldMessage;
+        else 
+            obj[field] = unauthorizedMessage;
+    });
+}
+
+function setEmptyFieldMessages(contactData) {
+    const contactProperties = ["channel_contact", "channel_contact_position", "channel_contact_information"];
+    contactProperties.forEach(prop => {
+        if (!contactData[prop] || contactData[prop].trim() === "") {
+            contactData[prop] = "目前该信息尚未填充";
+        }
+    });
+
+}
+
+
 async function filterProtectedFields(user, partner) {
 
     function handleSalesFields(partner, requestedContactField) {
-
 
         switch (requestedContactField) {
             case 'sh_contact':
@@ -154,34 +184,15 @@ async function filterProtectedFields(user, partner) {
         }
     }
 
-    function isEmptyField(contactData) {
-        const contactProperties = ["channel_contact", "channel_contact_position", "channel_contact_information"];
-        return contactProperties.some(prop => !contactData[prop] || contactData[prop].trim() === "");
-    }
-
-    function setEmptyFieldMessages(contactData) {
-        const contactProperties = ["channel_contact", "channel_contact_position", "channel_contact_information"];
-        contactProperties.forEach(prop => {
-            if (!contactData[prop] || contactData[prop].trim() === "") {
-                contactData[prop] = "目前该信息尚未填充";
-            }
-        });
-    }
-
     // super-admin works fine with all access 
     if (user.identity === 'Super-Admin') {
         // handle all contact data
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
-            if (!partner[field] || isEmptyField(partner[field])) {
-                // 如果字段不存在或其中有空字段，则设置“目前该信息尚未填充”
-                if (!partner[field]) {
-                    partner[field] = {};
-                }
-                setEmptyFieldMessages(partner[field]);
-            } else {
-                partner[field] = originalPartner[field];
-            }
+            partner[field] = partner[field] || {};
+            setEmptyFieldMessages(partner[field]);
         });
+        
+       
         return partner;
     }
 
@@ -203,24 +214,18 @@ async function filterProtectedFields(user, partner) {
             if (approvedFields.includes(field)) {
                 handleSalesFields(partner, field);
             } else {
-                if (!partner[field] || isEmptyField(partner[field])) {
-                    if (!partner[field]) {
-                        partner[field] = {};
-                    }
-                    // 对于空字段，设置“目前该信息尚未填充”消息
-                    setEmptyFieldMessages(partner[field]);
-                } else {
-                    // 如果不是空的，但也没有得到批准，将其设置为空对象
-                    partner[field] = {};
-                }
+                partner[field] = partner[field] || {};
+                setFieldMessages(partner[field]);
             }
         });
         // 根据 user 的 cluster 来恢复相应的数据
-        if (user.cluster === 'SH') {
+        if (user.cluster === 'SH' && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
-        } else if (user.cluster === 'HZ') {
             partner.hz_contact = originalPartner.hz_contact;
-        } else if (user.cluster === 'BJ') {
+        } else if (user.cluster === 'HZ' && originalPartner.hz_contact != null) {
+            partner.hz_contact = originalPartner.hz_contact;
+            partner.sh_contact = originalPartner.sh_contact;
+        } else if (user.cluster === 'BJ' && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
         }
 
@@ -229,7 +234,6 @@ async function filterProtectedFields(user, partner) {
 
     //works fine for team-leader
     if (user.identity === 'Team-Leader') {
-        console.log(partner)
 
         // 获取已批准的请求
         const approvedRequests = await AccessRequest.find({
@@ -248,34 +252,27 @@ async function filterProtectedFields(user, partner) {
             if (approvedFields.includes(field)) {
                 handleSalesFields(partner, field);
             } else {
-                if (!partner[field] || isEmptyField(partner[field])) {
-                    if (!partner[field]) {
-                        partner[field] = {};
-                    }
-                    // 对于空字段，设置“目前该信息尚未填充”消息
-                    setEmptyFieldMessages(partner[field]);
-                } else {
-                    // 如果不是空的，但也没有得到批准，将其设置为空对象
-                    partner[field] = {};
-                }
+                partner[field] = partner[field] || {};
+                setFieldMessages(partner[field]);
             }
         });
+
         // 根据 user 的 cluster 来恢复相应的数据
-        if (user.cluster === 'SH') {
+        if (user.cluster === 'SH' && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
-        } else if (user.cluster === 'HZ') {
+        } else if (user.cluster === 'HZ' && originalPartner.hz_contact != null) {
             partner.hz_contact = originalPartner.hz_contact;
-        } else if (user.cluster === 'BJ') {
+        } else if (user.cluster === 'BJ' && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
         }
-
+        
         return partner;
     }
-
 
     //works fine for pod-leader
     if (user.identity === 'Pod-Leader') {
         const fullUser = await Users.findOne({ _id: user._id });
+
 
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
@@ -290,27 +287,20 @@ async function filterProtectedFields(user, partner) {
 
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
             if (approvedFields.includes(field)) {
+                // 已获批准，从原始数据中恢复它
                 handleSalesFields(partner, field);
             } else {
-                if (!partner[field] || isEmptyField(partner[field])) {
-                    if (!partner[field]) {
-                        partner[field] = {};
-                    }
-                    // 对于空字段，设置“目前该信息尚未填充”消息
-                    setEmptyFieldMessages(partner[field]);
-                } else {
-                    // 如果不是空的，但也没有得到批准，将其设置为空对象
-                    partner[field] = {};
-                }
+                partner[field] = partner[field] || {};
+                setFieldMessages(partner[field]);
             }
         });
 
         // 根据 user 的 ID 与 POC 字段的匹配来决定哪个字段可见
-        if (fullUser.email === partner.POC_HZ) {
+        if (fullUser.email === partner.POC_HZ && originalPartner.hz_contact != null) {
             partner.hz_contact = originalPartner.hz_contact;
-        } else if (fullUser.email === partner.POC_BJ) {
+        } else if (fullUser.email === partner.POC_BJ && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
-        } else if (fullUser.email === partner.POC_SH) {
+        } else if (fullUser.email === partner.POC_SH && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
         }
 
@@ -336,18 +326,11 @@ async function filterProtectedFields(user, partner) {
                 // 已获批准，从原始数据中恢复它
                 handleSalesFields(partner, field);
             } else {
-                if (!partner[field] || isEmptyField(partner[field])) {
-                    if (!partner[field]) {
-                        partner[field] = {};
-                    }
-                    // 对于空字段，设置“目前该信息尚未填充”消息
-                    setEmptyFieldMessages(partner[field]);
-                } else {
-                    // 如果不是空的，但也没有得到批准，将其设置为空对象
-                    partner[field] = {};
-                }
+                partner[field] = partner[field] || {};
+                setFieldMessages(partner[field]);
             }
         });
+    
         return partner;
     }
 }
@@ -402,11 +385,17 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.BJ_tracking_process) partners.BJ_tracking_process = req.body.BJ_tracking_process;
     if (req.body.BJ_tracking_process_segment) partners.BJ_tracking_process_segment = req.body.BJ_tracking_process_segment;
     if (req.body.hz_marketing_data) partners.hz_marketing_data = req.body.hz_marketing_data;
+    if (req.body.hz_marketing_data_leads) partners.hz_marketing_data_leads = req.body.hz_marketing_data_leads;
     if (req.body.sh_marketing_data) partners.sh_marketing_data = req.body.sh_marketing_data;
+    if (req.body.sh_marketing_data_leads) partners.sh_marketing_data_leads = req.body.sh_marketing_data_leads;
     if (req.body.bj_marketing_data) partners.bj_marketing_data = req.body.bj_marketing_data;
+    if (req.body.bj_marketing_data_leads) partners.bj_marketing_data_leads = req.body.bj_marketing_data_leads;
     if (req.body.sh_transfer_data) partners.sh_transfer_data = req.body.sh_transfer_data;
+    if (req.body.sh_transfer_data_leads) partners.sh_transfer_data_leads = req.body.sh_transfer_data_leads;
     if (req.body.hz_transfer_data) partners.hz_transfer_data = req.body.hz_transfer_data;
+    if (req.body.hz_transfer_data_leads) partners.hz_transfer_data_leads = req.body.hz_transfer_data_leads;
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
+    if (req.body.bj_transfer_data_leads) partners.bj_transfer_data_leads = req.body.bj_transfer_data_leads;
 
     Partners.findByIdAndUpdate(
         { _id: req.params.id },

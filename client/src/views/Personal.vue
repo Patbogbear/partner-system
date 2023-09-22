@@ -385,8 +385,8 @@
                     </td>
                     <td class="text-secondary">
                       {{
-                        request.userId && request.userId.Cluster
-                          ? request.userId.Cluster
+                        request.userId && request.userId.cluster
+                          ? request.userId.cluster
                           : "user has been delete"
                       }}&{{
                         request.userId && request.userId.identity
@@ -468,9 +468,9 @@
                   >
                     <td>
                       {{
-                        request.userId && request.userId.email
-                          ? request.userId.email
-                          : "N/A"
+                        request.partnerId
+                          ? request.partnerId.third_partner_name
+                          : "partner has been deleted"
                       }}
                     </td>
                     <td class="text-secondary">
@@ -490,14 +490,15 @@
                         " v-if="request.status === 'DENIED'">
                         delete request
                       </button>
-                      <button class="btn btn-primary"
+                      <router-link v-if="request.status === 'APPROVED' && request.partnerId" class="btn btn-primary" 
+                       :to="'/single-partner/' + request.partnerId._id"
                         style="
                           --bs-btn-padding-y: 0.25rem;
                           --bs-btn-padding-x: 0.5rem;
                           --bs-btn-font-size: 0.75rem;
-                        " v-if="request.status === 'APPROVED'">
+                        " >
                         view detail
-                      </button>
+                      </router-link>
                     </td>
                     <td class="text-end w-1">
                       <div
@@ -621,6 +622,7 @@ const requestLists = async (userIdentity) => {
       );
 
       requestList.value = data;
+      console.log(requestList)
     }
   } catch (error) {
     console.log("error get request list", error);

@@ -241,7 +241,9 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">HZ合作评级</label>
+                            <label class="form-label required"
+                              >HZ合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -253,7 +255,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -290,7 +291,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.hz_marketing_data_leads"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -300,7 +311,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >转介绍数据</label
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.hz_transfer_data_leads"
+                            />
+                          </div>
+                           <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -322,16 +343,16 @@
                           class="form-control form-select"
                           v-model="partner.POC_SH"
                         >
-                          <option value="hz-pod-leader-a@google.com">
+                          <option value="sh-pod-leader-a@google.com">
                             sh-pod-leader-a
                           </option>
-                          <option value="hz-pod-leader-b@google.com">
+                          <option value="sh-pod-leader-b@google.com">
                             sh-pod-leader-b
                           </option>
-                          <option value="hz-pod-leader-c@google.com">
+                          <option value="sh-pod-leader-c@google.com">
                             sh-pod-leader-c
                           </option>
-                          <option value="hz-pod-leader-d@google.com">
+                          <option value="sh-pod-leader-c@google.com">
                             sh-pod-leader-c
                           </option>
                         </select>
@@ -379,7 +400,9 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">SH合作评级</label>
+                            <label class="form-label required"
+                              >SH合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -391,7 +414,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -404,7 +426,7 @@
                               autocomplete="off"
                               v-model="partner.SH_tracking_process"
                             >
-                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="A. 待合作">A. 待合作</option>
                               <option value="B. 合作暂停">B. 合作暂停</option>
                               <option value="C. 合作中">C. 合作中</option>
                             </select>
@@ -428,7 +450,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.sh_marketing_data_leads"
+                            />
+                          </div>
+                           <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -438,7 +470,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >转介绍数据</label
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.sh_transfer_data_leads"
+                            />
+                          </div>
+                           <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -505,10 +547,12 @@
                           </div>
                         </fieldset>
                       </div>
-                       <div class="mb-3">
+                      <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">BJ合作评级</label>
+                            <label class="form-label required"
+                              >BJ合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -520,7 +564,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -533,7 +576,7 @@
                               autocomplete="off"
                               v-model="partner.BJ_tracking_process"
                             >
-                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="A. 待合作">A. 待合作</option>
                               <option value="B. 合作暂停">B. 合作暂停</option>
                               <option value="C. 合作中">C. 合作中</option>
                             </select>
@@ -557,7 +600,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >市场活动数据</label
+                              >市场活动数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.bj_marketing_data_leads"
+                            />
+                          </div>
+                           <div class="mb-3">
+                            <label class="form-label required"
+                              >市场活动数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -567,7 +620,17 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label required"
-                              >转介绍数据</label
+                              >转介绍数据 leads</label
+                            >
+                            <input
+                              class="form-control"
+                              autocomplete="off"
+                              v-model="partner.bj_transfer_data_leads"
+                            />
+                          </div>
+                           <div class="mb-3">
+                            <label class="form-label required"
+                              >转介绍数据 CW%</label
                             >
                             <input
                               class="form-control"
@@ -641,11 +704,17 @@ export default {
         BJ_tracking_process: "",
         BJ_tracking_process_segment: "",
         hz_marketing_data: "",
+        hz_marketing_data_leads: "",
         sh_marketing_data: "",
+        sh_marketing_data_leads: "",
         bj_marketing_data: "",
+        bj_marketing_data_leads: "",
         hz_transfer_data: "",
+        hz_transfer_data_leads:"",
         sh_transfer_data: "",
+        sh_transfer_data_leads:"",
         bj_transfer_data: "",
+        bj_transfer_data_leads: "",
       },
       segments: {
         A: [
