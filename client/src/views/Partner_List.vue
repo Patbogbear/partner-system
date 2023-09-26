@@ -64,9 +64,9 @@
             <div class="filter-item">
               <label class="form-label">2B或2C</label>
               <select v-model="select_2b_or_2c">
-                <option value="2B">2B</option>
-                <option value="2C">2C</option>
-                <option value="MIX">MIX</option>
+                <option value="B2B">2B</option>
+                <option value="B2C">2C</option>
+                <option value="Mix">MIX</option>
                 <option value="all">All</option>
               </select>
             </div>
@@ -230,7 +230,16 @@ const filterData = (data, value) => {
     );
   }
   if (value.select_tier && value.select_tier !== "all") {
-    result = result.filter((partner) => partner.tier === value.select_tier);
+    const selectedTiers = ["金牌", "银牌", "铜牌"];
+    result = result.filter((partner) =>
+      selectedTiers.some((tier) => {
+        return (
+          partner.hz_tier === tier ||
+          partner.sh_tier === tier ||
+          partner.bj_tier === tier
+        );
+      })
+    );
   }
   if (value.select_cluster && value.select_cluster !== "all") {
     result = result.filter(
