@@ -327,6 +327,12 @@
                                   <option value="Team-Leader">
                                     Team-Leader
                                   </option>
+                                  <option value="Team-Leader">
+                                    Marketing_Specialist
+                                  </option>
+                                  <option value="Team-Leader">
+                                    DA
+                                  </option>
                                 </select>
                               </div>
                             </div>

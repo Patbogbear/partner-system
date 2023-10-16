@@ -25,13 +25,36 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label">服务商类型</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="服务商类型"
+                        <select
+                          class="form-control form-select"
                           v-model="partner.third_partner_type"
-                          required
-                        />
+                        >
+                          <option value="支付">支付</option>
+                          <option value="物流">物流</option>
+                          <option value="建站&代运营">建站&代运营</option>
+                          <option value="ERP&CRM">ERP&CRM</option>
+                          <option value="KOL内容营销">KOL内容营销</option>
+                          <option value="培训机构">培训机构</option>
+                          <option value="媒体">媒体</option>
+                          <option value="保险">保险</option>
+                          <option value="出口认证">出口认证</option>
+                          <option value="财税&VAT">财税&VAT</option>
+                          <option value="展会">展会</option>
+                          <option value="代理商&谷歌代运营">
+                            代理商&谷歌代运营
+                          </option>
+                          <option value="商会">商会</option>
+                          <option value="协会">协会</option>
+                          <option value="服务平台">服务平台</option>
+                          <option value="服务中心">服务中心</option>
+                          <option value="政府/产业园">政府/产业园</option>
+                          <option value="VC">VC</option>
+                          <option value="其他">其他</option>
+                          <option value="品牌营销">品牌营销</option>
+                          <option value="AI">AI</option>
+                          <option value="云服务">云服务</option>
+                          <option value="学院">学院</option>
+                        </select>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">服务商名称</label>
@@ -157,46 +180,24 @@
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
-                          <option value="hz-pod-lead-a@google.com">
-                            hz-pod-lead-a@google.com
+                          <option
+                            v-for="email in hz_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
-                          <option value="chenlong@google.com">
-                            chenlong@google.com
-                          </option>
-                          <option value="chjie@google.com">
-                            chjie@google.com
-                          </option>
-                          <option value="congp@google.com">
-                            congp@google.com
-                          </option>
-                          <option value="herong@google.com">
-                            herong@google.com
-                          </option>
-                          <option value="jianlian@google.com">
-                            jianlian@google.com
-                          </option>
-                          <option value="jieyin@google.com">
-                            jieyin@google.com
-                          </option>
-                          <option value="jinyangz@google.com">
-                            jinyangz@google.com
-                          </option>
-                          <option value="qinying@google.com">
-                            qinying@google.com
-                          </option>
-                          <option value="suxin@google.com">
-                            suxin@google.com
-                          </option>
-                          <option value="xincchen@google.com">
-                            xincchen@google.com
-                          </option>
-                          <option value="yiduc@google.com">
-                            yiduc@google.com
-                          </option>
-                          <option value="zhimaop@google.com">
-                            zhimaop@google.com
-                          </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+
+                        <input
+                          v-if="partner.POC_HZ === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_HZ"
+                          @blur="updatePOC_HZ"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -319,7 +320,7 @@
                               v-model="partner.hz_transfer_data_leads"
                             />
                           </div>
-                           <div class="mb-3">
+                          <div class="mb-3">
                             <label class="form-label required"
                               >转介绍数据 CW%</label
                             >
@@ -343,19 +344,23 @@
                           class="form-control form-select"
                           v-model="partner.POC_SH"
                         >
-                          <option value="sh-pod-leader-a@google.com">
-                            sh-pod-leader-a
+                          <option
+                            v-for="email in sh_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
-                          <option value="sh-pod-leader-b@google.com">
-                            sh-pod-leader-b
-                          </option>
-                          <option value="sh-pod-leader-c@google.com">
-                            sh-pod-leader-c
-                          </option>
-                          <option value="sh-pod-leader-c@google.com">
-                            sh-pod-leader-c
-                          </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+                        <input
+                          v-if="partner.POC_SH === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_SH"
+                          @blur="updatePOC_SH"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -458,7 +463,7 @@
                               v-model="partner.sh_marketing_data_leads"
                             />
                           </div>
-                           <div class="mb-3">
+                          <div class="mb-3">
                             <label class="form-label required"
                               >市场活动数据 CW%</label
                             >
@@ -478,7 +483,7 @@
                               v-model="partner.sh_transfer_data_leads"
                             />
                           </div>
-                           <div class="mb-3">
+                          <div class="mb-3">
                             <label class="form-label required"
                               >转介绍数据 CW%</label
                             >
@@ -502,10 +507,24 @@
                           class="form-control form-select"
                           v-model="partner.POC_BJ"
                         >
-                          <option value="zhibinzheng@google.com">
-                            zhibinzheng@google.com
+                          <option
+                            v-for="email in bj_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+
+                         <input
+                          v-if="partner.POC_BJ === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_BJ"
+                          @blur="updatePOC_BJ"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -608,7 +627,7 @@
                               v-model="partner.bj_marketing_data_leads"
                             />
                           </div>
-                           <div class="mb-3">
+                          <div class="mb-3">
                             <label class="form-label required"
                               >市场活动数据 CW%</label
                             >
@@ -628,7 +647,7 @@
                               v-model="partner.bj_transfer_data_leads"
                             />
                           </div>
-                           <div class="mb-3">
+                          <div class="mb-3">
                             <label class="form-label required"
                               >转介绍数据 CW%</label
                             >
@@ -710,9 +729,9 @@ export default {
         bj_marketing_data: "",
         bj_marketing_data_leads: "",
         hz_transfer_data: "",
-        hz_transfer_data_leads:"",
+        hz_transfer_data_leads: "",
         sh_transfer_data: "",
-        sh_transfer_data_leads:"",
+        sh_transfer_data_leads: "",
         bj_transfer_data: "",
         bj_transfer_data_leads: "",
       },
@@ -734,17 +753,48 @@ export default {
           "C. 已对接KP, 客户转介绍+活动推进中",
         ],
       },
+      allPartners: [],
+      hz_poc: [],
+      sh_poc: [],
+      bj_poc: [],
+      manualPOC_HZ: "",
+      manualPOC_SH: "",
+      manualPOC_BJ: "",
     };
   },
   methods: {
     addData() {
       const res = axios.post("/api/partners/add", this.partner).then((res) => {
-        console.log(this.partner);
         this.$router.push({ path: "/" });
       });
     },
     gotoHome() {
       this.$router.push({ path: "/" });
+    },
+    getPartners() {
+      axios.get("/api/partners").then((res) => {
+        this.allPartners = res.data;
+        this.allPartners.forEach((partner) => {
+          if (partner.POC_HZ && !this.hz_poc.includes(partner.POC_HZ)) {
+            this.hz_poc.push(partner.POC_HZ);
+          }
+          if (partner.POC_SH && !this.sh_poc.includes(partner.POC_SH)) {
+            this.sh_poc.push(partner.POC_SH);
+          }
+          if (partner.POC_BJ && !this.bj_poc.includes(partner.POC_BJ)) {
+            this.bj_poc.push(partner.POC_BJ);
+          }
+        });
+      });
+    },
+    updatePOC_HZ() {
+      this.partner.POC_HZ = this.manualPOC_HZ;
+    },
+    updatePOC_SH() {
+      this.partner.POC_SH = this.manualPOC_SH;
+    },
+    updatePOC_BJ() {
+      this.partner.POC_BJ = this.manualPOC_BJ;
     },
   },
   computed: {
@@ -760,6 +810,9 @@ export default {
       const selected = this.partner.BJ_tracking_process[0];
       return this.segments[selected] || [];
     },
+  },
+  created() {
+    this.getPartners();
   },
 };
 </script>

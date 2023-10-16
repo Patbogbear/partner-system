@@ -7,7 +7,7 @@
             <div class="col">
               <!-- Page pre-title -->
               <div class="page-pretitle">Overview</div>
-              <h2 class="page-title">Dashboard{{ currentData }}</h2>
+              <h2 class="page-title">Dashboard</h2>
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
@@ -40,7 +40,8 @@
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
-                <div >
+                <div v-if="user.identity =='DB'">
+                   
                   <input type="file" @change="uploadFile">
                 </div>
               </div>
@@ -144,6 +145,7 @@
                             {{ label }}
                           </li>
                         </ul>
+                        {{ currentData }}
                       </span>
                     </div>
                   </div>

@@ -85,7 +85,7 @@
           <div>
             <select class="form-select" v-model="users.identity" required>
               <option>Sales</option>
-              <option value="Pod-Leader">Pod-Leader/POC</option>
+              <option value="POC">Pod-Leader/POC</option>
               <option>Team-Leader</option>
               <!-- only for PM and VPM above lever -->
                <!-- <option>PM</option> -->

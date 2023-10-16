@@ -1,7 +1,7 @@
 <template>
   <div class="container-xl">
     <h2>Update Partner</h2>
-     <div class="page-body">
+    <div class="page-body">
       <form method="post" class="card" @submit.prevent="updateData()">
         <div class="col-12">
           <div class="card">
@@ -23,13 +23,36 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label">服务商类型</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="服务商类型"
+                        <select
+                          class="form-control form-select"
                           v-model="partner.third_partner_type"
-                          required
-                        />
+                        >
+                          <option value="支付">支付</option>
+                          <option value="物流">物流</option>
+                          <option value="建站&代运营">建站&代运营</option>
+                          <option value="ERP&CRM">ERP&CRM</option>
+                          <option value="KOL内容营销">KOL内容营销</option>
+                          <option value="培训机构">培训机构</option>
+                          <option value="媒体">媒体</option>
+                          <option value="保险">保险</option>
+                          <option value="出口认证">出口认证</option>
+                          <option value="财税&VAT">财税&VAT</option>
+                          <option value="展会">展会</option>
+                          <option value="代理商&谷歌代运营">
+                            代理商&谷歌代运营
+                          </option>
+                          <option value="商会">商会</option>
+                          <option value="协会">协会</option>
+                          <option value="服务平台">服务平台</option>
+                          <option value="服务中心">服务中心</option>
+                          <option value="政府/产业园">政府/产业园</option>
+                          <option value="VC">VC</option>
+                          <option value="其他">其他</option>
+                          <option value="品牌营销">品牌营销</option>
+                          <option value="AI">AI</option>
+                          <option value="云服务">云服务</option>
+                          <option value="学院">学院</option>
+                        </select>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">服务商名称</label>
@@ -151,50 +174,28 @@
                     <div class="col-md-6 col-xl-12">
                       <div class="mb-3">
                         <label class="form-label">HZ-POC</label>
-                        <select
+                         <select
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
-                          <option value="hz-pod-lead-a@google.com">
-                            hz-pod-lead-a@google.com
+                          <option
+                            v-for="email in hz_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
-                          <option value="chenlong@google.com">
-                            chenlong@google.com
-                          </option>
-                          <option value="chjie@google.com">
-                            chjie@google.com
-                          </option>
-                          <option value="congp@google.com">
-                            congp@google.com
-                          </option>
-                          <option value="herong@google.com">
-                            herong@google.com
-                          </option>
-                          <option value="jianlian@google.com">
-                            jianlian@google.com
-                          </option>
-                          <option value="jieyin@google.com">
-                            jieyin@google.com
-                          </option>
-                          <option value="jinyangz@google.com">
-                            jinyangz@google.com
-                          </option>
-                          <option value="qinying@google.com">
-                            qinying@google.com
-                          </option>
-                          <option value="suxin@google.com">
-                            suxin@google.com
-                          </option>
-                          <option value="xincchen@google.com">
-                            xincchen@google.com
-                          </option>
-                          <option value="yiduc@google.com">
-                            yiduc@google.com
-                          </option>
-                          <option value="zhimaop@google.com">
-                            zhimaop@google.com
-                          </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+
+                        <input
+                          v-if="partner.POC_HZ === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_HZ"
+                          @blur="updatePOC_HZ"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -239,7 +240,9 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">HZ合作评级</label>
+                            <label class="form-label required"
+                              >HZ合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -251,7 +254,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -340,19 +342,23 @@
                           class="form-control form-select"
                           v-model="partner.POC_SH"
                         >
-                          <option value="hz-pod-leader-a@google.com">
-                            sh-pod-leader-a
+                          <option
+                            v-for="email in sh_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
-                          <option value="hz-pod-leader-b@google.com">
-                            sh-pod-leader-b
-                          </option>
-                          <option value="hz-pod-leader-c@google.com">
-                            sh-pod-leader-c
-                          </option>
-                          <option value="hz-pod-leader-d@google.com">
-                            sh-pod-leader-c
-                          </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+                        <input
+                          v-if="partner.POC_SH === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_SH"
+                          @blur="updatePOC_SH"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -397,7 +403,9 @@
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">SH合作评级</label>
+                            <label class="form-label required"
+                              >SH合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -409,7 +417,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -422,7 +429,7 @@
                               autocomplete="off"
                               v-model="partner.SH_tracking_process"
                             >
-                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="A. 待合作">A. 待合作</option>
                               <option value="B. 合作暂停">B. 合作暂停</option>
                               <option value="C. 合作中">C. 合作中</option>
                             </select>
@@ -498,10 +505,24 @@
                           class="form-control form-select"
                           v-model="partner.POC_BJ"
                         >
-                          <option value="zhibinzheng@google.com">
-                            zhibinzheng@google.com
+                          <option
+                            v-for="email in bj_poc"
+                            :value="email"
+                            :key="email"
+                          >
+                            {{ email }}
                           </option>
+                          <option value="手动输入">手动输入</option>
                         </select>
+
+                         <input
+                          v-if="partner.POC_BJ === '手动输入'"
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          v-model="manualPOC_BJ"
+                          @blur="updatePOC_BJ"
+                        />
                       </div>
                       <div class="mb-3">
                         <fieldset class="form-fieldset">
@@ -543,10 +564,12 @@
                           </div>
                         </fieldset>
                       </div>
-                       <div class="mb-3">
+                      <div class="mb-3">
                         <fieldset class="form-fieldset">
                           <div class="mb-3">
-                            <label class="form-label required">BJ合作评级</label>
+                            <label class="form-label required"
+                              >BJ合作评级</label
+                            >
                             <select
                               type="text"
                               class="form-control"
@@ -558,7 +581,6 @@
                               <option value="铜牌">铜牌</option>
                             </select>
                           </div>
-                          
                         </fieldset>
                       </div>
                       <div class="mb-3">
@@ -571,7 +593,7 @@
                               autocomplete="off"
                               v-model="partner.BJ_tracking_process"
                             >
-                            <option value="A. 待合作">A. 待合作</option>
+                              <option value="A. 待合作">A. 待合作</option>
                               <option value="B. 合作暂停">B. 合作暂停</option>
                               <option value="C. 合作中">C. 合作中</option>
                             </select>
@@ -660,6 +682,7 @@ import axios from "../http";
 export default {
   created() {
     this.getDetail();
+    this.getPartners();
     //console.log(this.partner)
   },
   data() {
@@ -703,14 +726,14 @@ export default {
         SH_tracking_process_segment: "",
         BJ_tracking_process: "",
         BJ_tracking_process_segment: "",
-         hz_marketing_data: "",
+        hz_marketing_data: "",
         hz_marketing_data_leads: "",
         sh_marketing_data: "",
         sh_marketing_data_leads: "",
         bj_marketing_data: "",
         bj_marketing_data_leads: "",
         hz_transfer_data: "",
-        hz_transfer_data_leads:"",
+        hz_transfer_data_leads: "",
         sh_transfer_data: "",
         sh_transfer_data_leads: "",
         bj_transfer_data: "",
@@ -734,6 +757,13 @@ export default {
           "C. 已对接KP, 客户转介绍+活动推进中",
         ],
       },
+      allPartners: [],
+      hz_poc: [],
+      sh_poc: [],
+      bj_poc: [],
+      manualPOC_HZ: "",
+      manualPOC_SH: "",
+      manualPOC_BJ: "",
     };
   },
 
@@ -743,7 +773,7 @@ export default {
         .get("/api/partners/" + this.$route.params.id)
         .then((res) => {
           this.partner = res.data;
-          console.log(this.partner)
+          console.log(this.partner);
         });
     },
     updateData() {
@@ -755,32 +785,57 @@ export default {
           this.$router.push({ path: "/" });
         });
     },
+    updatePOC_HZ() {
+      this.partner.POC_HZ = this.manualPOC_HZ;
+    },
+    updatePOC_SH() {
+      this.partner.POC_SH = this.manualPOC_SH;
+    },
+    updatePOC_BJ() {
+      this.partner.POC_BJ = this.manualPOC_BJ;
+    },
+    getPartners() {
+      axios.get("/api/partners").then((res) => {
+        this.allPartners = res.data;
+        this.allPartners.forEach((partner) => {
+          if (partner.POC_HZ && !this.hz_poc.includes(partner.POC_HZ)) {
+            this.hz_poc.push(partner.POC_HZ);
+          }
+          if (partner.POC_SH && !this.sh_poc.includes(partner.POC_SH)) {
+            this.sh_poc.push(partner.POC_SH);
+          }
+          if (partner.POC_BJ && !this.bj_poc.includes(partner.POC_BJ)) {
+            this.bj_poc.push(partner.POC_BJ);
+          }
+        });
+      });
+    },
     jumpBack() {
       this.$router.push({ path: "/" });
     },
   },
   computed: {
-     filteredSegmentsHZ() {
-        if (!this.partner.HZ_tracking_process) {
-            return [];
-        }
-        const selected = this.partner.HZ_tracking_process[0];
-        return this.segments[selected] || [];
+    filteredSegmentsHZ() {
+      if (!this.partner.HZ_tracking_process) {
+        return [];
+      }
+      const selected = this.partner.HZ_tracking_process[0];
+      return this.segments[selected] || [];
     },
 
-     filteredSegmentsSH() {
-        if (!this.partner.SH_tracking_process) {
-            return [];
-        }
-        const selected = this.partner.SH_tracking_process[0];
-        return this.segments[selected] || [];
+    filteredSegmentsSH() {
+      if (!this.partner.SH_tracking_process) {
+        return [];
+      }
+      const selected = this.partner.SH_tracking_process[0];
+      return this.segments[selected] || [];
     },
     filteredSegmentsBJ() {
-        if (!this.partner.BJ_tracking_process) {
-            return [];
-        }
-        const selected = this.partner.BJ_tracking_process[0];
-        return this.segments[selected] || [];
+      if (!this.partner.BJ_tracking_process) {
+        return [];
+      }
+      const selected = this.partner.BJ_tracking_process[0];
+      return this.segments[selected] || [];
     },
   },
 };

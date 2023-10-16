@@ -50,9 +50,9 @@
             <div class="filter-item">
               <label class="form-label">服务商评级</label>
               <select v-model="select_tier">
-                <option value="金">金</option>
-                <option value="银">银</option>
-                <option value="铜">铜</option>
+                <option value="金牌">金牌</option>
+                <option value="银牌">银牌</option>
+                <option value="铜牌">铜牌</option>
                 <option value="all">All</option>
               </select>
             </div>
@@ -76,7 +76,7 @@
                 <option value="SH">SH</option>
                 <option value="HZ">HZ</option>
                 <option value="BJ">BJ</option>
-                <option value="all">ALl</option>
+                <option value="all">All</option>
               </select>
             </div>
           </div>
@@ -210,6 +210,7 @@ const getData = async () => {
   try {
     let { data } = await axios.get("/api/partners");
     partners.value = data;
+    console.log(partners.value)
   } catch (error) {}
 };
 const filteredData = computed(() => {
@@ -230,15 +231,11 @@ const filterData = (data, value) => {
     );
   }
   if (value.select_tier && value.select_tier !== "all") {
-    const selectedTiers = ["金牌", "银牌", "铜牌"];
-    result = result.filter((partner) =>
-      selectedTiers.some((tier) => {
-        return (
-          partner.hz_tier === tier ||
-          partner.sh_tier === tier ||
-          partner.bj_tier === tier
-        );
-      })
+    result = result.filter(
+      (partner) =>
+        partner.hz_tier === value.select_tier ||
+        partner.sh_tier === value.select_tier ||
+        partner.bj_tier === value.select_tier
     );
   }
   if (value.select_cluster && value.select_cluster !== "all") {

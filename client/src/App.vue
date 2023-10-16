@@ -184,8 +184,8 @@
             aria-label="Open user menu"
           >
             <div class="d-none d-xl-block ps-2">
-              <div>user name</div>
-              <div class="mt-1 small text-secondary">user identity</div>
+              <div>{{userIdentity.name}}</div>
+              <div class="mt-1 small text-secondary">{{userIdentity.identity}}</div>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -209,37 +209,39 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 import jwt_decode from "jwt-decode";
-export default {
-  created() {
-    if (localStorage.userToken) {
-      const decoded = jwt_decode(localStorage.userToken);
+import { onMounted,computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-      this.$store.dispatch("setAuthenticated", !this.isEmpty(decoded));
-      this.$store.dispatch("setUser", decoded);
-      // const userIdentity = this.$store.getters.user
-    }
-  },
+const store = useStore();
+const router = useRouter();
+const userIdentity = computed(() => store.getters.user);
 
-  methods: {
-    isEmpty(value) {
-      return (
-        value === undefined ||
-        value === null ||
-        (typeof value === "object" && Object.keys(value).length === 0) ||
-        (typeof value === "string" && value.trim().length === 0)
-      );
-    },
-    logOut() {
-      //clear token
-      localStorage.removeItem("userToken");
-      //config vuex store
-      this.$store.dispatch("clearCurrentState");
-      this.$router.push({ path: "/login" });
-    },
-  },
+// 方法提取
+const isEmpty = (value) => {
+  return (
+    value === undefined ||
+    value === null ||
+    (typeof value === "object" && Object.keys(value).length === 0) ||
+    (typeof value === "string" && value.trim().length === 0)
+  );
 };
+
+const logOut = () => {
+  localStorage.removeItem("userToken");
+  store.dispatch("clearCurrentState");
+  router.push({ path: "/login" });
+};
+
+onMounted(() => {
+  if (localStorage.userToken) {
+    const decoded = jwt_decode(localStorage.userToken);
+    store.dispatch("setAuthenticated", !isEmpty(decoded));
+    store.dispatch("setUser", decoded);
+  }
+});
 </script>
 <style>
 #app {
