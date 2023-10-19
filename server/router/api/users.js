@@ -51,7 +51,7 @@ router.post("/register", (req, res) => {
 
 router.get("/", passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        User.find({ identity: { $ne: "Super-Admin" } }, 'email')
+        User.find({ identity: { $ne: "Super-Admin" } }, 'email cluster identity name')
             .then((users) => {
                 res.json(users);
             })
