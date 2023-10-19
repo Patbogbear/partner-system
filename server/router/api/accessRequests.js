@@ -2,6 +2,18 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport")
 const AccessRequest = require("../../model/AccessRequests");
+const nodemailer =require('nodemailer')
+
+const transporter =nodemailer.createTransport({
+    service:'gmail',
+    auth:{
+        type:'OAuth2',
+        user:'ppartnersystememail@gmail.com',
+        clientId:'241542371798-i4cahg9bcd0e1oaj775tt4j2kg37hst3.apps.googleusercontent.com',
+        clientSecret:'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',
+        refreshToken:'1//04otaz3e5wIewCgYIARAAGAQSNwF-L9IrWmkJrdE1HhsfF8pDO82MSo2Xr5mt8lBxnxCZVYOYk7K84_kNAHtzNue6jL0ZFfUvXxg'
+    }
+})
 
 
 //request for partner contact information 
@@ -32,6 +44,26 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         const newRequest = new AccessRequest({ userId, partnerId, requestedContactField });
         await newRequest.save();
+
+        //test email 
+
+        const mailOptions = {
+            from:'ppartnersystememail@gmail.com',
+            to:'jiandongz@google.com',
+            subject:'test request',
+            text:'new request,please have a look'
+        }
+
+
+        transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+
         res.status(200).send({newRequest,message:"request has been submitted"});
     } catch (error) {
         res.status(404).send({ message: 'Error creating access request.' });
@@ -140,7 +172,8 @@ router.get('/user-requests/:userId', passport.authenticate("jwt", { session: fal
             userId: userId,
             $or: [
                 { status: 'APPROVED' },
-                { status: 'DENIED' }
+                { status: 'DENIED' },
+                { status:'PENDING'}
             ]
         };
 
