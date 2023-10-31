@@ -193,7 +193,7 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">Demo</div>
+                    <div class="h2 mb-3 me-2">lack of data</div>
                     <div class="me-auto">
                       <span
                         class="text-green d-inline-flex align-items-center lh-1"
