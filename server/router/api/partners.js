@@ -270,7 +270,7 @@ async function filterProtectedFields(user, partner) {
     }
 
     //works fine for pod-leader
-    if (user.identity === 'Pod-Leader') {
+    if (user.identity === 'POC') {
         const fullUser = await Users.findOne({ _id: user._id });
 
 
