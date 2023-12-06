@@ -121,7 +121,7 @@ router.get("/export", passport.authenticate("jwt", { session: false }), (req, re
 
 
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
-    console.log(111)
+
     let originalPartner = {};
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
