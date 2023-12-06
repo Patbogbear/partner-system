@@ -118,12 +118,15 @@ router.get("/export", passport.authenticate("jwt", { session: false }), (req, re
 // @desc return require json data 
 // @ access private
 
-let originalPartner = {};
+
 
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
+    console.log(111)
+    let originalPartner = {};
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
-        // console.log(partner)
+        
+         
         if (!partner) {
             return res.status(400).json({ message: "no content" });
         }
@@ -131,11 +134,9 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
         // copy origin partner data object
         Object.assign(originalPartner, partner.toObject());
 
-        
-        const filteredPartner = await filterProtectedFields(req.user, partner);
-
+        const filteredPartner = await filterProtectedFields(req.user, partner,originalPartner);
         res.json(filteredPartner);
-
+       
     } catch (error) {
         res.status(404).json({ error: "serve error,could not get data", message: "serve error, could not get datat" });
     }
@@ -167,7 +168,7 @@ function setEmptyFieldMessages(contactData) {
 }
 
 
-async function filterProtectedFields(user, partner) {
+async function filterProtectedFields(user, partner,originalPartner) {
 
     function handleSalesFields(partner, requestedContactField) {
 
@@ -273,7 +274,7 @@ async function filterProtectedFields(user, partner) {
     if (user.identity === 'POC') {
         const fullUser = await Users.findOne({ _id: user._id });
 
-
+        
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
@@ -284,7 +285,7 @@ async function filterProtectedFields(user, partner) {
         approvedRequests.forEach(request => {
             approvedFields.push(request.requestedContactField);
         });
-
+        
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
             if (approvedFields.includes(field)) {
                 // 已获批准，从原始数据中恢复它
@@ -294,6 +295,7 @@ async function filterProtectedFields(user, partner) {
                 setFieldMessages(partner[field]);
             }
         });
+     
 
         // 根据 user 的 ID 与 POC 字段的匹配来决定哪个字段可见
         if (fullUser.email === partner.POC_HZ && originalPartner.hz_contact != null) {
@@ -303,7 +305,7 @@ async function filterProtectedFields(user, partner) {
         } else if (fullUser.email === partner.POC_SH && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
         }
-
+       
         return partner;
     }
 
