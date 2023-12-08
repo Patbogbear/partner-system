@@ -19,6 +19,10 @@ const fastcsv = require("fast-csv")
 router.post("/add", passport.authenticate("jwt", { session: false }), (req, res) => {
     const partners = {};
 
+    const userIdentity = req.user.identity
+    const userCluster = req.user.cluster
+
+
     if (req.body.cluster) partners.cluster = req.body.cluster;
     if (req.body.third_partner_type) partners.third_partner_type = req.body.third_partner_type;
     if (req.body.third_partner_name) partners.third_partner_name = req.body.third_partner_name;
@@ -32,24 +36,6 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.sh_tier) partners.sh_tier = req.body.sh_tier;
     if (req.body.hz_tier) partners.hz_tier = req.body.hz_tier;
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;
-
-    // SH, HZ, BJ contact details
-    partners.sh_contact = {
-        channel_contact: req.body.sh_contact?.channel_contact,
-        channel_contact_position: req.body.sh_contact?.channel_contact_position,
-        channel_contact_information: req.body.sh_contact?.channel_contact_information
-    };
-    partners.hz_contact = {
-        channel_contact: req.body.hz_contact?.channel_contact,
-        channel_contact_position: req.body.hz_contact?.channel_contact_position,
-        channel_contact_information: req.body.hz_contact?.channel_contact_information
-    };
-    partners.bj_contact = {
-        channel_contact: req.body.bj_contact?.channel_contact,
-        channel_contact_position: req.body.bj_contact?.channel_contact_position,
-        channel_contact_information: req.body.bj_contact?.channel_contact_information
-    };
-
     if (req.body.vertical) partners.vertical = req.body.vertical;
     if (req.body.POC_HZ) partners.POC_HZ = req.body.POC_HZ;
     if (req.body.POC_SH) partners.POC_SH = req.body.POC_SH;
@@ -72,6 +58,13 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
     if (req.body.hz_transfer_data_leads) partners.hz_transfer_data_leads = req.body.hz_transfer_data_leads;
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
     if (req.body.bj_transfer_data_leads) partners.bj_transfer_data_leads = req.body.bj_transfer_data_leads;
+
+
+
+
+
+
+
 
     new Partners(partners).save().then((partners) => {
         res.status(200).json({ partners, message: "add partner success" })
@@ -340,6 +333,9 @@ async function filterProtectedFields(user, partner, originalPartner) {
 router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
     const partners = {};
 
+    const userIdentity = req.user.identity
+    const userCluster = req.user.cluster
+
     if (req.body.cluster) partners.cluster = req.body.cluster;
     if (req.body.third_partner_type) partners.third_partner_type = req.body.third_partner_type;
     if (req.body.third_partner_name) partners.third_partner_name = req.body.third_partner_name;
@@ -353,24 +349,6 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.sh_tier) partners.sh_tier = req.body.sh_tier;
     if (req.body.hz_tier) partners.hz_tier = req.body.hz_tier;
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;
-
-    // SH, HZ, BJ contact details
-    partners.sh_contact = {
-        channel_contact: req.body.sh_contact?.channel_contact,
-        channel_contact_position: req.body.sh_contact?.channel_contact_position,
-        channel_contact_information: req.body.sh_contact?.channel_contact_information
-    };
-    partners.hz_contact = {
-        channel_contact: req.body.hz_contact?.channel_contact,
-        channel_contact_position: req.body.hz_contact?.channel_contact_position,
-        channel_contact_information: req.body.hz_contact?.channel_contact_information
-    };
-    partners.bj_contact = {
-        channel_contact: req.body.bj_contact?.channel_contact,
-        channel_contact_position: req.body.bj_contact?.channel_contact_position,
-        channel_contact_information: req.body.bj_contact?.channel_contact_information
-    };
-
     if (req.body.vertical) partners.vertical = req.body.vertical;
     if (req.body.POC_HZ) partners.POC_HZ = req.body.POC_HZ;
     if (req.body.POC_SH) partners.POC_SH = req.body.POC_SH;
@@ -393,6 +371,48 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.hz_transfer_data_leads) partners.hz_transfer_data_leads = req.body.hz_transfer_data_leads;
     if (req.body.bj_transfer_data) partners.bj_transfer_data = req.body.bj_transfer_data;
     if (req.body.bj_transfer_data_leads) partners.bj_transfer_data_leads = req.body.bj_transfer_data_leads;
+
+    // 根据用户角色和集群来决定是否更新联系信息
+    if (userIdentity === 'Super-Admin') {
+        // Super-Admin可以更新所有字段
+        // 更新sh_contact, hz_contact, bj_contact
+        partners.sh_contact = {
+            channel_contact: req.body.sh_contact?.channel_contact,
+            channel_contact_position: req.body.sh_contact?.channel_contact_position,
+            channel_contact_information: req.body.sh_contact?.channel_contact_information
+        };
+        partners.hz_contact = {
+            channel_contact: req.body.hz_contact?.channel_contact,
+            channel_contact_position: req.body.hz_contact?.channel_contact_position,
+            channel_contact_information: req.body.hz_contact?.channel_contact_information
+        };
+        partners.bj_contact = {
+            channel_contact: req.body.bj_contact?.channel_contact,
+            channel_contact_position: req.body.bj_contact?.channel_contact_position,
+            channel_contact_information: req.body.bj_contact?.channel_contact_information
+        };
+    } else if (userIdentity === 'Team-Leader' || userIdentity === 'POC') {
+        // 对于Pod-leader/Team-leader
+        if (userCluster === 'HZ') {
+            // 只更新hz_contact
+            if (req.body.hz_contact) {
+                partners.hz_contact = req.body.hz_contact;
+            }
+        } else if (userCluster === 'SH') {
+            // 只更新sh_contact
+            if (req.body.sh_contact) {
+                partners.sh_contact = req.body.sh_contact;
+            }
+        } else if (userCluster === 'BJ') {
+            // 只更新bj_contact
+            if (req.body.bj_contact) {
+                partners.bj_contact = req.body.bj_contact;
+            }
+
+        }
+    }
+
+
 
     Partners.findByIdAndUpdate(
         { _id: req.params.id },
