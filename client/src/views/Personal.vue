@@ -18,7 +18,11 @@
         </div>
         <div class="col-xl-4 px-3 d-flex align-items-center">
           <div class="row">
-            <a class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-team">
+            <a
+              class="btn btn-secondary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-team"
+            >
               Change Password
             </a>
             <div
@@ -75,7 +79,11 @@
                 </div>
               </div>
             </div>
-            <a class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addUser">
+            <a
+              class="btn btn-secondary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#addUser"
+            >
               Add User
             </a>
             <div
@@ -90,7 +98,10 @@
                   <div class="modal-body">
                     <form
                       @submit.prevent="addUser"
-                      v-if="userIdentity.identity === 'Super-Admin'"
+                      v-if="
+                        userIdentity.identity === 'Super-Admin' ||
+                        userIdentity.identity === 'PM'
+                      "
                     >
                       <fieldset class="form-fieldset">
                         <div class="card-header">
@@ -191,14 +202,16 @@
                 </div>
               </div>
             </div>
-           
           </div>
         </div>
         <div class="col-xl-4 px-3 d-flex align-items-center">
           <div class="row">
-
             <div class="row">
-              <a  class="btn btn-secondary btn-sm custom-btn"  data-bs-toggle="modal" data-bs-target="#deleteUser">
+              <a
+                class="btn btn-secondary btn-sm custom-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteUser"
+              >
                 Delete User
               </a>
               <div
@@ -213,7 +226,10 @@
                     <div class="modal-body">
                       <form
                         @submit.prevent="deleteUser"
-                        v-if="userIdentity.identity === 'Super-Admin'"
+                        v-if="
+                          userIdentity.identity === 'Super-Admin' ||
+                          userIdentity.identity === 'PM'
+                        "
                       >
                         <fieldset class="form-fieldset">
                           <div class="card-header">
@@ -286,7 +302,10 @@
                     <div class="modal-body">
                       <form
                         @submit.prevent="updateUserRole"
-                        v-if="userIdentity.identity === 'Super-Admin'"
+                        v-if="
+                          userIdentity.identity === 'Super-Admin' ||
+                          userIdentity.identity === 'PM'
+                        "
                       >
                         <fieldset class="form-fieldset">
                           <div class="card-header">
@@ -323,16 +342,16 @@
                                   v-model="selectedRole"
                                 >
                                   <option value="Sales">Sales</option>
-                                  <option value="Pod-Leader">Pod-Leader/POC</option>
+                                  <option value="Pod-Leader">
+                                    Pod-Leader/POC
+                                  </option>
                                   <option value="Team-Leader">
                                     Team-Leader
                                   </option>
                                   <option value="Team-Leader">
                                     Marketing_Specialist
                                   </option>
-                                  <option value="Team-Leader">
-                                    DA
-                                  </option>
+                                  <option value="Team-Leader">DA</option>
                                 </select>
                               </div>
                             </div>
@@ -361,7 +380,8 @@
             class="col-xl-12"
             v-if="
               userIdentity.identity === 'Super-Admin' ||
-              userIdentity.identity === 'Team-Leader'
+              userIdentity.identity === 'Team-Leader' ||
+              userIdentity.identity === 'PM'
             "
           >
             <div class="card">
@@ -488,21 +508,29 @@
                       }}的区域联系人信息，目前已被{{ request.status }}
                     </td>
                     <td class="text-secondary">
-                      <button class="btn btn-warning  btn-sm"
+                      <button
+                        class="btn btn-warning btn-sm"
                         style="
                           --bs-btn-padding-y: 0.25rem;
                           --bs-btn-padding-x: 0.5rem;
                           --bs-btn-font-size: 0.75rem;
-                        " v-if="request.status === 'DENIED'">
+                        "
+                        v-if="request.status === 'DENIED'"
+                      >
                         delete request
                       </button>
-                      <router-link v-if="request.status === 'APPROVED' && request.partnerId" class="btn btn-primary" 
-                       :to="'/single-partner/' + request.partnerId._id"
+                      <router-link
+                        v-if="
+                          request.status === 'APPROVED' && request.partnerId
+                        "
+                        class="btn btn-primary"
+                        :to="'/single-partner/' + request.partnerId._id"
                         style="
                           --bs-btn-padding-y: 0.25rem;
                           --bs-btn-padding-x: 0.5rem;
                           --bs-btn-font-size: 0.75rem;
-                        " >
+                        "
+                      >
                         view detail
                       </router-link>
                     </td>
@@ -511,6 +539,45 @@
                         class="chart-sparkline chart-sparkline-sm"
                         id="sparkline-bounce-rate-1"
                       ></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12" v-if="userIdentity.identity === 'Super-Admin'">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Logs</h3>
+              </div>
+              <div class="card-table table-responsive">
+                <table class="table table-vcenter">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Actions</th>
+                      <th>Descriptions</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tr v-for="log in logList" :key="log._id + new Date()">
+                    <td>
+                      {{
+                        log.userId && log.userId.name
+                          ? log.userId.name
+                          : "user has been delete"
+                      }}
+                    </td>
+                    <td class="text-secondary">
+                      {{ log.action }}
+                    </td>
+                    <td class="text-secondary">
+                      {{ log.description }}
+                    </td>
+                    <td class="text-secondary">
+                      {{ log.date }}
                     </td>
                   </tr>
                 </table>
@@ -542,16 +609,24 @@ const addUserIdentity = ref("");
 const addUserName = ref("");
 const addUserCluster = ref("");
 const requestList = ref([]);
+const logList = ref([]);
 
 onMounted(async () => {
   await getUsers();
   await requestLists(userIdentity);
+  await getLogs();
 });
 
 const getUsers = async () => {
   try {
     let { data } = await axios.get("/api/users");
     allUsers.value = data;
+  } catch (error) {}
+};
+const getLogs = async () => {
+  try {
+    let { data } = await axios.get("/api/logs");
+    logList.value = data;
   } catch (error) {}
 };
 const changePassword = () => {
@@ -618,7 +693,11 @@ const requestLists = async (userIdentity) => {
         params: { status: "PENDING" },
       });
       requestList.value = data;
-      console.log(requestList);
+    } else if (userIdentity.value.identity === "PM") {
+      let { data } = await axios.get("/api/accessQuests/all-requests", {
+        params: { status: "PENDING" },
+      });
+      requestList.value =data
     } else if (
       userIdentity.value.identity === "Sales" ||
       userIdentity.value.identity === "Team-Leader"
@@ -628,7 +707,6 @@ const requestLists = async (userIdentity) => {
       );
 
       requestList.value = data;
-      console.log(requestList)
     }
   } catch (error) {
     console.log("error get request list", error);
@@ -664,10 +742,10 @@ const denyRequest = async (value) => {
     max-width: 1199px;
   }
 }
-.row{
+.row {
   padding: 0;
 }
-.col-xl-4{
+.col-xl-4 {
   text-align: center;
 }
 .modal-content .btn-close {
@@ -680,16 +758,15 @@ const denyRequest = async (value) => {
   padding: 0;
   z-index: 10;
 }
-.btn{
+.btn {
   margin: 10px;
 }
-.custom-btn{
-
+.custom-btn {
 }
-.btn-primary{
+.btn-primary {
   background-color: #216bc4;
 }
-.btn-warning{
+.btn-warning {
   background-color: #ffc107;
 }
 
@@ -705,54 +782,54 @@ const denyRequest = async (value) => {
   vertical-align: middle;
 }
 .card {
-    box-shadow: rgba(35,46,60,.04) 0 2px 4px 0;
-    border: 1px solid rgba(101,109,119,.16);
+  box-shadow: rgba(35, 46, 60, 0.04) 0 2px 4px 0;
+  border: 1px solid rgba(101, 109, 119, 0.16);
 }
 .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(101,109,119,.16);
-    border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(101, 109, 119, 0.16);
+  border-radius: 4px;
 }
 .card-body {
-    flex: 1 1 auto;
-    padding: 1rem 1rem;
+  flex: 1 1 auto;
+  padding: 1rem 1rem;
 }
 .mb-3 {
-    margin-bottom: 1rem!important;
+  margin-bottom: 1rem !important;
 }
 .card-title {
-    display: block;
-    margin: 0 0 1rem;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.5rem;
+  display: block;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
 }
 .text-muted {
-    color: #656d77!important;
+  color: #656d77 !important;
 }
 .avatar-xl {
-    --tblr-avatar-size: 7rem;
+  --tblr-avatar-size: 7rem;
 }
 .avatar-rounded {
-    border-radius: 100rem;
+  border-radius: 100rem;
 }
-.avatar { 
-    position: relative;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #656d77;
-    text-align: center;
-    text-transform: uppercase;
-    vertical-align: bottom;
-    background: #f0f2f6 no-repeat center/cover;
-    border-radius: 4px;
+.avatar {
+  position: relative;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #656d77;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  background: #f0f2f6 no-repeat center/cover;
+  border-radius: 4px;
 }
 </style>

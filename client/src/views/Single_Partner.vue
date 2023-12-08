@@ -747,7 +747,7 @@ const requestData = (value) => {
 
 const getDetail = async (id) => {
   try {
-    console.log(id);
+    
     let { data } = await axios.get("/api/partners/" + id);
     partner.value = data;
     console.log(partner);

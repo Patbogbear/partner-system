@@ -664,7 +664,7 @@
             </div>
             <div class="card-footer text-end">
               <div class="d-flex">
-                <a href="#" class="btn btn-link" @click="gotoHome()">Cancel</a>
+                <a class="btn btn-link" @click="gotoHome()">Cancel</a>
                 <button type="submit" class="btn btn-primary ms-auto">
                   Send data
                 </button>
@@ -810,8 +810,8 @@ export default {
         });
       });
     },
-    jumpBack() {
-      this.$router.push({ path: "/" });
+    gotoHome() {
+      this.$router.go(-1);
     },
   },
   computed: {

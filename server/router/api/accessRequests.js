@@ -2,16 +2,17 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport")
 const AccessRequest = require("../../model/AccessRequests");
-const nodemailer =require('nodemailer')
+const Partners = require("../../model/Partners")
+const nodemailer = require('nodemailer')
 
-const transporter =nodemailer.createTransport({
-    service:'gmail',
-    auth:{
-        type:'OAuth2',
-        user:'ppartnersystememail@gmail.com',
-        clientId:'241542371798-i4cahg9bcd0e1oaj775tt4j2kg37hst3.apps.googleusercontent.com',
-        clientSecret:'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',
-        refreshToken:'1//04otaz3e5wIewCgYIARAAGAQSNwF-L9IrWmkJrdE1HhsfF8pDO82MSo2Xr5mt8lBxnxCZVYOYk7K84_kNAHtzNue6jL0ZFfUvXxg'
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        type: 'OAuth2',
+        user: 'ppartnersystememail@gmail.com',
+        clientId: '241542371798-i4cahg9bcd0e1oaj775tt4j2kg37hst3.apps.googleusercontent.com',
+        clientSecret: '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',
+        refreshToken: '1//04otaz3e5wIewCgYIARAAGAQSNwF-L9IrWmkJrdE1HhsfF8pDO82MSo2Xr5mt8lBxnxCZVYOYk7K84_kNAHtzNue6jL0ZFfUvXxg'
     }
 })
 
@@ -31,6 +32,24 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
             return res.status(400).send({ message: 'userId, partnerId, and requestedContactField are required.' });
         }
 
+        // 获取 partner 信息
+        const partner = await Partner.findById(partnerId);
+        if (!partner) {
+            return res.status(404).send({ message: 'Partner not found.' });
+        }
+
+        // 获取请求的联系信息字段
+        const contactInfo = partner[requestedContactField];
+        const channelContactInfo = contactInfo ? contactInfo.channel_contact_information : null;
+        console.log(channelContactInfo)
+        // 检查 channel_contact_information 字段是否有效
+        if (!channelContactInfo || channelContactInfo === "目前该信息尚未填充") {
+            return res.status(400).send({ message: '联系人信息尚未填充，请求失败' });
+        }
+
+
+
+
         // 检查是否存在重复请求
         const existingRequest = await AccessRequest.findOne({ userId, partnerId, requestedContactField });
         if (existingRequest) {
@@ -47,24 +66,24 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         //test email 
 
-        const mailOptions = {
-            from:'ppartnersystememail@gmail.com',
-            to:'jiandongz@google.com',
-            subject:'test request',
-            text:'new request,please have a look'
-        }
+        // const mailOptions = {
+        //     from:'ppartnersystememail@gmail.com',
+        //     to:'jiandongz@google.com',
+        //     subject:'test request',
+        //     text:'new request,please have a look'
+        // }
 
 
-        transporter.sendMail(mailOptions, function(error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
+        // transporter.sendMail(mailOptions, function(error, info) {
+        //     if (error) {
+        //         console.log(error);
+        //     } else {
+        //         console.log('Email sent: ' + info.response);
+        //     }
+        // });
 
 
-        res.status(200).send({newRequest,message:"request has been submitted"});
+        res.status(200).send({ newRequest, message: "request has been submitted" });
     } catch (error) {
         res.status(404).send({ message: 'Error creating access request.' });
     }
@@ -87,10 +106,19 @@ router.get('/all-requests', passport.authenticate("jwt", { session: false }), as
         }
 
         // 当用户身份为 PM，根据其 cluster 属性筛选 AccessRequest
-        if (req.user.identity === 'PM') {
-            requests = requests.filter(request => request.userId && request.userId.cluster === req.user.cluster);
+        if (req.user.email === 'congp@google.com') {
+            requests = requests.filter(request =>
+                request.userId && (request.userId.cluster === 'HZ' || request.userId.cluster === 'SH')
+            );
             return res.status(200).send(requests);
         }
+        if (req.user.email === 'dongjia@google.com') {
+            requests = requests.filter(request =>
+                request.userId && (request.userId.cluster === 'BJ')
+            );
+            return res.status(200).send(requests);
+        }
+
         // 当用户身份为 Team-Leader，根据其 cluster 属性筛选 AccessRequest
         if (req.user.identity === 'Team-Leader') {
             requests = requests.filter(request => request.userId && request.userId.cluster === req.user.cluster);
@@ -98,7 +126,7 @@ router.get('/all-requests', passport.authenticate("jwt", { session: false }), as
         }
 
         // when user identity is pod-leader, 
-        if(req.user.identity ==="Pod-Leader"){
+        if (req.user.identity === "Pod-Leader") {
             const pocField = `POC_${req.user.cluster}`;
             requests = requests.filter(request => request.partnerId && request.partnerId[pocField] === req.user.email);
             return res.status(200).send(requests);
@@ -162,7 +190,7 @@ router.put('/all-requests/:requestAccessId', passport.authenticate("jwt", { sess
 router.get('/user-requests/:userId', passport.authenticate("jwt", { session: false }), async (req, res) => {
     try {
         const { userId } = req.params;
-      
+
         // 只允许用户访问他自己的请求
         if (req.user.id !== userId) {
             return res.status(403).send({ message: 'Permission denied' });
@@ -173,14 +201,14 @@ router.get('/user-requests/:userId', passport.authenticate("jwt", { session: fal
             $or: [
                 { status: 'APPROVED' },
                 { status: 'DENIED' },
-                { status:'PENDING'}
+                { status: 'PENDING' }
             ]
         };
 
         let requests = await AccessRequest.find(filter).populate('partnerId');
-     
+
         return res.status(200).send(requests);
-        
+
 
     } catch (error) {
         res.status(500).send({ message: 'Error fetching user requests.' });

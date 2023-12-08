@@ -89,7 +89,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
         }
         res.json(partners)
     })
-        .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
+    .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
 })
 
 // $route get api/partners/export
@@ -121,22 +121,21 @@ router.get("/export", passport.authenticate("jwt", { session: false }), (req, re
 
 
 router.get("/:id", passport.authenticate("jwt", { session: false }), async (req, res) => {
-
     let originalPartner = {};
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
+      
         
-         
         if (!partner) {
             return res.status(400).json({ message: "no content" });
         }
 
         // copy origin partner data object
         Object.assign(originalPartner, partner.toObject());
-
-        const filteredPartner = await filterProtectedFields(req.user, partner,originalPartner);
-        res.json(filteredPartner);
        
+        const filteredPartner = await filterProtectedFields(req.user, partner, originalPartner);
+        res.json(filteredPartner);
+
     } catch (error) {
         res.status(404).json({ error: "serve error,could not get data", message: "serve error, could not get datat" });
     }
@@ -148,11 +147,11 @@ function setFieldMessages(obj) {
     const unauthorizedMessage = "尚未获得查看权限";
     const emptyFieldMessage = "目前该信息尚未填充";
     const contactProperties = ['channel_contact', 'channel_contact_position', 'channel_contact_information'];
-    
+
     contactProperties.forEach(field => {
         if (!obj[field] || obj[field].trim() === "" || obj[field] === emptyFieldMessage)
             obj[field] = emptyFieldMessage;
-        else 
+        else
             obj[field] = unauthorizedMessage;
     });
 }
@@ -168,7 +167,7 @@ function setEmptyFieldMessages(contactData) {
 }
 
 
-async function filterProtectedFields(user, partner,originalPartner) {
+async function filterProtectedFields(user, partner, originalPartner) {
 
     function handleSalesFields(partner, requestedContactField) {
 
@@ -192,13 +191,14 @@ async function filterProtectedFields(user, partner,originalPartner) {
             partner[field] = partner[field] || {};
             setEmptyFieldMessages(partner[field]);
         });
-        
-       
+
+
         return partner;
     }
 
     if (user.identity === 'PM') {
         // 获取已批准的请求
+      
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
@@ -219,17 +219,14 @@ async function filterProtectedFields(user, partner,originalPartner) {
                 setFieldMessages(partner[field]);
             }
         });
-        // 根据 user 的 cluster 来恢复相应的数据
-        if (user.cluster === 'SH' && originalPartner.sh_contact != null) {
+      
+        // 根据 user 的 email 来恢复相应的数据
+        if (user.email === 'congp@google.com' && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
-            partner.hz_contact = originalPartner.hz_contact;
-        } else if (user.cluster === 'HZ' && originalPartner.hz_contact != null) {
-            partner.hz_contact = originalPartner.hz_contact;
-            partner.sh_contact = originalPartner.sh_contact;
-        } else if (user.cluster === 'BJ' && originalPartner.bj_contact != null) {
+            partner.hz_contact= originalPartner.hz_contact; 
+        } else if (user.email === 'dongjia@google.com' && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
         }
-
         return partner;
     }
 
@@ -266,15 +263,13 @@ async function filterProtectedFields(user, partner,originalPartner) {
         } else if (user.cluster === 'BJ' && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
         }
-        
         return partner;
     }
-
     //works fine for pod-leader
     if (user.identity === 'POC') {
         const fullUser = await Users.findOne({ _id: user._id });
 
-        
+
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
@@ -285,7 +280,7 @@ async function filterProtectedFields(user, partner,originalPartner) {
         approvedRequests.forEach(request => {
             approvedFields.push(request.requestedContactField);
         });
-        
+
         ['sh_contact', 'hz_contact', 'bj_contact'].forEach(field => {
             if (approvedFields.includes(field)) {
                 // 已获批准，从原始数据中恢复它
@@ -295,7 +290,7 @@ async function filterProtectedFields(user, partner,originalPartner) {
                 setFieldMessages(partner[field]);
             }
         });
-     
+
 
         // 根据 user 的 ID 与 POC 字段的匹配来决定哪个字段可见
         if (fullUser.email === partner.POC_HZ && originalPartner.hz_contact != null) {
@@ -305,7 +300,7 @@ async function filterProtectedFields(user, partner,originalPartner) {
         } else if (fullUser.email === partner.POC_SH && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
         }
-       
+
         return partner;
     }
 
@@ -332,7 +327,7 @@ async function filterProtectedFields(user, partner,originalPartner) {
                 setFieldMessages(partner[field]);
             }
         });
-    
+
         return partner;
     }
 }
@@ -423,7 +418,7 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
                 const newLog = new Log({
                     userId,
                     action: 'delete partner',
-                    description: `user ${req.user.email} delete partner name:${partner.third_partner_name} partner id:${req.params.id} at :${partner.date}`
+                    description: `user ${req.user.email} delete partner name:${partner.third_partner_name} `
                 })
                 newLog.save()
                 res.status(200).json({ message: "delete success" });
