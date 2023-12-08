@@ -89,7 +89,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
         }
         res.json(partners)
     })
-    .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
+        .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
 })
 
 // $route get api/partners/export
@@ -124,15 +124,15 @@ router.get("/:id", passport.authenticate("jwt", { session: false }), async (req,
     let originalPartner = {};
     try {
         const partner = await Partners.findOne({ _id: req.params.id });
-      
-        
+
+
         if (!partner) {
             return res.status(400).json({ message: "no content" });
         }
 
         // copy origin partner data object
         Object.assign(originalPartner, partner.toObject());
-       
+
         const filteredPartner = await filterProtectedFields(req.user, partner, originalPartner);
         res.json(filteredPartner);
 
@@ -198,7 +198,7 @@ async function filterProtectedFields(user, partner, originalPartner) {
 
     if (user.identity === 'PM') {
         // 获取已批准的请求
-      
+
         const approvedRequests = await AccessRequest.find({
             userId: user._id,
             partnerId: partner._id,
@@ -219,11 +219,11 @@ async function filterProtectedFields(user, partner, originalPartner) {
                 setFieldMessages(partner[field]);
             }
         });
-      
+
         // 根据 user 的 email 来恢复相应的数据
         if (user.email === 'congp@google.com' && originalPartner.sh_contact != null) {
             partner.sh_contact = originalPartner.sh_contact;
-            partner.hz_contact= originalPartner.hz_contact; 
+            partner.hz_contact = originalPartner.hz_contact;
         } else if (user.email === 'dongjia@google.com' && originalPartner.bj_contact != null) {
             partner.bj_contact = originalPartner.bj_contact;
         }

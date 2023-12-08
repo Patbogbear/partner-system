@@ -2,19 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport")
 const AccessRequest = require("../../model/AccessRequests");
-const Partners = require("../../model/Partners")
-const nodemailer = require('nodemailer')
+const Logs = require("../../model/Logs")
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: 'ppartnersystememail@gmail.com',
-        clientId: '241542371798-i4cahg9bcd0e1oaj775tt4j2kg37hst3.apps.googleusercontent.com',
-        clientSecret: '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',
-        refreshToken: '1//04otaz3e5wIewCgYIARAAGAQSNwF-L9IrWmkJrdE1HhsfF8pDO82MSo2Xr5mt8lBxnxCZVYOYk7K84_kNAHtzNue6jL0ZFfUvXxg'
-    }
-})
 
 
 //request for partner contact information 
@@ -41,7 +30,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
         // 获取请求的联系信息字段
         const contactInfo = partner[requestedContactField];
         const channelContactInfo = contactInfo ? contactInfo.channel_contact_information : null;
-        console.log(channelContactInfo)
+       
         // 检查 channel_contact_information 字段是否有效
         if (!channelContactInfo || channelContactInfo === "目前该信息尚未填充") {
             return res.status(400).send({ message: '联系人信息尚未填充，请求失败' });
@@ -64,24 +53,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
         const newRequest = new AccessRequest({ userId, partnerId, requestedContactField });
         await newRequest.save();
 
-        //test email 
-
-        // const mailOptions = {
-        //     from:'ppartnersystememail@gmail.com',
-        //     to:'jiandongz@google.com',
-        //     subject:'test request',
-        //     text:'new request,please have a look'
-        // }
-
-
-        // transporter.sendMail(mailOptions, function(error, info) {
-        //     if (error) {
-        //         console.log(error);
-        //     } else {
-        //         console.log('Email sent: ' + info.response);
-        //     }
-        // });
-
+       
 
         res.status(200).send({ newRequest, message: "request has been submitted" });
     } catch (error) {
@@ -132,12 +104,13 @@ router.get('/all-requests', passport.authenticate("jwt", { session: false }), as
             return res.status(200).send(requests);
         }
 
-
         res.status(400).send({ message: 'Permission denied' });
 
     } catch (error) {
         res.status(500).send({ message: 'Error fetching access requests' });
     }
+
+
 });
 
 

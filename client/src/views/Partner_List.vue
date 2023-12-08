@@ -210,7 +210,6 @@ const getData = async () => {
   try {
     let { data } = await axios.get("/api/partners");
     partners.value = data;
-    console.log(partners.value)
   } catch (error) {}
 };
 const filteredData = computed(() => {
@@ -255,7 +254,6 @@ const filterData = (data, value) => {
   return result;
 };
 const SearchData = (partners, value) => {
-  console.log(value);
   const regex = new RegExp(value, "i");
   return partners.filter((partner) =>
     Object.values(partner).some(

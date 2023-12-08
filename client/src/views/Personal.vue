@@ -627,6 +627,7 @@ const getLogs = async () => {
   try {
     let { data } = await axios.get("/api/logs");
     logList.value = data;
+    console.log(logList.value)
   } catch (error) {}
 };
 const changePassword = () => {
