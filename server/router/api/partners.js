@@ -62,7 +62,45 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
 
 
 
+    // 根据用户角色和集群来决定是否更新联系信息
+    if (userIdentity === 'Super-Admin') {
+        // Super-Admin可以更新所有字段
+        // 更新sh_contact, hz_contact, bj_contact
+        partners.sh_contact = {
+            channel_contact: req.body.sh_contact?.channel_contact,
+            channel_contact_position: req.body.sh_contact?.channel_contact_position,
+            channel_contact_information: req.body.sh_contact?.channel_contact_information
+        };
+        partners.hz_contact = {
+            channel_contact: req.body.hz_contact?.channel_contact,
+            channel_contact_position: req.body.hz_contact?.channel_contact_position,
+            channel_contact_information: req.body.hz_contact?.channel_contact_information
+        };
+        partners.bj_contact = {
+            channel_contact: req.body.bj_contact?.channel_contact,
+            channel_contact_position: req.body.bj_contact?.channel_contact_position,
+            channel_contact_information: req.body.bj_contact?.channel_contact_information
+        };
+    } else if (userIdentity === 'Team-Leader' || userIdentity === 'POC') {
+        // 对于Pod-leader/Team-leader
+        if (userCluster === 'HZ') {
+            // 只更新hz_contact
+            if (req.body.hz_contact) {
+                partners.hz_contact = req.body.hz_contact;
+            }
+        } else if (userCluster === 'SH') {
+            // 只更新sh_contact
+            if (req.body.sh_contact) {
+                partners.sh_contact = req.body.sh_contact;
+            }
+        } else if (userCluster === 'BJ') {
+            // 只更新bj_contact
+            if (req.body.bj_contact) {
+                partners.bj_contact = req.body.bj_contact;
+            }
 
+        }
+    }
 
 
 
