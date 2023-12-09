@@ -40,10 +40,7 @@
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
-                <div v-if="user.identity =='DB'">
-                   
-                  <input type="file" @change="uploadFile">
-                </div>
+                
               </div>
             </div>
           </div>
@@ -159,8 +156,15 @@
                     <div class="subheader">Vertical</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2" style="width:250px; height:120px">
-                      <canvas ref="verticalChart" width="220" height="130"></canvas>
+                    <div
+                      class="h1 mb-3 me-2"
+                      style="width: 250px; height: 120px"
+                    >
+                      <canvas
+                        ref="verticalChart"
+                        width="220"
+                        height="130"
+                      ></canvas>
                     </div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
@@ -244,10 +248,21 @@
                 </div>
               </div>
             </div>
+            <button
+                    v-if="user.identity ==='Super-Admin'|| user.identity ==='BA' "
+                    class="btn btn-outline-success"
+                    @click="exportToCSV()"
+                  >
+                    export marketing data 
+                  </button> 
+                  <!-- <span v-if="user.identity === 'DB' || user.identity ==='Super-Admin'"> upload marketing data
+                  <input type="file" @change="uploadFile" />
+                </span> -->
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">Partner list</h3>
+                  
                 </div>
                 <div class="card-body border-bottom py-3">
                   <div class="d-flex">
@@ -276,12 +291,6 @@
                         />
                       </div>
                     </div>
-                    <!-- <button
-                      class="btn btn-outline-success"
-                      @click="exportToCSV()"
-                    >
-                      export
-                    </button> -->
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -646,11 +655,11 @@ const createChart = () => {
       ],
     },
     options: {
-      responsive:false,
+      responsive: false,
       scales: {
         x: {
           type: "category",
-          maxBarThickness:10,
+          maxBarThickness: 10,
         },
         y: {
           type: "linear",
@@ -718,15 +727,23 @@ const exportToCSV = () => {
   axios
     .get("api/partners/export")
     .then((res) => {
-      this.exportsData = res.data;
+      exportsData.value = res.data;
       const csv = [];
-      const headers = Object.keys(this.exportsData[0]);
+      const headers = Object.keys(exportsData.value[0]);
       csv.push(headers.join(",")); // 添加表头行
 
-      for (const partner of this.exportsData) {
+      for (const partner of exportsData.value) {
         const row = [];
         for (const header of headers) {
-          const value = partner[header] !== undefined ? partner[header] : ""; // 如果值为 undefined，则使用空字符串
+          let value = partner[header];
+          if (value !== null && value !== undefined) {
+            value = value.toString().replace(/"/g, '""'); // 转换为字符串并处理双引号
+            if (value.indexOf(",") >= 0 || value.indexOf("\n") >= 0) {
+              value = `"${value}"`; // 包含逗号或换行符的字段用双引号包围
+            }
+          } else {
+            value = ""; // 如果值为 null 或 undefined，使用空字符串
+          }
           row.push(value);
         }
         csv.push(row.join(",")); // 添加每条数据的行
