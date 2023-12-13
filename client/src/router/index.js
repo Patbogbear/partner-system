@@ -57,6 +57,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLogin = localStorage.userToken ? true : false;
+  const isApprovalRoute = to.path.startsWith('/api/accessQuests/public-access-requests/')
   if (to.path == "/login" || to.path == "/register") {
     next();
   } else {

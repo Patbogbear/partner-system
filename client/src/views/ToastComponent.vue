@@ -37,7 +37,9 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed } from "vue";
+import { ref, defineProps, computed, nextTick } from "vue";
+
+const isToastShowing = ref(false);
 
 const props = defineProps({
   message: {
@@ -67,18 +69,21 @@ const alertClass = computed(() => {
   }
 });
 const show = () => {
-  console.log(alertClass.value);
-  let toastElement = document.querySelector(".toast");
-  let toastInstance = new bootstrap.Toast(toastElement);
-  toastInstance.show();
+  nextTick(() => {
+    let toastElement = document.querySelector(".toast");
+    let toastInstance = new bootstrap.Toast(toastElement);
+    toastInstance.show();
+    isToastShowing.value = true;
+  });
 };
 const closeToast = () => {
   let toastElement = document.querySelector(".toast");
   let toastInstance = new bootstrap.Toast(toastElement);
   toastInstance.hide();
+  isToastShowing.value = false;
 };
 
-defineExpose({ show });
+defineExpose({ show, closeToast });
 </script>
 
 <style scoped>

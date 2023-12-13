@@ -33,7 +33,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">服务商类型</div>
+                  <div class="font-extra-bold">服务商类型</div>
                   <div>
                     {{ partner.third_partner_type }}
                   </div>
@@ -70,7 +70,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">服务商名称</div>
+                  <div class="font-extra-bold">服务商名称</div>
                   <div>
                     {{ partner.third_partner_name }}
                   </div>
@@ -105,7 +105,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">2B/2C</div>
+                  <div class="font-extra-bold">2B/2C</div>
                   <div>{{ partner.b2b_or_b2c }}</div>
                 </div>
               </div>
@@ -146,7 +146,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">所在地</div>
+                  <div class="font-extra-bold">所在地</div>
                   <div>
                     {{ partner.partner_location }}
                   </div>
@@ -181,7 +181,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">服务覆盖范围</div>
+                  <div class="font-extra-bold">服务覆盖范围</div>
                   <div>{{ partner.partner_scope }}</div>
                 </div>
               </div>
@@ -215,7 +215,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">重点覆盖城市</div>
+                  <div class="font-extra-bold">重点覆盖城市</div>
                   <div>
                     {{ partner.coverage_province }}
                   </div>
@@ -256,7 +256,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">主要客户/成功案例</div>
+                  <div class="font-extra-bold">主要客户/成功案例</div>
                   <div>
                     {{ partner.major_clients_or_case }}
                   </div>
@@ -295,7 +295,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">网址</div>
+                  <div class="font-extra-bold">网址</div>
                   <div>{{ partner.website }}</div>
                 </div>
               </div>
@@ -329,7 +329,7 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="font-weight-medium">Vertical</div>
+                  <div class="font-extra-bold">Vertical</div>
                   <div>{{ partner.vertical }}</div>
                 </div>
               </div>
@@ -343,7 +343,7 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col">
-                  <div class="font-weight-medium">公司介绍</div>
+                  <div class="font-extra-bold">公司介绍</div>
                   <div>{{ partner.introduce }}</div>
                 </div>
               </div>
@@ -359,7 +359,7 @@
             <h4 class="card-title">上海区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped">
+            <table class="table table-vcenter card-table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>POC-SH</th>
@@ -441,7 +441,7 @@
             </table>
             <button
               v-if="userIdentity.identity !== 'Super-Admin'"
-              @click="requestData('sh_contact')"
+              @click="() => showConfirmDialog('sh_contact')"
               class="btn btn-primary btn-sm"
             >
               request SH contact
@@ -455,7 +455,7 @@
             <h4 class="card-title">杭州区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped">
+            <table class="table table-vcenter card-table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>POC-HZ</th>
@@ -539,7 +539,7 @@
             </table>
             <button
               v-if="userIdentity.identity !== 'Super-Admin'"
-              @click="requestData('hz_contact')"
+              @click="() => showConfirmDialog('hz_contact')"
               class="btn btn-primary btn-sm"
             >
               request HZ contact
@@ -553,7 +553,7 @@
             <h4 class="card-title">北京区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped">
+            <table class="table table-vcenter card-table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>POC-BJ</th>
@@ -588,7 +588,6 @@
                         : "尚未获取查看权限"
                     }}
                   </td>
-                  
                 </tr>
               </tbody>
               <thead>
@@ -632,7 +631,7 @@
             </table>
             <button
               v-if="userIdentity.identity !== 'Super-Admin'"
-              @click="requestData('bj_contact')"
+              @click="() => showConfirmDialog('bj_contact')"
               class="btn btn-primary btn-sm"
             >
               request BJ contact
@@ -642,13 +641,20 @@
       </div>
     </div>
   </div>
-
+  <ConfirmDialog
+    ref="ConfirmDialogRef"
+    :pocInfo="pocInfo"
+    :VPM="VPM"
+    :PM="PM"
+    @confirm="confirmAction"
+  ></ConfirmDialog>
   <div class="edit">
     <div class="dropdown">
       <button
         class="btn btn-dark"
         data-bs-toggle="dropdown"
-        @click="deleteData(partner._id)"
+        @click="()=> showDeleteDialog()"
+        
         v-if="
           userIdentity.identity == 'Super-Admin' ||
           userIdentity.identity == 'PM' ||
@@ -666,13 +672,21 @@
       </router-link>
     </div>
   </div>
+  <DeleteDialog
+  ref="ConfirmDeleteDialogRef"
+  @confirm="deleteData(partner._id)"
+  >
+    </DeleteDialog>
 </template>
 
 <script setup>
 import axios from "../http";
-import { ref, onMounted, defineProps, computed } from "vue";
+import { ref, onMounted, defineProps, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 import router from "../router";
+import ConfirmDialog from "./ConfirmDialog.vue";
+import DeleteDialog from"./DeleteDialog.vue"
+
 const store = useStore();
 const userIdentity = store.getters.user;
 const requestLocation = ref("");
@@ -722,6 +736,14 @@ const partner = ref({
   sh_transfer_data: "",
   bj_transfer_data: "",
 });
+
+let pocInfo = ref("");
+let VPM = ref("");
+let PM = ref("");
+const currentAction = ref("");
+const ConfirmDialogRef = ref(null);
+const ConfirmDeleteDialogRef =ref(null);
+
 computed(() => {
   return store.getters.user;
 });
@@ -729,6 +751,49 @@ computed(() => {
 const props = defineProps({
   id: String,
 });
+
+
+
+const showConfirmDialog = async (value) => {
+  try {
+    const response = await axios.post("/api/accessQuests/access-requests", {
+      userId: userIdentity.id,
+      userName:userIdentity.name,
+      partnerId: props.id,
+      requestedContactField: value,
+      getPocOnly: true,
+    });
+    if (response.data.pocInfo) {
+      pocInfo.value = response.data.pocInfo;
+      VPM.value = response.data.VPM;
+      PM.value = response.data.PM;
+      currentAction.value = value;
+      ConfirmDialogRef.value.show();
+    } else {
+      confirmAction();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const confirmAction = async () => {
+  try {
+    const value = currentAction.value;
+    await axios.post("/api/accessQuests/access-requests", {
+      userId: userIdentity.id,
+      userName:userIdentity.name,
+      partnerId: props.id,
+      requestedContactField: value,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const showDeleteDialog =async() => {
+ ConfirmDeleteDialogRef.value.show()
+};
 
 const deleteData = (value) => {
   axios.delete("/api/partners/delete/" + value).then((res) => {
@@ -747,7 +812,6 @@ const requestData = (value) => {
 
 const getDetail = async (id) => {
   try {
-    
     let { data } = await axios.get("/api/partners/" + id);
     partner.value = data;
     console.log(partner);
@@ -825,5 +889,10 @@ span.avatar {
   /* color: #888;             
   font-weight: normal;      */
   padding: 8px;
+}
+.font-extra-bold{
+  font-weight: 700;
+  color:#000000;
+
 }
 </style>

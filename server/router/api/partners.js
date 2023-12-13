@@ -102,8 +102,6 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
         }
     }
 
-
-
     new Partners(partners).save().then((partners) => {
         res.status(200).json({ partners, message: "add partner success" })
     });
