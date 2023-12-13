@@ -90,8 +90,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
             const pocInfo = partner[pocField];
             if (pocField) {
-                emailRecipients.push(PM, VPM);
-                console.log(emailRecipients)
+                emailRecipients.push(PM,VPM);
                 return res.status(200).send({ pocInfo: pocInfo, VPM: VPM, PM: PM, message: `你将要向${pocInfo}发起申请` });
 
             }
@@ -148,7 +147,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
             text: mailSubject,//需加参数
             html: htmlContent,//需加链接
         })
-            .then(msg => console.log(msg)) // logs response data
+            .then() // logs response data
             .catch(err => console.log(err)); // logs any error
 
 
@@ -292,7 +291,6 @@ router.get('/user-requests/:userId', passport.authenticate("jwt", { session: fal
 //需要调试和完善的接口 主要用于邮件中的点击审批 流程
 router.get('/public-access-requests/:requestAccessId/:token', async (req, res) => {
     try {
-        console.log(req.params)
         const { requestAccessId, token } = req.params;
         const { status } = req.query;
 
