@@ -40,7 +40,6 @@
                 <span class="d-none d-sm-inline">
                   <a href="#" class="btn logout" @click="logOut()"> Logout </a>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -175,52 +174,32 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <div class="subheader">Active Partners</div>
+                    <div class="subheader">New Partners</div>
                     <div class="ms-auto lh-1">
                       <div class="dropdown">
                         <a
-                          class="dropdown-toggle text-secondary"
+                          class="text-secondary"
                           href="#"
                           data-bs-toggle="dropdown"
                           aria-haspopup="true"
                           aria-expanded="false"
-                          >Last 7 days</a
+                          >Last {{ selectedDays }} days</a
                         >
                         <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item active" href="#"
-                            >Last 7 days</a
-                          >
-                          <a class="dropdown-item" href="#">Last 30 days</a>
-                          <a class="dropdown-item" href="#">Last 3 months</a>
+                          <!-- <a class="dropdown-item active" @click="selectedDays=7">Last 7 days</a>
+                          <a class="dropdown-item" @click="selectedDays=30">Last 30 days</a>
+                          <a class="dropdown-item" @click="selectedDays=90">Last 90 days</a> -->
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h2 mb-3 me-2">lack of data</div>
                     <div class="me-auto">
-                      <span
-                        class="text-green d-inline-flex align-items-center lh-1"
-                      >
-                        4%
-                        <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon ms-1"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M3 17l6 -6l4 4l8 -8" />
-                          <path d="M14 7l7 0l0 7" />
-                        </svg>
-                      </span>
+                      <canvas
+                        ref="newPartnersChart"
+                        width="220"
+                        height="130"
+                      ></canvas>
                     </div>
                   </div>
                   <div id="chart-active-users" class="chart-sm"></div>
@@ -228,41 +207,81 @@
               </div>
             </div>
 
-            <div class="col-lg-6">
+            <div
+              class="col-lg-6"
+              v-if="
+                user.identity == 'Super-Admin' ||
+                user.identity == 'PM' ||
+                user.identity == 'Team-Leader'
+              "
+            >
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">Data Dashboard 1{{ verticalData }}</h3>
-                  <div id="chart-mentions" class="chart-lg"></div>
+                  <h4 class="card-title">Data Dashboard 1{{ verticalData }}</h4>
+                  <div class="ms-auto lh-1">
+                    <a
+                      class="dropdown-toggle text-secondary"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      >{{ dashboardCity }}</a
+                    >
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a
+                        class="dropdown-item active"
+                        @click="dashboardCity = 'SH'"
+                        >SH</a
+                      >
+                      <a class="dropdown-item" @click="dashboardCity = 'HZ'"
+                        >HZ</a
+                      >
+                      <a class="dropdown-item" @click="dashboardCity = 'BJ'"
+                        >BJ</a
+                      >
+                    </div>
+                  </div>
+                  <div id="chart-mentions" class="chart-lg">
+                    <canvas ref="dashboardOnePartnerType"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div
+              class="col-lg-6"
+              v-if="
+                user.identity == 'Super-Admin' ||
+                user.identity == 'PM' ||
+                user.identity == 'Team-Leader'
+              "
+            >
               <div class="card">
                 <div class="card-body">
                   <h3 class="card-title">Data Dashboard 2</h3>
                   <div class="ratio ratio-21x9">
                     <div>
-                      <div id="map-world" class="w-100 h-100"></div>
+                      <div id="map-world" class="w-100 h-100">
+                        <canvas ref="dashboardTwoPartnerData"></canvas>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <button
-                    v-if="user.identity ==='Super-Admin'|| user.identity ==='BA' "
-                    class="btn btn-outline-success"
-                    @click="exportToCSV()"
-                  >
-                    export marketing data 
-                  </button> 
-                  <!-- <span v-if="user.identity === 'DB' || user.identity ==='Super-Admin'"> upload marketing data
+              v-if="user.identity === 'Super-Admin' || user.identity === 'BA'"
+              class="btn btn-outline-success"
+              @click="exportToCSV()"
+            >
+              export marketing data
+            </button>
+            <!-- <span v-if="user.identity === 'DB' || user.identity ==='Super-Admin'"> upload marketing data
                   <input type="file" @change="uploadFile" />
                 </span> -->
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">Partner list</h3>
-                  
                 </div>
                 <div class="card-body border-bottom py-3">
                   <div class="d-flex">
@@ -355,8 +374,11 @@
                               --bs-btn-font-size: 0.75rem;
                             "
                             data-bs-toggle="dropdown"
-                            @click.stop="deleteData(partner._id)"
-                            v-if="user.identity == 'Super-Admin'"
+                            @click="() => showDeleteDialog(partner._id)"
+                            v-if="
+                              user.identity == 'Super-Admin' ||
+                              user.identity == 'PM'
+                            "
                           >
                             delete
                           </button>
@@ -422,6 +444,8 @@
       </div>
     </div>
   </div>
+  <DeleteDialog ref="ConfirmDeleteDialogRef" @confirm="deleteData()">
+  </DeleteDialog>
 </template>
 <script setup>
 import { useRouter } from "vue-router";
@@ -436,6 +460,10 @@ import {
   Tooltip,
   LinearScale,
   BarElement,
+  LineController,
+  PointElement,
+  LineElement,
+  elements,
 } from "chart.js";
 import { useStore } from "vuex";
 
@@ -446,18 +474,30 @@ Chart.register(
   CategoryScale,
   Tooltip,
   LinearScale,
-  BarElement
+  BarElement,
+  LineController,
+  PointElement,
+  LineElement
 );
+
+import DeleteDialog from "./DeleteDialog.vue";
+
+const ConfirmDeleteDialogRef = ref(null);
+const deleteDialogId = ref("");
 
 const router = useRouter();
 const store = useStore();
 const partners = ref([]);
 const filterInput = ref([]);
+const user = computed(() => store.getters.user);
+
 const exportsData = ref([]);
 const currentPage = ref(1);
+const pageWindowStart = ref(1); // Start page for sliding window
+const windowSize = ref(3); // Number of pages to display in the sliding window
+
 const itemsPerPage = ref(10);
 const chart = ref(null);
-
 const verticalChart = ref(null);
 const labels = ref([
   "collaborating",
@@ -469,27 +509,25 @@ const selectedCity = ref("SH");
 const chartInstance = ref(null); // 存储图表实例
 const verticalChartInstance = ref(null);
 
-const user = computed(() => store.getters.user);
+const selectedDays = ref(90);
+const newPartnersChart = ref(null);
+let newPartnersChartInstance = ref(null);
 
-const pageWindowStart = ref(1); // Start page for sliding window
-const windowSize = ref(3); // Number of pages to display in the sliding window
+const dashboardOnePartnerType = ref(null);
+let dashboardOnePartnerTypeInstance = ref(null);
+const dashboardCity = ref("SH");
 
-const visiblePages = computed(() => {
-  let end = pageWindowStart.value + windowSize.value;
-  if (end > totalPages.value) end = totalPages.value;
-  return Array.from(
-    { length: end - pageWindowStart.value },
-    (_, i) => i + pageWindowStart.value
-  );
-});
+const dashboardTwoPartnerData = ref(null);
+let dashboardTwoPartnerDataInstance = ref(null);
 
-const getData = () => {
-  axios
-    .get("api/partners")
-    .then((res) => {
-      partners.value = res.data;
-    })
-    .catch((err) => console.log(err));
+const getData = async () => {
+  try {
+    const response = await axios.get("api/partners");
+    partners.value = response.data;
+    console.log(partners.value);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const goto_add = () => {
@@ -503,10 +541,27 @@ const logOut = () => {
   router.push({ path: "/login" });
 };
 
-const deleteData = (id) => {
-  axios.delete("api/partners/delete/" + id);
+const showDeleteDialog = async (value) => {
+  deleteDialogId.value = value;
+  console.log(deleteDialogId.value);
+  ConfirmDeleteDialogRef.value.show();
+};
+
+const deleteData = () => {
+  const deleteID = deleteDialogId.value;
+  axios.delete("api/partners/delete/" + deleteID);
   getData();
 };
+
+//分页
+const visiblePages = computed(() => {
+  let end = pageWindowStart.value + windowSize.value;
+  if (end > totalPages.value) end = totalPages.value;
+  return Array.from(
+    { length: end - pageWindowStart.value },
+    (_, i) => i + pageWindowStart.value
+  );
+});
 
 const paginatedData = computed(() => {
   const filtered = filteredData(partners.value, filterInput.value);
@@ -532,6 +587,7 @@ const totalPages = computed(() => {
   );
 });
 
+//筛选器
 const filteredData = (partners, value) => {
   const regex = new RegExp(value, "i");
   return partners.filter((partner) =>
@@ -541,6 +597,7 @@ const filteredData = (partners, value) => {
   );
 };
 
+//chart 1 数据处理
 const contactPercentage = computed(() => {
   const partnersWithContact = partners.value.filter((partner) => {
     const hasSHContact =
@@ -557,6 +614,7 @@ const contactPercentage = computed(() => {
   return parseFloat(percentage.toFixed(2));
 });
 
+//chart 2 数据处理
 const selectCity = (city) => {
   selectedCity.value = city;
 };
@@ -602,6 +660,7 @@ const currentData = computed(() => {
   return [counts["合作中"], counts["待合作"], counts["暂停合作"]];
 });
 
+//chart 1
 const initChart = () => {
   const ctx = chart.value.getContext("2d");
   chartInstance.value = new Chart(ctx, {
@@ -673,13 +732,306 @@ const createChart = () => {
     },
   });
 };
+//chart 4
+const updateChart = () => {
+  if (newPartnersChartInstance && newPartnersChartInstance.value) {
+    // 根据 selectedDays 计算数据
+    const newData = countNewPartners(selectedDays);
+    // 更新图表实例的数据
+    newPartnersChartInstance.value.data.datasets[0].data = newData;
 
-onMounted(() => {
+    // 重绘图表以显示新数据
+    newPartnersChartInstance.value.update();
+  }
+};
+
+//chart 4
+const countNewPartners = (days) => {
+  const now = new Date();
+  // 创建 UTC 时间的 cutoffDate
+  const cutoffDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() - days,
+      0,
+      0,
+      0
+    )
+  );
+  const filteredPartners = partners.value.filter(
+    (partner) => new Date(partner.date) >= cutoffDate
+  );
+  return filteredPartners.length;
+};
+
+//chart 4
+const createNewPartnersChart = () => {
+  const ctx = newPartnersChart.value.getContext("2d");
+  newPartnersChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Last 7 Days", "Last 30 Days", "Last 90 Days"],
+      datasets: [
+        {
+          label: "New Partners",
+          data: [
+            countNewPartners(7),
+            countNewPartners(30),
+            countNewPartners(90),
+          ],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
+
+//dashboard 1
+const prepareChartData = (dashboardCity) => {
+  const leadsField = `${dashboardCity.toLowerCase()}_marketing_data_leads`;
+  const dataField = `${dashboardCity.toLowerCase()}_marketing_data`;
+
+  const groupedData = partners.value.reduce((acc, partner) => {
+    const type = partner.third_partner_type;
+    if (!acc[type]) {
+      acc[type] = { totalLeads: 0, weightedDataSum: 0 };
+    }
+
+    const leads = Number(partner[leadsField]) || 0;
+    const dataFieldValue = partner[dataField];
+    const dataPercentage = dataFieldValue
+      ? parseFloat(dataFieldValue.replace("%", ""))
+      : 0;
+
+    acc[type].totalLeads += leads;
+    acc[type].weightedDataSum += (leads * dataPercentage) / 100;
+
+    return acc;
+  }, {});
+
+  const chartData = Object.entries(groupedData).map(([type, data]) => ({
+    type: type,
+    leads: data.totalLeads,
+    dataPercentage:
+      data.totalLeads > 0 ? (data.weightedDataSum / data.totalLeads) * 100 : 0,
+  }));
+
+  chartData.sort((a, b) => b.leads - a.leads);
+  return chartData;
+};
+
+const updateDashboardChart = (value) => {
+  if (
+    !dashboardOnePartnerTypeInstance ||
+    !dashboardOnePartnerTypeInstance.data
+  ) {
+    console.error("Chart instance or chart data is undefined");
+    return;
+  }
+
+  let chartData = prepareChartData(value);
+  dashboardOnePartnerTypeInstance.data.labels = chartData.map(
+    (item) => item.type
+  );
+  dashboardOnePartnerTypeInstance.data.datasets[0].data = chartData.map(
+    (item) => item.leads
+  );
+  dashboardOnePartnerTypeInstance.data.datasets[1].data = chartData.map(
+    (item) => item.dataPercentage
+  );
+  dashboardOnePartnerTypeInstance.update();
+};
+
+const createMixedChart = () => {
+  const ctx = dashboardOnePartnerType.value.getContext("2d");
+  dashboardOnePartnerTypeInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: [], // 初始化时标签为空
+      datasets: [
+        {
+          label: "Leads",
+          data: [], // 初始化时数据为空
+          backgroundColor: "rgba(54, 162, 235, 0.5)",
+          yAxisID: "y-axis-1",
+        },
+        {
+          label: "Data Percentage",
+          data: [], // 初始化时数据为空
+          type: "line",
+          borderColor: "rgba(255, 99, 132, 1)",
+          yAxisID: "y-axis-2",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        "y-axis-1": {
+          type: "linear",
+          display: true,
+          position: "left",
+        },
+        "y-axis-2": {
+          type: "linear",
+          display: true,
+          position: "right",
+          grid: {
+            drawOnChartArea: false,
+          },
+          ticks: {
+            callback: function (value) {
+              return value + "%";
+            },
+          },
+        },
+      },
+      onClick: (event, activeElements) => {
+        if (activeElements.length > 0) {
+          const dataIndex = activeElements[0].index;
+          const type = dashboardOnePartnerTypeInstance.data.labels[dataIndex];
+          updateSecondChart(type);
+        }
+      },
+    },
+  });
+};
+
+const createDashboardTwoChart = () => {
+  const ctx = dashboardTwoPartnerData.value.getContext("2d");
+  dashboardTwoPartnerDataInstance = new Chart(ctx, {
+    type: 'bar', // 或者根据您的需求选择其他类型
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Leads',
+        data: [],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        // ...其他配置...
+      }, {
+        label: 'Data Percentage',
+        data: [],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        // ...其他配置...
+      }]
+    },
+     options: {
+      scales: {
+        "y-axis-1": {
+          type: "linear",
+          display: true,
+          position: "left",
+        },
+        "y-axis-2": {
+          type: "linear",
+          display: true,
+          position: "right",
+          grid: {
+            drawOnChartArea: false,
+          },
+          ticks: {
+            callback: function (value) {
+              return value + "%";
+            },
+          },
+        },
+      }
+    },
+  });
+
+};
+
+
+const updateSecondChart = (label) => {
+  console.log(label)
+  // 根据label获取新的数据
+  const newData = getNewDataForSecondChart(dashboardCity.value,label);
+
+  // 更新第二个图表的数据
+  dashboardTwoPartnerDataInstance.data.labels = newData.labels;
+  dashboardTwoPartnerDataInstance.data.datasets[0].data = newData.leads;
+  dashboardTwoPartnerDataInstance.data.datasets[1].data = newData.percentages;
+  dashboardTwoPartnerDataInstance.update();
+};
+
+const getNewDataForSecondChart = (dashboardCity, label) => {
+  const leadsField = `${dashboardCity.toLowerCase()}_marketing_data_leads`;
+  const dataField = `${dashboardCity.toLowerCase()}_marketing_data`;
+
+  // 筛选出指定类型和城市的partners
+  const filteredPartners = partners.value
+    .filter(p => p.third_partner_type === label)
+    .slice(0, 10); // 你可以根据需要调整这个数量
+
+  // 提取每个partner的相关数据
+  const newData = filteredPartners.map(p => {
+    const leads = Number(p[leadsField]) || 0;
+    const dataPercentage = p[dataField]
+      ? parseFloat(p[dataField].replace("%", ""))
+      : 0;
+
+    return {
+      name: p.name, // 假设每个partner有一个'name'字段
+      leads: leads,
+      percentage: dataPercentage
+    };
+  });
+
+  return {
+    labels: newData.map(p => p.name),
+    leads: newData.map(p => p.leads),
+    percentages: newData.map(p => p.percentage)
+  };
+};
+
+onMounted(async () => {
   const fetchDataAndInitChart = async () => {
     await getData();
+    countNewPartners(selectedDays.value);
     initChart();
+    createNewPartnersChart();
+    updateChart();
+    createMixedChart();
+    nextTick(() => {
+      updateDashboardChart(dashboardCity.value);
+    });
+    createDashboardTwoChart();
   };
   fetchDataAndInitChart();
+});
+
+watch(
+  dashboardCity,
+  (newValue) => {
+    if (
+      dashboardOnePartnerTypeInstance &&
+      dashboardOnePartnerTypeInstance.data
+    ) {
+      updateDashboardChart(newValue);
+    }
+  },
+  { immediate: true }
+);
+
+watch(selectedDays, () => {
+  updateChart();
 });
 
 watch(currentData, (newData) => {
@@ -711,6 +1063,7 @@ watch(
   { deep: true }
 );
 
+//upload function
 const uploadFile = async (event) => {
   const file = event.target.files[0];
   const formData = new FormData();

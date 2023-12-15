@@ -471,7 +471,8 @@
             class="col-xl-12"
             v-if="
               userIdentity.identity === 'Sales' ||
-              userIdentity.identity === 'Team-Leader'
+              userIdentity.identity === 'Team-Leader' ||
+              userIdentity.identity === 'POC'
             "
           >
             <div class="card">
@@ -557,29 +558,32 @@
                   <thead>
                     <tr>
                       <th>User</th>
+
                       <th>Actions</th>
-                      <th>Descriptions</th>
                       <th>Date</th>
+                      <th>Descriptions</th>
                     </tr>
                   </thead>
-                  <tr v-for="log in logList" :key="log._id + new Date()">
-                    <td>
-                      {{
-                        log.userId && log.userId.name
-                          ? log.userId.name
-                          : "user has been delete"
-                      }}
-                    </td>
-                    <td class="text-secondary">
-                      {{ log.action }}
-                    </td>
-                    <td class="text-secondary">
-                      {{ log.description }}
-                    </td>
-                    <td class="text-secondary">
-                      {{ log.date }}
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr v-for="log in logList" :key="log._id + new Date()">
+                      <td class="w-1">
+                        {{
+                          log.userId && log.userId.name
+                            ? log.userId.name
+                            : "user has been delete"
+                        }}
+                      </td>
+                      <td class="td-truncate">
+                        {{ log.action }}
+                      </td>
+                      <td class="text-nowrap text-secondary">
+                        {{ log.date }}
+                      </td>
+                      <td class="td-truncate">
+                        {{ log.description }}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -627,7 +631,7 @@ const getLogs = async () => {
   try {
     let { data } = await axios.get("/api/logs");
     logList.value = data;
-    console.log(logList.value)
+    console.log(logList.value);
   } catch (error) {}
 };
 const changePassword = () => {
@@ -698,7 +702,7 @@ const requestLists = async (userIdentity) => {
       let { data } = await axios.get("/api/accessQuests/all-requests", {
         params: { status: "PENDING" },
       });
-      requestList.value =data
+      requestList.value = data;
     } else if (
       userIdentity.value.identity === "Sales" ||
       userIdentity.value.identity === "Team-Leader"
@@ -743,6 +747,17 @@ const denyRequest = async (value) => {
     max-width: 1199px;
   }
 }
+.table th {
+  text-align: left; /* 左对齐 */
+  font-weight: bold; /* 文字加粗 */
+}
+
+/* 表格单元格样式 */
+.table td {
+  text-align: left; /* 左对齐 */
+  vertical-align: middle; /* 垂直居中 */
+}
+
 .row {
   padding: 0;
 }
@@ -761,8 +776,6 @@ const denyRequest = async (value) => {
 }
 .btn {
   margin: 10px;
-}
-.custom-btn {
 }
 .btn-primary {
   background-color: #216bc4;

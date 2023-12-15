@@ -11,23 +11,7 @@ module.exports = defineConfig({
   runtimeCompiler:true,
   transpileDependencies: [],
   productionSourceMap: true,
-  // configureWebpack: config => {
-  //   if(debug) {
-  //     //dev env config
-  //     config.devtool = 'cheap-module-eval-source-map';
-  //   }else{
-  //     //pro env config
-  //   }
-  //   // Object.assign(config,{
-  //   //   resolve:{
-  //   //     alias:{
-  //   //       '@':path.resolve(__dirname,'./src'),
-  //   //       '@c':path.resolve(__dirname,'./src/components'),
-  //   //       'vue$':'vue/dist/vue.esm.js'
-  //   //     }
-  //   //   }
-  //   // })
-  // },
+
   chainWebpack: config => {
     if(debug){
       // local dev config
@@ -62,7 +46,15 @@ module.exports = defineConfig({
       
     },
    //before: app =>{}
-  }
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'), // 这里设置别名
+      }
+    }
+  },
+
 
 
 })

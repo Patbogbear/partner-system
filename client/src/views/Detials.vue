@@ -262,7 +262,7 @@
                             <label class="form-label required">合作状态</label>
                             <select
                               type="text"
-                              class="form-control"
+                              class="form-control form-select"
                               autocomplete="off"
                               v-model="partner.HZ_tracking_process"
                             >
@@ -276,7 +276,7 @@
                               >合作状态细分</label
                             >
                             <select
-                              class="form-control"
+                              class="form-control form-select"
                               v-model="partner.HZ_tracking_process_segment"
                             >
                               <option
@@ -425,7 +425,7 @@
                             <label class="form-label required">合作状态</label>
                             <select
                               type="text"
-                              class="form-control"
+                              class="form-control form-select"
                               autocomplete="off"
                               v-model="partner.SH_tracking_process"
                             >
@@ -439,7 +439,7 @@
                               >合作状态细分</label
                             >
                             <select
-                              class="form-control"
+                              class="form-control form-select"
                               v-model="partner.SH_tracking_process_segment"
                             >
                               <option
@@ -589,7 +589,7 @@
                             <label class="form-label required">合作状态</label>
                             <select
                               type="text"
-                              class="form-control"
+                              class="form-control form-select"
                               autocomplete="off"
                               v-model="partner.BJ_tracking_process"
                             >
@@ -603,7 +603,7 @@
                               >合作状态细分</label
                             >
                             <select
-                              class="form-control"
+                              class="form-control form-select"
                               v-model="partner.BJ_tracking_process_segment"
                             >
                               <option
@@ -773,16 +773,16 @@ export default {
         .get("/api/partners/" + this.$route.params.id)
         .then((res) => {
           this.partner = res.data;
-          console.log(this.partner);
+        
         });
     },
     updateData() {
-      console.log(this.partner);
+      
       axios
         .post("/api/partners/edit/" + this.$route.params.id, this.partner)
         .then((res) => {
-          //console.log(this.partner);
-          this.$router.push({ path: "/" });
+
+          this.$router.push({ path: "/single-partner/" + res.data.partners._id });
         });
     },
     updatePOC_HZ() {

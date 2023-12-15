@@ -145,7 +145,7 @@
               <h5 class="card-title">{{ partner.third_partner_name }}</h5>
               <div class="links">
                 <router-link
-                  v-if="userIdentity.identity == 'Super-Admin'"
+                  v-if="userIdentity.identity !== 'Sales'"
                   class="btn btn-secondary"
                   style="
                     --bs-btn-padding-y: 0.25rem;

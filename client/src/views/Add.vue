@@ -28,6 +28,7 @@
                         <select
                           class="form-control form-select"
                           v-model="partner.third_partner_type"
+                          required
                         >
                           <option value="支付">支付</option>
                           <option value="物流">物流</option>

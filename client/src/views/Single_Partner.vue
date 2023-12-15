@@ -7,6 +7,43 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-auto">
+                  <span class="bg-light text-white avatar"
+                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="icon"
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="#0b6efd"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h1l3 3l3 -3h1"></path>
+                      <line x1="8" y1="15" x2="10" y2="15"></line>
+                      <line x1="14" y1="15" x2="16" y2="15"></line>
+                      <line x1="9" y1="9" x2="9" y2="15"></line>
+                      <line x1="15" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="font-extra-bold">服务商名称</div>
+                  <div>
+                    {{ partner.third_partner_name }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
                   <span class="bg-primary text-white avatar"
                     ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
                     <svg
@@ -41,43 +78,7 @@
               </div>
             </div>
           </div>
-          <div class="card card-sm">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <span class="bg-light text-white avatar"
-                    ><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="#0b6efd"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                      <path d="M8 9h1l3 3l3 -3h1"></path>
-                      <line x1="8" y1="15" x2="10" y2="15"></line>
-                      <line x1="14" y1="15" x2="16" y2="15"></line>
-                      <line x1="9" y1="9" x2="9" y2="15"></line>
-                      <line x1="15" y1="9" x2="15" y2="15"></line>
-                    </svg>
-                  </span>
-                </div>
-                <div class="col">
-                  <div class="font-extra-bold">服务商名称</div>
-                  <div>
-                    {{ partner.third_partner_name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -359,7 +360,9 @@
             <h4 class="card-title">上海区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped table-bordered">
+            <table
+              class="table table-vcenter card-table table-striped table-bordered"
+            >
               <thead>
                 <tr>
                   <th>POC-SH</th>
@@ -455,7 +458,9 @@
             <h4 class="card-title">杭州区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped table-bordered">
+            <table
+              class="table table-vcenter card-table table-striped table-bordered"
+            >
               <thead>
                 <tr>
                   <th>POC-HZ</th>
@@ -553,7 +558,9 @@
             <h4 class="card-title">北京区域</h4>
           </div>
           <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped table-bordered">
+            <table
+              class="table table-vcenter card-table table-striped table-bordered"
+            >
               <thead>
                 <tr>
                   <th>POC-BJ</th>
@@ -615,18 +622,20 @@
                 </tr>
               </thead>
               <tbody>
-                <td>
-                  <span href="#" class="text-reset">{{
-                    partner.bj_marketing_data_leads
-                  }}</span>
-                </td>
-                <td>
-                  <span href="#" class="text-reset">{{
-                    partner.bj_marketing_data
-                  }}</span>
-                </td>
-                <td>{{ partner.bj_transfer_data_leads }}</td>
-                <td>{{ partner.bj_transfer_data }}</td>
+                <tr>
+                  <td>
+                    <span href="#" class="text-reset">{{
+                      partner.bj_marketing_data_leads
+                    }}</span>
+                  </td>
+                  <td>
+                    <span href="#" class="text-reset">{{
+                      partner.bj_marketing_data
+                    }}</span>
+                  </td>
+                  <td>{{ partner.bj_transfer_data_leads }}</td>
+                  <td>{{ partner.bj_transfer_data }}</td>
+                </tr>
               </tbody>
             </table>
             <button
@@ -653,8 +662,7 @@
       <button
         class="btn btn-dark"
         data-bs-toggle="dropdown"
-        @click="()=> showDeleteDialog()"
-        
+        @click="() => showDeleteDialog()"
         v-if="
           userIdentity.identity == 'Super-Admin' ||
           userIdentity.identity == 'PM' ||
@@ -672,11 +680,8 @@
       </router-link>
     </div>
   </div>
-  <DeleteDialog
-  ref="ConfirmDeleteDialogRef"
-  @confirm="deleteData(partner._id)"
-  >
-    </DeleteDialog>
+  <DeleteDialog ref="ConfirmDeleteDialogRef" @confirm="deleteData(partner._id)">
+  </DeleteDialog>
 </template>
 
 <script setup>
@@ -685,7 +690,7 @@ import { ref, onMounted, defineProps, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 import router from "../router";
 import ConfirmDialog from "./ConfirmDialog.vue";
-import DeleteDialog from"./DeleteDialog.vue"
+import DeleteDialog from "./DeleteDialog.vue";
 
 const store = useStore();
 const userIdentity = store.getters.user;
@@ -742,7 +747,7 @@ let VPM = ref("");
 let PM = ref("");
 const currentAction = ref("");
 const ConfirmDialogRef = ref(null);
-const ConfirmDeleteDialogRef =ref(null);
+const ConfirmDeleteDialogRef = ref(null);
 
 computed(() => {
   return store.getters.user;
@@ -752,13 +757,11 @@ const props = defineProps({
   id: String,
 });
 
-
-
 const showConfirmDialog = async (value) => {
   try {
     const response = await axios.post("/api/accessQuests/access-requests", {
       userId: userIdentity.id,
-      userName:userIdentity.name,
+      userName: userIdentity.name,
       partnerId: props.id,
       requestedContactField: value,
       getPocOnly: true,
@@ -782,7 +785,7 @@ const confirmAction = async () => {
     const value = currentAction.value;
     await axios.post("/api/accessQuests/access-requests", {
       userId: userIdentity.id,
-      userName:userIdentity.name,
+      userName: userIdentity.name,
       partnerId: props.id,
       requestedContactField: value,
     });
@@ -791,8 +794,8 @@ const confirmAction = async () => {
   }
 };
 
-const showDeleteDialog =async() => {
- ConfirmDeleteDialogRef.value.show()
+const showDeleteDialog = async () => {
+  ConfirmDeleteDialogRef.value.show();
 };
 
 const deleteData = (value) => {
@@ -890,9 +893,8 @@ span.avatar {
   font-weight: normal;      */
   padding: 8px;
 }
-.font-extra-bold{
+.font-extra-bold {
   font-weight: 700;
-  color:#000000;
-
+  color: #000000;
 }
 </style>
