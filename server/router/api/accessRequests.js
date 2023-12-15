@@ -5,15 +5,15 @@ const AccessRequest = require("../../model/AccessRequests");
 const Partners = require("../../model/Partners")
 const Logs = require("../../model/Logs")
 
-const mailKey = require("../../../config/keys").gunMail
+
 
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
-const mg = mailgun.client({ username: 'api', key: mailKey || 'partner-system' });
+const mg = mailgun.client({ username: 'api', key: process.env.GUNMAIL_KEY || 'partner-system' });
 const crypto = require('crypto')
 
-
+//const mailKey = require("../../../config/keys").gunMail
 
 function generateToken(value) {
     const timestamp = new Date().getTime();
