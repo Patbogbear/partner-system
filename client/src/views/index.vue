@@ -217,15 +217,17 @@
             >
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Partner Marketing Data</h4>
-                  <div class="ms-auto lh-1">
+                  <div class="d-flex align-items-center">
+                    <h4 class="subheader">Partner Marketing Data</h4>
+                    <div class="ms-auto lh-1"></div>
+
                     <a
-                      class="dropdown-toggle text-secondary"
+                      class="dropdown-toggle"
                       href="#"
                       data-bs-toggle="dropdown"
                       aria-haspopup="true"
                       aria-expanded="false"
-                      >{{ dashboardCity }}</a
+                      >Cluster {{ dashboardCity }} Data</a
                     >
                     <div class="dropdown-menu dropdown-menu-end">
                       <a
@@ -257,9 +259,10 @@
             >
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">
-                    {{ dashboardCity }} cluster {{ dashboardSelectType }}
-                  </h5>
+                  <h6 class="card-title">
+                    Cluster {{ dashboardCity }} & Partner Type:
+                    <strong>{{ dashboardSelectType }}</strong>
+                  </h6>
                   <div class="ratio ratio-21x9">
                     <div>
                       <div id="map-world" class="w-100 h-100">
@@ -521,13 +524,13 @@ const dashboardCity = ref("SH");
 
 const dashboardTwoPartnerData = ref(null);
 let dashboardTwoPartnerDataInstance = ref(null);
-const dashboardSelectType = ref("");
+//图表二初始化的时候，head中默认展示 third_partner_type字段的初始化值，因没有及时处理，默认手动硬编码“Click On The Left Bar To change Data”
+const dashboardSelectType = ref("Click On The Left Bar To change Data ");
 
 const getData = async () => {
   try {
     const response = await axios.get("api/partners");
     partners.value = response.data;
-    console.log(partners.value);
   } catch (err) {
     console.error(err);
   }
@@ -915,60 +918,24 @@ const createMixedChart = () => {
       },
     },
   });
-  nextTick(() => {
-    console.log(dashboardOnePartnerTypeInstance.data);
-  });
-};
-//对图表二的初始化数据的处理
-const getInitialDataForDashboardTwo = (dashboardCity) => {
-  const leadsField = `${dashboardCity.toLowerCase()}_marketing_data_leads`;
-
-  // 累加每个类型的 leads
-  const typeLeadsSum = partners.reduce((acc, partner) => {
-    const type = partner.thrid_partner_type;
-    const leads = Number(partner[leadsField]) || 0;
-    acc[type] = (acc[type] || 0) + leads;
-    return acc;
-  }, {});
-
-  // 找出 leads 最高的类型
-  const highestLeadsType = Object.entries(typeLeadsSum).sort(
-    (a, b) => b[1] - a[1]
-  )[0][0];
-
-  // 根据找到的类型，筛选并排序 partners
-  const filteredPartners = partners
-    .filter((partner) => partner.thrid_partner_type === highestLeadsType)
-    .sort((a, b) => b[leadsField] - a[leadsField]);
-
-  // 提取用于图表显示的数据
-  const labels = filteredPartners.map((partner) => partner.third_partner_name);
-  const leads = filteredPartners.map((partner) => partner[leadsField]);
-  const percentages = filteredPartners.map((partner) => {
-    const percentageValue = partner[`${city.toLowerCase()}_marketing_data`];
-    return percentageValue ? parseFloat(percentageValue.replace("%", "")) : 0;
-  });
-  console.log(labels,leads,percentages)
-
-  return { labels, leads, percentages, type: highestLeadsType };
 };
 
-const createDashboardTwoChart = () => {
+const createDashboardTwoChart = (initialDateBoard) => {
   const ctx = dashboardTwoPartnerData.value.getContext("2d");
   dashboardTwoPartnerDataInstance = new Chart(ctx, {
     type: "bar", // 主类型设置为柱状图
     data: {
-      labels: [],
+      labels: initialDateBoard.labels,
       datasets: [
         {
           label: "Leads",
-          data: [],
+          data: initialDateBoard.leads,
           backgroundColor: "rgba(54, 162, 235, 0.5)",
           yAxisID: "y-axis-1", // 指定使用左侧的 y 轴
         },
         {
           label: "Data Percentage",
-          data: [],
+          data: initialDateBoard.percentages,
           type: "line", // 设置此数据集为折线图类型
           borderColor: "rgba(255, 99, 132, 1)",
           yAxisID: "y-axis-2", // 指定使用右侧的 y 轴
@@ -999,6 +966,40 @@ const createDashboardTwoChart = () => {
       },
     },
   });
+};
+
+//对图表二的初始化数据的处理
+const getInitialDataForDashboardTwo = (dashboardCity) => {
+  const leadsField = `${dashboardCity.toLowerCase()}_marketing_data_leads`;
+
+  // 累加每个类型的 leads
+
+  const typeLeadsSum = partners.value.reduce((acc, partner) => {
+    const type = partner.third_partner_type;
+    const leads = Number(partner[leadsField]) || 0;
+    acc[type] = (acc[type] || 0) + leads;
+    return acc;
+  }, {});
+
+  // 找出 leads 最高的类型
+  const highestLeadsType = Object.entries(typeLeadsSum).sort(
+    (a, b) => b[1] - a[1]
+  )[0][0];
+  // 根据找到的类型，筛选并排序 partners
+  const filteredPartners = partners.value
+    .filter((partner) => partner.third_partner_type === highestLeadsType)
+    .sort((a, b) => b[leadsField] - a[leadsField]);
+
+  // 提取用于图表显示的数据
+  const labels = filteredPartners.map((partner) => partner.third_partner_name);
+  const leads = filteredPartners.map((partner) => partner[leadsField]);
+  const percentages = filteredPartners.map((partner) => {
+    const percentageValue =
+      partner[`${dashboardCity.toLowerCase()}_marketing_data`];
+    return percentageValue ? parseFloat(percentageValue.replace("%", "")) : 0;
+  });
+
+  return { labels, leads, percentages, type: highestLeadsType };
 };
 
 const updateSecondChart = (type) => {
@@ -1033,11 +1034,24 @@ const getNewDataForSecondChart = (dashboardCity, type) => {
   return { labels, leads, percentages };
 };
 
+const updateDashboardTwoForNewCity = (newCity) => {
+  const newDashboardTwoData = getInitialDataForDashboardTwo(newCity);
 
+  if (dashboardTwoPartnerDataInstance && dashboardTwoPartnerDataInstance.data) {
+    dashboardTwoPartnerDataInstance.data.labels = newDashboardTwoData.labels;
+    dashboardTwoPartnerDataInstance.data.datasets[0].data = newDashboardTwoData.leads;
+    dashboardTwoPartnerDataInstance.data.datasets[1].data = newDashboardTwoData.percentages;
+    dashboardTwoPartnerDataInstance.update();
+  } else {
+    // 如果图表实例不存在，则创建新的图表
+    createDashboardTwoChart(newDashboardTwoData);
+  }
+};
 
 onMounted(async () => {
   const fetchDataAndInitChart = async () => {
     await getData();
+    const initialDateBoard = getInitialDataForDashboardTwo(dashboardCity.value);
     countNewPartners(selectedDays.value);
     initChart();
     createNewPartnersChart();
@@ -1045,9 +1059,10 @@ onMounted(async () => {
     createMixedChart();
     nextTick(() => {
       updateDashboardChart(dashboardCity.value);
+      getInitialDataForDashboardTwo(dashboardCity.value);
     });
-    createDashboardTwoChart();
-    getInitialDataForDashboardTwo();
+
+    createDashboardTwoChart(initialDateBoard);
   };
   fetchDataAndInitChart();
 });
@@ -1061,6 +1076,7 @@ watch(
     ) {
       updateDashboardChart(newValue);
     }
+    
   },
   { immediate: true }
 );

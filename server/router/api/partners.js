@@ -111,6 +111,7 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
 // @desc return require json data 
 // @ access private
 
+//此处缺乏逻辑去依据身份调整partners的可见信息
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners) {
