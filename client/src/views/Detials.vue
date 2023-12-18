@@ -174,7 +174,7 @@
                     <div class="col-md-6 col-xl-12">
                       <div class="mb-3">
                         <label class="form-label">HZ-POC</label>
-                         <select
+                        <select
                           class="form-control form-select"
                           v-model="partner.POC_HZ"
                         >
@@ -515,7 +515,7 @@
                           <option value="手动输入">手动输入</option>
                         </select>
 
-                         <input
+                        <input
                           v-if="partner.POC_BJ === '手动输入'"
                           type="text"
                           class="form-control"
@@ -773,16 +773,27 @@ export default {
         .get("/api/partners/" + this.$route.params.id)
         .then((res) => {
           this.partner = res.data;
-        
         });
     },
     updateData() {
-      
+      if (this.partner.POC_BJ === "手动输入") {
+        this.partner.POC_BJ =
+          this.manualPOC_BJ.trim() === "" ? null : this.manualPOC_BJ.trim();
+      }
+      if (this.partner.POC_HZ === "手动输入") {
+        this.partner.POC_HZ =
+          this.manualPOC_HZ.trim() === "" ? null : this.manualPOC_HZ.trim();
+      }
+      if (this.partner.POC_SH === "手动输入") {
+        this.partner.POC_SH =
+          this.manualPOC_SH.trim() === "" ? null : this.manualPOC_SH.trim();
+      }
       axios
         .post("/api/partners/edit/" + this.$route.params.id, this.partner)
         .then((res) => {
-
-          this.$router.push({ path: "/single-partner/" + res.data.partners._id });
+          this.$router.push({
+            path: "/single-partner/" + res.data.partners._id,
+          });
         });
     },
     updatePOC_HZ() {

@@ -111,12 +111,12 @@ router.post("/add", passport.authenticate("jwt", { session: false }), (req, res)
 // @desc return require json data 
 // @ access private
 
-//此处缺乏逻辑去依据身份调整partners的可见信息
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
     Partners.find().then((partners) => {
         if (!partners) {
             return res.status(400).json({ message: "no content" })
         }
+        //这里未基于权限对partners中的联系人信息进行处理，存在一个非常小的隐患，主要是在index和partner list页面总体获取数据时
         res.json(partners)
     })
         .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
@@ -372,7 +372,7 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
 
     const userIdentity = req.user.identity
     const userCluster = req.user.cluster
-
+    console.log(req.body.POC_BJ)
     if (req.body.cluster) partners.cluster = req.body.cluster;
     if (req.body.third_partner_type) partners.third_partner_type = req.body.third_partner_type;
     if (req.body.third_partner_name) partners.third_partner_name = req.body.third_partner_name;
@@ -387,9 +387,16 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     if (req.body.hz_tier) partners.hz_tier = req.body.hz_tier;
     if (req.body.bj_tier) partners.bj_tier = req.body.bj_tier;
     if (req.body.vertical) partners.vertical = req.body.vertical;
-    if (req.body.POC_HZ) partners.POC_HZ = req.body.POC_HZ;
-    if (req.body.POC_SH) partners.POC_SH = req.body.POC_SH;
-    if (req.body.POC_BJ) partners.POC_BJ = req.body.POC_BJ;
+    //此处为了处理前端提供一个poc为空的情况下，能成功在数据库中写入的逻辑
+    if (typeof req.body.POC_HZ !== 'undefined') {
+        partners.POC_HZ = req.body.POC_HZ;
+      }
+      if (typeof req.body.POC_SH !== 'undefined') {
+        partners.POC_SH = req.body.POC_SH;
+      }
+    if (typeof req.body.POC_BJ !== 'undefined') {
+        partners.POC_BJ = req.body.POC_BJ;
+      }
     if (req.body.HZ_tracking_process) partners.HZ_tracking_process = req.body.HZ_tracking_process;
     if (req.body.HZ_tracking_process_segment) partners.HZ_tracking_process_segment = req.body.HZ_tracking_process_segment;
     if (req.body.SH_tracking_process) partners.SH_tracking_process = req.body.SH_tracking_process;
