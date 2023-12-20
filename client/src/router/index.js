@@ -17,6 +17,21 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/retrive',
+    name: 'retrive',
+    component: () => import('../views/Retrive.vue')
+  },
+  {
+    path: '/reset-password/:token/:email',
+    name: 'reset-password',
+    component: () => import('../views/ResetPassword.vue')
+  },
+  {
+    path: '/public-access-requests/:requestId/:token',
+    name: 'public-access-requests',
+    component: () => import('../views/PublicRequest.vue')
+  },
+  {
     path: '/add',
     name: 'add',
     component: () => import('../views/Add.vue')
@@ -57,8 +72,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLogin = localStorage.userToken ? true : false;
-  const isApprovalRoute = to.path.startsWith('/api/accessQuests/public-access-requests/')
-  if (to.path == "/login" || to.path == "/register") {
+  const isApprovalRoute = to.path.startsWith('/public-access-requests/')
+  const isResetPassword = to.path.startsWith('/reset-password')
+  if (to.path == "/login" || to.path == "/register" || to.path == "/retrive" || isApprovalRoute || isResetPassword) {
     next();
   } else {
     isLogin ? next() : next('/login');

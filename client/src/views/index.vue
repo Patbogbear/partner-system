@@ -276,13 +276,16 @@
             <button
               v-if="user.identity === 'Super-Admin' || user.identity === 'BA'"
               class="btn btn-outline-success"
-              @click="exportToCSV()"
+              @click="exportMarketingData()"
             >
               export marketing data
             </button>
-            <!-- <span v-if="user.identity === 'DB' || user.identity ==='Super-Admin'"> upload marketing data
-                  <input type="file" @change="uploadFile" />
-                </span> -->
+            <span
+              v-if="user.identity === 'DB' || user.identity === 'Super-Admin'"
+            >
+              upload marketing data
+              <input type="file" @change="uploadMarketingData($event)" />
+            </span>
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
@@ -1039,8 +1042,10 @@ const updateDashboardTwoForNewCity = (newCity) => {
 
   if (dashboardTwoPartnerDataInstance && dashboardTwoPartnerDataInstance.data) {
     dashboardTwoPartnerDataInstance.data.labels = newDashboardTwoData.labels;
-    dashboardTwoPartnerDataInstance.data.datasets[0].data = newDashboardTwoData.leads;
-    dashboardTwoPartnerDataInstance.data.datasets[1].data = newDashboardTwoData.percentages;
+    dashboardTwoPartnerDataInstance.data.datasets[0].data =
+      newDashboardTwoData.leads;
+    dashboardTwoPartnerDataInstance.data.datasets[1].data =
+      newDashboardTwoData.percentages;
     dashboardTwoPartnerDataInstance.update();
   } else {
     // 如果图表实例不存在，则创建新的图表
@@ -1076,7 +1081,6 @@ watch(
     ) {
       updateDashboardChart(newValue);
     }
-    
   },
   { immediate: true }
 );
@@ -1126,7 +1130,7 @@ const uploadFile = async (event) => {
     alert("上传失败：" + err.message);
   }
 };
-
+//old function export all data
 const exportToCSV = () => {
   axios
     .get("api/partners/export")
@@ -1169,6 +1173,53 @@ const exportToCSV = () => {
     })
     .catch((err) => console.log(err));
 };
+
+//new export marketing data
+const exportMarketingData = () => {
+  axios
+    .get("api/partners/export/marketing", { responseType: "blob" })
+    .then((res) => {
+      const csvContent = res.data; // 直接获取Blob数据
+      const downloadLink = document.createElement("a");
+      const url = URL.createObjectURL(csvContent);
+
+      downloadLink.href = url;
+      downloadLink.download = "partners.csv";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      URL.revokeObjectURL(url);
+    })
+    .catch((err) => console.log(err));
+};
+
+const uploadMarketingData = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    uploadMarketingFile(file);
+  } else {
+    console.log("No file selected");
+  }
+};
+
+const uploadMarketingFile = (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  axios.post('/api/partners/upload/marketing', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  .then(response => {
+    console.log('File uploaded successfully', response.data);
+  })
+  .catch(error => {
+    console.error('Error uploading file:', error.response.data);
+  });
+};
+
 </script>
 
 <style scoped>

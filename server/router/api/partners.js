@@ -122,27 +122,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
         .catch(error => res.status(404).json({ error: "serve error,could not fetch partner list", message: "could not fetch partner list" }));
 })
 
-// $route get api/partners/export
-// @desc return require json data
-// @ access private 
 
-router.get("/export", passport.authenticate("jwt", { session: false }), (req, res) => {
-    Partners.find().then((partners) => {
-        if (!partners || partners.length === 0) {
-            return res.status(400).json({ message: "no content" })
-        }
-        res.json(partners)
-        const userId = req.user.id
-        const newLog = new Log({
-            userId,
-            action: 'export partners',
-            description: `user ${req.user.email} export partners data `
-        });
-        newLog.save()
-    })
-        .catch(err => res.status(404).json({ error: "serve error,could not export data", message: "serve error could not export data" }));
-
-})
 
 // $route get api/partners/:id
 // @desc return require json data 
@@ -390,13 +370,13 @@ router.post("/edit/:id", passport.authenticate("jwt", { session: false }), (req,
     //此处为了处理前端提供一个poc为空的情况下，能成功在数据库中写入的逻辑
     if (typeof req.body.POC_HZ !== 'undefined') {
         partners.POC_HZ = req.body.POC_HZ;
-      }
-      if (typeof req.body.POC_SH !== 'undefined') {
+    }
+    if (typeof req.body.POC_SH !== 'undefined') {
         partners.POC_SH = req.body.POC_SH;
-      }
+    }
     if (typeof req.body.POC_BJ !== 'undefined') {
         partners.POC_BJ = req.body.POC_BJ;
-      }
+    }
     if (req.body.HZ_tracking_process) partners.HZ_tracking_process = req.body.HZ_tracking_process;
     if (req.body.HZ_tracking_process_segment) partners.HZ_tracking_process_segment = req.body.HZ_tracking_process_segment;
     if (req.body.SH_tracking_process) partners.SH_tracking_process = req.body.SH_tracking_process;
@@ -493,61 +473,161 @@ router.delete("/delete/:id", passport.authenticate("jwt", { session: false }),
     });
 
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// $route get api/partners/export
+// @desc return require json data
+// @ access private 
+//原有的导出接口，会导出除联系人信息外所有值
+// router.get("/export", passport.authenticate("jwt", { session: false }), (req, res) => {
+//     Partners.find().then((partners) => {
+//         console.log(111)
+//         if (!partners || partners.length === 0) {
+//             return res.status(400).json({ message: "no content" })
+//         }
+//         res.json(partners)
+//         const userId = req.user.id
+//         const newLog = new Log({
+//             userId,
+//             action: 'export partners',
+//             description: `user ${req.user.email} export partners data `
+//         });
+//         newLog.save()
+//     })
+//         .catch(err => res.status(404).json({ error: "serve error,could not export data", message: "serve error could not export data" }));
+
+// })
+
+
+
+const { Transform } = require('stream');
+
+router.get('/export/marketing', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Partners.find({}, '_id third_partner_name hz_marketing_data hz_marketing_data_leads sh_marketing_data sh_marketing_data_leads bj_marketing_data bj_marketing_data_leads hz_transfer_data hz_transfer_data_leads sh_transfer_data sh_transfer_data_leads bj_transfer_data bj_transfer_data_leads ') // 其他所有需要的字段
+        .then((partners) => {
+            if (!partners || partners.length === 0) {
+                return res.status(400).json({ message: "no content" });
+            }
+
+            const csvStream = fastcsv.format({ headers: true });
+            const transformStream = new Transform({
+                transform(partner, encoding, callback) {
+                    const transformed = { ...partner.toObject() }; // 将 Mongoose 文档转换为普通对象
+                    // 这里可以添加其他转换逻辑，比如处理特殊字符等
+                    callback(null, transformed);
+                },
+                objectMode: true,
+            });
+
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', 'attachment; filename="partners.csv"');
+
+            transformStream.pipe(csvStream).pipe(res);
+
+            partners.forEach(partner => transformStream.write(partner));
+            transformStream.end();
+        })
+        .catch(err => res.status(404).json({ error: "serve error, could not export data", message: "serve error could not export data" }));
+});
+
+
+
+
+
+//const storage = multer.memoryStorage();
+//const upload = multer({ storage: storage });
 
 // $route delete api/partners/upload
 // @desc return require json data 
 // @ access private  
 
-router.post('/upload', passport.authenticate("jwt", { session: false }), upload.single('csv'), async (req, res) => {
-    const streamifier = require('streamifier');
-    const csvStream = streamifier.createReadStream(req.file.buffer);
+// router.post('/upload/old', passport.authenticate("jwt", { session: false }), upload.single('csv'), async (req, res) => {
+//     const streamifier = require('streamifier');
+//     const csvStream = streamifier.createReadStream(req.file.buffer);
 
-    csvStream
-        .pipe(fastcsv.parse({ headers: true }))
+//     csvStream
+//         .pipe(fastcsv.parse({ headers: true }))
+//         .on('data', async (row) => {
+//             // 处理空值
+//             for (let key in row) {
+//                 if (row[key] === '') {
+//                     row[key] = null;
+//                 }
+//             }
+
+//             // 根据 third_partner_type 和 third_partner_name 查找是否存在此数据
+//             const existingPartner = await Partners.findOne({
+//                 third_partner_type: row.third_partner_type,
+//                 third_partner_name: row.third_partner_name
+//             });
+
+//             // 如果存在，则检查除 third_partner_type 和 third_partner_name 以外的其他列是否有变化，并进行更新
+//             if (existingPartner) {
+//                 let isChanged = false;
+
+//                 for (let key in row) {
+//                     if (key !== 'third_partner_type' && key !== 'third_partner_name' && existingPartner[key] !== row[key]) {
+//                         isChanged = true;
+//                         existingPartner[key] = row[key];
+//                     }
+//                 }
+
+//                 if (isChanged) {
+//                     await existingPartner.save();
+//                 }
+//             }
+//             // 否则，插入新条目
+//             else {
+//                 await Partners.create(row);
+//             }
+//         })
+//         .on('end', () => {
+//             res.status(200).send({ message: "upload successfully" });
+//         })
+//         .on('error', (error) => {
+//             console.error(error);
+//             res.status(404).send({ message: "serve error" });
+//         });
+// });
+
+
+// 设置Multer存储配置
+const upload = multer({ dest: 'tmp/csv/' });
+
+router.post('/upload/marketing', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    const filePath = req.file.path;
+    const errors = [];
+    const stream = fs.createReadStream(filePath);
+
+    const csvStream = fastcsv.parse({ headers: true })
         .on('data', async (row) => {
-            // 处理空值
-            for (let key in row) {
-                if (row[key] === '') {
-                    row[key] = null;
+            try {
+                const { _id, ...updateData } = row;
+                const partner = await Partners.findById(_id);
+                if (partner) {
+                    Object.assign(partner, updateData);
+                    await partner.save();
+                } else {
+                    errors.push(`Partner with ID ${_id} not found.`);
                 }
-            }
-
-            // 根据 third_partner_type 和 third_partner_name 查找是否存在此数据
-            const existingPartner = await Partners.findOne({
-                third_partner_type: row.third_partner_type,
-                third_partner_name: row.third_partner_name
-            });
-
-            // 如果存在，则检查除 third_partner_type 和 third_partner_name 以外的其他列是否有变化，并进行更新
-            if (existingPartner) {
-                let isChanged = false;
-
-                for (let key in row) {
-                    if (key !== 'third_partner_type' && key !== 'third_partner_name' && existingPartner[key] !== row[key]) {
-                        isChanged = true;
-                        existingPartner[key] = row[key];
-                    }
-                }
-
-                if (isChanged) {
-                    await existingPartner.save();
-                }
-            }
-            // 否则，插入新条目
-            else {
-                await Partners.create(row);
+            } catch (err) {
+                errors.push(`Error processing row with ID ${row._id}: ${err.message}`);
             }
         })
-        .on('end', () => {
-            res.status(200).send({ message: "upload successfully" });
-        })
-        .on('error', (error) => {
-            console.error(error);
-            res.status(404).send({ message: "serve error" });
+        .on('end', async () => {
+            fs.unlinkSync(filePath); // 删除临时文件
+            if (errors.length > 0) {
+                return res.status(400).json({ errors });
+            }
+            res.json({ message: 'File processed successfully.' });
         });
+
+    stream.pipe(csvStream);
 });
 
+
 module.exports = router;
+
 

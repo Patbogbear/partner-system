@@ -5,7 +5,7 @@ const AccessRequest = require("../../model/AccessRequests");
 const Partners = require("../../model/Partners")
 const Logs = require("../../model/Logs")
 
-
+const mailKey = require("../../../config/keys").gunMail
 
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
@@ -13,7 +13,7 @@ const mailgun = new Mailgun(formData);
 const mg = mailgun.client({ username: 'api', key: process.env.GUNMAIL_KEY || 'partner-system' });
 const crypto = require('crypto')
 
-//const mailKey = require("../../../config/keys").gunMail
+
 
 function generateToken(value) {
     const timestamp = new Date().getTime();
@@ -90,7 +90,7 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
             const pocInfo = partner[pocField];
             if (pocField) {
-                emailRecipients.push(PM,VPM);
+                emailRecipients.push(PM, VPM);
                 return res.status(200).send({ pocInfo: pocInfo, VPM: VPM, PM: PM, message: `你将要向${pocInfo}发起申请` });
 
             }
@@ -130,8 +130,8 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
         const baseUrl = 'https://partner-system.onrender.com';
 
         // 构建同意和不同意的链接
-        const approvalLink = `${baseUrl}/api/accessQuests/public-access-requests/${requestId}/${tokenWithTimestamp}?status=APPROVED`;
-        const denialLink = `${baseUrl}/api/accessQuests/public-access-requests/${requestId}/${tokenWithTimestamp}?status=DENIED`;
+        const approvalLink = `${baseUrl}/public-access-requests/${requestId}/${tokenWithTimestamp}?status=APPROVED`;
+        const denialLink = `${baseUrl}/public-access-requests/${requestId}/${tokenWithTimestamp}?status=DENIED`;
 
         // 将这些链接添加到邮件内容中
         const htmlContent = `
@@ -142,12 +142,12 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         mg.messages.create('dmabc.space', {
             from: "Partner-System-2.0 <mailgun@dmabc.space>",
-            to: emailRecipients,
-            subject: mailSubject,
+            to: "jiandongz@google.com",
+            subject: emailRecipients,
             text: mailSubject,//需加参数
             html: htmlContent,//需加链接
         })
-            .then() // logs response data
+            .then(msg => console.log(msg)) // logs response data
             .catch(err => console.log(err)); // logs any error
 
 
@@ -289,11 +289,11 @@ router.get('/user-requests/:userId', passport.authenticate("jwt", { session: fal
 
 
 //需要调试和完善的接口 主要用于邮件中的点击审批 流程
-router.get('/public-access-requests/:requestAccessId/:token', async (req, res) => {
+router.put('/public-access-requests/:requestAccessId/:token', async (req, res) => {
     try {
         const { requestAccessId, token } = req.params;
         const { status } = req.query;
-
+       
         // 从token中提取时间戳
         const parts = token.split('-');
         const originalTimestamp = parts.pop();
@@ -308,7 +308,7 @@ router.get('/public-access-requests/:requestAccessId/:token', async (req, res) =
 
         // 更新请求状态的逻辑...
         const resultRequest = await AccessRequest.findByIdAndUpdate(requestAccessId, { status }, { new: true });
-        res.status(200).send({ message: 'Request approved' });
+        res.status(200).send({ message: 'Request processed successfully!' });
     } catch (error) {
         res.status(500).send({ message: 'Error processing request' });
     }
