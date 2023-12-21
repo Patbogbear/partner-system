@@ -348,10 +348,10 @@
                                   <option value="Team-Leader">
                                     Team-Leader
                                   </option>
-                                  <option value="Team-Leader">
+                                  <option value="Marketing_Specialist">
                                     Marketing_Specialist
                                   </option>
-                                  <option value="Team-Leader">DA</option>
+                                  <option value="BA">BA</option>
                                 </select>
                               </div>
                             </div>
