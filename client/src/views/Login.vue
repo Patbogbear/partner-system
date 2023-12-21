@@ -32,11 +32,14 @@
               placeholder="Password"
               v-model="loginUser.password"
             />
-            <small class="form-hint">
-              Your password must be 8-20 characters long
-            </small>
+           
           </div>
+          <span style="color:red;" @click="gotoRetrive()">
+            forget password? click here to reset your password
+          </span>
+          
         </div>
+        
       </div>
       <div class="card-footer text-end">
         <span class="go_register" @click="gotoRegister()">
@@ -87,6 +90,9 @@ export default {
     },
     gotoRegister() {
       this.$router.push({path:'/register'})
+    },
+    gotoRetrive(){
+      this.$router.push({path:'/retrive'})
     },
     isEmpty(value) {
       return (
