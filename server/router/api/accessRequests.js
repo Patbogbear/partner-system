@@ -142,8 +142,8 @@ router.post('/access-requests', passport.authenticate("jwt", { session: false })
 
         mg.messages.create('dmabc.space', {
             from: "Partner-System-2.0 <mailgun@dmabc.space>",
-            to: "jiandongz@google.com",
-            subject: emailRecipients,
+            to: emailRecipients,
+            subject: mailSubject,
             text: mailSubject,//需加参数
             html: htmlContent,//需加链接
         })
