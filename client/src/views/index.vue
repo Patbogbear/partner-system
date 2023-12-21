@@ -212,7 +212,8 @@
               v-if="
                 user.identity == 'Super-Admin' ||
                 user.identity == 'PM' ||
-                user.identity == 'Team-Leader'
+                user.identity == 'Team-Leader' ||
+                user.identity === 'BA'
               "
             >
               <div class="card">
@@ -254,7 +255,8 @@
               v-if="
                 user.identity == 'Super-Admin' ||
                 user.identity == 'PM' ||
-                user.identity == 'Team-Leader'
+                user.identity == 'Team-Leader' ||
+                user.identity === 'BA'
               "
             >
               <div class="card">
@@ -1205,21 +1207,21 @@ const uploadMarketingData = (event) => {
 
 const uploadMarketingFile = (file) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
 
-  axios.post('/api/partners/upload/marketing', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-  .then(response => {
-    console.log('File uploaded successfully', response.data);
-  })
-  .catch(error => {
-    console.error('Error uploading file:', error.response.data);
-  });
+  axios
+    .post("/api/partners/upload/marketing", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      console.log("File uploaded successfully", response.data);
+    })
+    .catch((error) => {
+      console.error("Error uploading file:", error.response.data);
+    });
 };
-
 </script>
 
 <style scoped>
