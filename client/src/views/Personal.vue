@@ -399,7 +399,7 @@
                     </tr>
                   </thead>
                   <tr
-                    v-for="request in requestList"
+                    v-for="request in paginatedData"
                     :key="request._id + new Date()"
                   >
                     <td>
@@ -490,7 +490,7 @@
                     </tr>
                   </thead>
                   <tr
-                    v-for="request in requestList"
+                    v-for="request in paginatedData"
                     :key="request._id + new Date()"
                   >
                     <td>
@@ -547,12 +547,72 @@
             </div>
           </div>
         </div>
+        <div class="card-footer d-flex align-items-center">
+                  <p class="m-0 text-secondary">
+                    Showing <span>1</span> to <span>5</span> 
+                  </p>
+
+                  <ul class="pagination m-0 ms-auto">
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPage === 1 }"
+                    >
+                      <a
+                        class="page-link"
+                        href=" "
+                        @click.prevent="moveWindow(-1)"
+                      >
+                        <!-- SVG for 'prev' ... -->
+                        prev
+                      </a>
+                    </li>
+
+                    <li
+                      class="page-item"
+                      v-for="page in visiblePages"
+                      :key="page"
+                      :class="{ active: page === currentPage }"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click.prevent="setCurrentPage(page)"
+                        >{{ page }}</a
+                      >
+                    </li>
+
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPage === totalPages }"
+                    >
+                      <a
+                        class="page-link"
+                        href=" "
+                        @click.prevent="moveWindow(1)"
+                      >
+                        next
+                        <!-- SVG for 'next' ... -->
+                      </a>
+                    </li>
+                  </ul>
+                </div>
         <div class="row">
           <div class="col-xl-12" v-if="userIdentity.identity === 'Super-Admin'">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Logs</h3>
               </div>
+               <div class="ms-auto text-secondary">
+                      Search:
+                      <div class="ms-2 d-inline-block">
+                        <input
+                          v-model="filterInput"
+                          type="text"
+                          class="form-control form-control-sm"
+                          aria-label="Search invoice"
+                        />
+                      </div>
+                    </div>
               <div class="card-table table-responsive">
                 <table class="table table-vcenter">
                   <thead>
@@ -565,7 +625,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="log in logList" :key="log._id + new Date()">
+                    <tr v-for="log in paginatedDataTwo" :key="log._id + new Date()">
                       <td class="w-1">
                         {{
                           log.userId && log.userId.name
@@ -589,6 +649,55 @@
             </div>
           </div>
         </div>
+        <div class="card-footer d-flex align-items-center">
+                  <p class="m-0 text-secondary">
+                    Showing <span>1</span> to <span>5</span> 
+                  </p>
+
+                  <ul class="pagination m-0 ms-auto">
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPageTwo === 1 }"
+                    >
+                      <a
+                        class="page-link"
+                        href=" "
+                        @click.prevent="moveWindowTwo(-1)"
+                      >
+                        <!-- SVG for 'prev' ... -->
+                        prev
+                      </a>
+                    </li>
+
+                    <li
+                      class="page-item"
+                      v-for="page in visiblePagesTwo"
+                      :key="page"
+                      :class="{ active: page === currentPageTwo }"
+                    >
+                      <a
+                        class="page-link"
+                        href="#"
+                        @click.prevent="setCurrentPageTwo(page)"
+                        >{{ page }}</a
+                      >
+                    </li>
+
+                    <li
+                      class="page-item"
+                      :class="{ disabled: currentPageTwo === totalPagesTwo }"
+                    >
+                      <a
+                        class="page-link"
+                        href=" "
+                        @click.prevent="moveWindowTwo(1)"
+                      >
+                        next
+                        <!-- SVG for 'next' ... -->
+                      </a>
+                    </li>
+                  </ul>
+                </div>
       </div>
     </div>
   </div>
@@ -614,6 +723,21 @@ const addUserName = ref("");
 const addUserCluster = ref("");
 const requestList = ref([]);
 const logList = ref([]);
+
+
+const currentPage = ref(1);
+const pageWindowStart = ref(1); // Start page for sliding window
+const windowSize = ref(3); // Number of pages to display in the sliding window
+const itemsPerPage = ref(5);
+
+
+
+const currentPageTwo = ref(1);
+const pageWindowStartTwo = ref(1); // Start page for sliding window
+const windowSizeTwo = ref(3); // Number of pages to display in the sliding window
+const itemsPerPageTwo = ref(8);
+const filterInput = ref([]);
+
 
 onMounted(async () => {
   await getUsers();
@@ -736,6 +860,82 @@ const denyRequest = async (value) => {
     console.log("error approve request", error);
   }
 };
+function setCurrentPage(page) {
+  currentPage.value = page;
+}
+
+function moveWindow(direction) {
+  const newStart = pageWindowStart.value + direction * windowSize.value;
+  if (newStart >= 1 && newStart + windowSize.value <= totalPages.value + 1) {
+    pageWindowStart.value = newStart;
+  }
+}
+
+const visiblePages = computed(() => {
+  let end = pageWindowStart.value + windowSize.value;
+  if (end > totalPages.value) end = totalPages.value;
+  return Array.from(
+    { length: end - pageWindowStart.value },
+    (_, i) => i + pageWindowStart.value
+  );
+});
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = currentPage.value * itemsPerPage.value;
+  return requestList.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(
+    requestList.value.length / itemsPerPage.value
+  );
+});
+
+function setCurrentPageTwo(page) {
+  currentPageTwo.value = page;
+}
+
+function moveWindowTwo(direction) {
+  const newStart = pageWindowStartTwo.value + direction * windowSizeTwo.value;
+  if (newStart >= 1 && newStart + windowSizeTwo.value <= totalPagesTwo.value + 1) {
+    pageWindowStartTwo.value = newStart;
+  }
+}
+
+const visiblePagesTwo = computed(() => {
+  let end = pageWindowStartTwo.value + windowSizeTwo.value;
+  if (end > totalPagesTwo.value) end = totalPagesTwo.value;
+  return Array.from(
+    { length: end - pageWindowStartTwo.value },
+    (_, i) => i + pageWindowStartTwo.value
+  );
+});
+
+const paginatedDataTwo = computed(() => {
+  const filtered = filteredData(logList.value, filterInput.value);
+  const start = (currentPageTwo.value - 1) * itemsPerPageTwo.value;
+  const end = currentPageTwo.value * itemsPerPageTwo.value;
+  return filtered.slice(start, end);
+});
+
+const totalPagesTwo = computed(() => {
+  return Math.ceil(
+    filteredData(logList.value, filterInput.value).length / itemsPerPageTwo.value
+  );
+});
+
+//筛选器
+const filteredData = (logList, value) => {
+  const regex = new RegExp(value, "i");
+  return logList.filter((log) =>
+    Object.values(log).some(
+      (field) => typeof field === "string" && regex.test(field)
+    )
+  );
+};
+
+
 </script>
 <style scoped>
 @media (min-width: 1200px) {
