@@ -257,7 +257,8 @@
                 user.identity == 'Super-Admin' ||
                 user.identity == 'PM' ||
                 user.identity == 'Team-Leader' ||
-                user.identity === 'BA'
+                user.identity == 'BA' ||
+                user.identity == 'POC'
               "
             >
               <div class="card">
