@@ -213,8 +213,7 @@
                 user.identity == 'Super-Admin' ||
                 user.identity == 'PM' ||
                 user.identity == 'Team-Leader' ||
-                user.identity == 'BA' ||
-                user.identity == 'POC'
+                user.identity === 'BA'
               "
             >
               <div class="card">
@@ -257,8 +256,7 @@
                 user.identity == 'Super-Admin' ||
                 user.identity == 'PM' ||
                 user.identity == 'Team-Leader' ||
-                user.identity == 'BA' ||
-                user.identity == 'POC'
+                user.identity === 'BA'
               "
             >
               <div class="card">
@@ -389,7 +387,8 @@
                             @click="() => showDeleteDialog(partner._id)"
                             v-if="
                               user.identity == 'Super-Admin' ||
-                              user.identity == 'PM'
+                              user.identity == 'PM' ||
+                              user.identity == 'Team-Leader'
                             "
                           >
                             delete
