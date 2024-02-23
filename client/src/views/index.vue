@@ -209,12 +209,7 @@
 
             <div
               class="col-lg-6"
-              v-if="
-                user.identity == 'Super-Admin' ||
-                user.identity == 'PM' ||
-                user.identity == 'Team-Leader' ||
-                user.identity === 'BA'
-              "
+           
             >
               <div class="card">
                 <div class="card-body">
@@ -252,12 +247,7 @@
             </div>
             <div
               class="col-lg-6"
-              v-if="
-                user.identity == 'Super-Admin' ||
-                user.identity == 'PM' ||
-                user.identity == 'Team-Leader' ||
-                user.identity === 'BA'
-              "
+         
             >
               <div class="card">
                 <div class="card-body">
@@ -282,6 +272,7 @@
             >
               export marketing data
             </button>
+            <!-- <button @click="exportToCSV()">data</button> -->
             <span
               v-if="user.identity === 'DB' || user.identity === 'Super-Admin'"
             >
@@ -1136,7 +1127,7 @@ const uploadFile = async (event) => {
 //old function export all data
 const exportToCSV = () => {
   axios
-    .get("api/partners/export")
+    .get("api/partners/export/rate")
     .then((res) => {
       exportsData.value = res.data;
       const csv = [];
